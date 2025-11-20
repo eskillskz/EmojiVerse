@@ -1,17 +1,27 @@
+
 import React, { useState } from 'react';
 import { Heart } from 'lucide-react';
-import { EmojiRaw } from '../types';
+import { EmojiRaw, Locale } from '../types';
+import { UI_LABELS } from '../data/uiTranslations';
 
 interface EmojiButtonProps {
   emoji: EmojiRaw;
   onCopy: (emoji: EmojiRaw) => void;
   isFavorite?: boolean;
   onToggleFavorite?: (emoji: EmojiRaw) => void;
+  locale?: Locale;
 }
 
-const EmojiButton: React.FC<EmojiButtonProps> = ({ emoji, onCopy, isFavorite = false, onToggleFavorite }) => {
+const EmojiButton: React.FC<EmojiButtonProps> = ({ 
+  emoji, 
+  onCopy, 
+  isFavorite = false, 
+  onToggleFavorite,
+  locale = 'en'
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const hasVariants = emoji.skins && emoji.skins.length > 0;
+  const labels = UI_LABELS[locale];
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -19,6 +29,13 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({ emoji, onCopy, isFavorite = f
       onToggleFavorite(emoji);
     }
   };
+
+  // Determine secondary label (English name if different from localized)
+  const showSecondaryLabel = emoji.baseLabel && emoji.baseLabel.toLowerCase() !== emoji.label.toLowerCase();
+  
+  // Get tags for "Analogy" / Emotion context
+  // We limit to 4 tags to keep the tooltip clean
+  const displayTags = emoji.tags ? emoji.tags.slice(0, 4).join(', ') : '';
 
   return (
     <div 
@@ -35,7 +52,7 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({ emoji, onCopy, isFavorite = f
     >
       <button
         onClick={() => onCopy(emoji)}
-        title={emoji.label}
+        // Removed 'title' to disable native tooltip
         className="w-full aspect-square flex items-center justify-center text-2xl sm:text-3xl md:text-4xl rounded-xl sm:rounded-2xl cursor-pointer select-none relative transition-all duration-200 transform
           bg-slate-50/50 dark:bg-slate-800/20 border border-transparent
           hover:bg-white dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600
@@ -64,6 +81,38 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({ emoji, onCopy, isFavorite = f
         </div>
       )}
 
+      {/* Custom Rich Tooltip */}
+      {isHovered && !hasVariants && (
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-xl border border-slate-700 dark:border-slate-200 z-50 w-max max-w-[200px] text-center pointer-events-none animate-in fade-in zoom-in-95 duration-200">
+           {/* Main Label */}
+           <div className="text-sm font-bold capitalize leading-tight">
+             {emoji.label}
+           </div>
+           
+           {/* Analogies / Tags (New Feature) */}
+           {displayTags && (
+             <div className="text-xs opacity-80 mt-1 text-indigo-200 dark:text-indigo-600 font-medium leading-snug">
+               {displayTags}
+             </div>
+           )}
+
+           {/* English Label (if different) */}
+           {showSecondaryLabel && !displayTags && (
+             <div className="text-xs opacity-70 italic mt-0.5 capitalize">
+               {emoji.baseLabel}
+             </div>
+           )}
+
+           {/* Click to Copy CTA */}
+           <div className="text-[10px] uppercase tracking-wider opacity-50 mt-2 border-t border-white/20 dark:border-slate-900/10 pt-1">
+             {labels.clickToCopy}
+           </div>
+           
+           {/* Triangle */}
+           <div className="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-900 dark:bg-white border-l border-t border-slate-700 dark:border-slate-200 rotate-[-135deg] -mt-1.5"></div>
+        </div>
+      )}
+
       {/* Skin Tone Popup Menu */}
       {hasVariants && isHovered && (
         <div 
@@ -74,7 +123,7 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({ emoji, onCopy, isFavorite = f
           <button
              onClick={(e) => { e.stopPropagation(); onCopy(emoji); }}
              className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xl sm:text-2xl hover:bg-slate-100 dark:hover:bg-white/10 hover:scale-110 rounded-lg transition-all cursor-pointer"
-             title="Default"
+             title={emoji.label}
           >
             {emoji.emoji}
           </button>

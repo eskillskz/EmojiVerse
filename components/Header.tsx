@@ -64,38 +64,33 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         
         {/* ================= MOBILE LAYOUT (< md) ================= */}
-        <div className="flex flex-col gap-4 md:hidden">
+        <div className="flex flex-col gap-3 md:hidden">
           
-          {/* Row 1: Logo & Name (Left) + Burger (Right) */}
-          <div className="flex items-center justify-between">
-             <div className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth'})}>
-                <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-2 rounded-xl text-white shadow-lg shadow-indigo-500/30">
-                  <Smile size={24} strokeWidth={2.5} />
+          {/* Row 1: Logo & Name ONLY */}
+          <div className="flex items-center justify-center relative" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth'})}>
+              <div className="flex items-center gap-2">
+                <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-1.5 rounded-xl text-white shadow-lg shadow-indigo-500/30">
+                  <Smile size={20} strokeWidth={2.5} />
                 </div>
-                <h1 className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-white dark:to-slate-400 tracking-tight">
+                <h1 className="text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-white dark:to-slate-400 tracking-tight">
                   EmojiVerse
                 </h1>
-            </div>
-            <button 
-              className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              </div>
           </div>
 
-          {/* Row 2: Theme (Compact) & Language (Full Name) */}
+          {/* Row 2: Theme, Language, Hamburger */}
           <div className="flex items-center gap-2">
+             {/* Theme Toggle */}
              <button 
               onClick={toggleTheme}
-              className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs shadow-sm active:scale-95 transition-all shrink-0"
+              className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm active:scale-95 transition-all shrink-0"
              >
-                {isDarkMode ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} className="text-indigo-600" />}
-                <span>{isDarkMode ? labels.lightMode : labels.darkMode}</span>
+                {isDarkMode ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} className="text-indigo-600" />}
              </button>
 
+             {/* Language Selector (Flexible Width) */}
              <div className="relative group flex-1">
-                <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-3 py-2.5 rounded-xl cursor-pointer shadow-sm">
+                <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-3 py-2.5 rounded-xl cursor-pointer shadow-sm h-10">
                     <div className="flex items-center gap-2 overflow-hidden">
                       <span className="text-lg leading-none">{currentFlag}</span>
                       <span className="text-sm font-bold text-slate-700 dark:text-slate-300 truncate">
@@ -115,19 +110,81 @@ const Header: React.FC<HeaderProps> = ({
                       ))}
                  </div>
              </div>
+
+             {/* Hamburger Menu (Highlighted) */}
+             <button 
+              className={`flex items-center justify-center w-10 h-10 rounded-xl border shadow-sm transition-all active:scale-95 shrink-0 ${
+                  isMobileMenuOpen 
+                  ? 'bg-indigo-500 text-white border-indigo-500' 
+                  : 'bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-500/30'
+              }`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
 
-          {/* Row 3: Search Bar */}
+          {/* Row 3: Main Navigation Tabs (Grid) - Visible by default now */}
+          {!isBlogActive && (
+            <div className="grid grid-cols-2 gap-2">
+               <button
+                 onClick={() => onTabChange('emoji')}
+                 className={`flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-bold text-xs transition-all border ${
+                    activeTab === 'emoji' 
+                    ? 'bg-indigo-500 text-white border-indigo-500 shadow-md shadow-indigo-500/20' 
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
+                 }`}
+               >
+                 <Smile size={14} />
+                 {labels.tabEmoji}
+               </button>
+               <button
+                 onClick={() => onTabChange('kaomoji')}
+                 className={`flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-bold text-xs transition-all border ${
+                    activeTab === 'kaomoji' 
+                    ? 'bg-pink-500 text-white border-pink-500 shadow-md shadow-pink-500/20' 
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
+                 }`}
+               >
+                 <Type size={14} />
+                 {labels.tabKaomoji}
+               </button>
+               <button
+                 onClick={() => onTabChange('translit')}
+                 className={`flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-bold text-xs transition-all border ${
+                    activeTab === 'translit' 
+                    ? 'bg-blue-500 text-white border-blue-500 shadow-md shadow-blue-500/20' 
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
+                 }`}
+               >
+                 <Globe size={14} />
+                 {labels.tabSeo}
+               </button>
+               <button
+                 onClick={() => onTabChange('capslock')}
+                 className={`flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-bold text-xs transition-all border ${
+                    activeTab === 'capslock' 
+                    ? 'bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-500/20' 
+                    : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
+                 }`}
+               >
+                 <CaseUpper size={14} />
+                 {labels.tabCapsLock}
+               </button>
+            </div>
+          )}
+
+          {/* Row 4: Search Bar */}
           <div className="relative w-full">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-slate-400" />
+              <Search className="h-4 w-4 text-slate-400" />
             </div>
             <input
               type="text"
               placeholder={labels.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-2xl text-base bg-slate-100/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-inner"
+              className="block w-full pl-9 pr-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-slate-100/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-indigo-500/50 transition-all shadow-inner"
             />
           </div>
         </div>
@@ -299,60 +356,36 @@ const Header: React.FC<HeaderProps> = ({
               Blog & Stories
             </button>
 
-            {!isBlogActive && (
-              <div className="grid grid-cols-2 gap-2 mb-2">
-                 <button
-                   onClick={() => onTabChange('emoji')}
-                   className={`py-2 rounded-xl font-bold text-xs ${activeTab === 'emoji' ? 'bg-indigo-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
-                 >
-                   {labels.tabEmoji}
-                 </button>
-                 <button
-                   onClick={() => onTabChange('kaomoji')}
-                   className={`py-2 rounded-xl font-bold text-xs ${activeTab === 'kaomoji' ? 'bg-pink-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
-                 >
-                   {labels.tabKaomoji}
-                 </button>
-                 <button
-                   onClick={() => onTabChange('translit')}
-                   className={`py-2 rounded-xl font-bold text-xs ${activeTab === 'translit' ? 'bg-blue-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
-                 >
-                   {labels.tabSeo}
-                 </button>
-                 <button
-                   onClick={() => onTabChange('capslock')}
-                   className={`py-2 rounded-xl font-bold text-xs ${activeTab === 'capslock' ? 'bg-orange-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
-                 >
-                   {labels.tabCapsLock}
-                 </button>
-              </div>
-            )}
+            {/* Note: Main tabs are now in the grid above, removed from here to avoid duplication as requested */}
             
             {!isBlogActive && activeTab === 'emoji' && (
-              <div className="grid grid-cols-2 gap-2">
-                {groups.map((group) => {
-                  const Icon = ICON_MAP[group.groupName] || Grid3X3;
-                  const isActive = activeCategory === group.groupName;
-                  const displayName = (labels.categories as any)[group.groupName] || group.groupName;
+              <>
+                <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">Categories</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {groups.map((group) => {
+                    const Icon = ICON_MAP[group.groupName] || Grid3X3;
+                    const isActive = activeCategory === group.groupName;
+                    const displayName = (labels.categories as any)[group.groupName] || group.groupName;
 
-                  return (
-                    <button
-                      key={group.groupName}
-                      onClick={() => handleMobileCategoryClick(group.groupName)}
-                      className={`
-                        flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all border text-left
-                        ${isActive 
-                          ? 'bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/50' 
-                          : 'bg-slate-50 dark:bg-slate-900/50 border-transparent text-slate-600 dark:text-slate-400'
-                        }
-                      `}
-                    >
-                      <Icon size={16} />
-                      {displayName}
-                    </button>
-                  );
-                })}
-              </div>
+                    return (
+                      <button
+                        key={group.groupName}
+                        onClick={() => handleMobileCategoryClick(group.groupName)}
+                        className={`
+                          flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all border text-left
+                          ${isActive 
+                            ? 'bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/50' 
+                            : 'bg-slate-50 dark:bg-slate-900/50 border-transparent text-slate-600 dark:text-slate-400'
+                          }
+                        `}
+                      >
+                        <Icon size={16} />
+                        {displayName}
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
             )}
           </div>
         </div>

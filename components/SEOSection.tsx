@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Locale } from '../types';
 import { getSEOData } from '../data/seoContent';
-import { HelpCircle, Info, Tag, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
+import { HelpCircle, Info, Tag, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface SEOSectionProps {
   locale: Locale;

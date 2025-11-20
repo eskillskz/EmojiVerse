@@ -61,21 +61,24 @@ const App: React.FC = () => {
   }, [locale]);
 
   useEffect(() => {
-    // Use 'emoji' data as default for meta title if not on a specific article/blog page
-    // Ideally, this could also be dynamic based on activeTab, but keeping it simple for now as per request
-    const seoData = getSEOData(locale, activeTab); 
+    // Get SEO data based on the active tab
+    const seoData = getSEOData(locale, activeTab);
+    
     if (viewState === 'article' && currentPost) {
       document.title = `${currentPost.title} - EmojiVerse`;
     } else if (viewState === 'blog') {
       document.title = `EmojiVerse Blog - Stories & History (${locale.toUpperCase()})`;
     } else {
+      // Use the tab-specific title
       document.title = seoData.appTitle;
     }
+    
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       if (viewState === 'article' && currentPost) {
         metaDesc.setAttribute('content', currentPost.excerpt);
       } else {
+        // Use the tab-specific description
         metaDesc.setAttribute('content', seoData.metaDescription);
       }
     }
@@ -220,6 +223,7 @@ const App: React.FC = () => {
                onCopy={handleEmojiSelect}
                isFavorite={favIds.includes(emoji.hexcode)}
                onToggleFavorite={toggleFavorite}
+               locale={locale}
              />
           ))}
         </div>
@@ -228,7 +232,6 @@ const App: React.FC = () => {
   };
 
   const labels = UI_LABELS[locale];
-  const seoData = getSEOData(locale, activeTab);
 
   return (
     <div className="min-h-screen pb-32 bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300 relative overflow-x-hidden">
@@ -298,6 +301,7 @@ const App: React.FC = () => {
                           favoriteIds={favIds}
                           onToggleFavorite={toggleFavorite}
                           localizedName={(labels.categories as any)[group.groupName]}
+                          locale={locale}
                         />
                       ))}
                     </>
@@ -322,6 +326,7 @@ const App: React.FC = () => {
                         key={index}
                         group={group}
                         onCopy={handleKaomojiSelect}
+                        locale={locale}
                      />
                    ))}
                 </div>
@@ -378,7 +383,7 @@ const App: React.FC = () => {
         isOpen={isShareModalOpen} 
         onClose={() => setIsShareModalOpen(false)} 
         url={window.location.href}
-        title={seoData.appTitle}
+        title={viewState === 'home' ? getSEOData(locale, activeTab).appTitle : currentPost?.title || ''}
         modalTitle={labels.shareTitle}
       />
       
