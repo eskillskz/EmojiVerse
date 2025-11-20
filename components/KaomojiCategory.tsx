@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { KaomojiGroup, Locale } from '../types';
+import { KaomojiGroup, KaomojiItem, Locale } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
 interface KaomojiCategoryProps {
@@ -10,14 +10,13 @@ interface KaomojiCategoryProps {
 }
 
 interface KaomojiButtonProps {
-  item: string;
+  item: KaomojiItem;
   onCopy: (k: string) => void;
   label: string;       // "Click to Copy"
-  description: string; // New: The Emotion/Group Name
 }
 
 // Sub-component to handle individual hover state for tooltips
-const KaomojiButton: React.FC<KaomojiButtonProps> = ({ item, onCopy, label, description }) => {
+const KaomojiButton: React.FC<KaomojiButtonProps> = ({ item, onCopy, label }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -27,7 +26,7 @@ const KaomojiButton: React.FC<KaomojiButtonProps> = ({ item, onCopy, label, desc
       onMouseLeave={() => setIsHovered(false)}
     >
       <button
-        onClick={() => onCopy(item)}
+        onClick={() => onCopy(item.text)}
         className="
           w-full flex items-center justify-center py-3 px-2 rounded-xl border border-slate-100 dark:border-slate-800
           bg-slate-50/50 dark:bg-slate-800/30 text-slate-700 dark:text-slate-300
@@ -36,15 +35,15 @@ const KaomojiButton: React.FC<KaomojiButtonProps> = ({ item, onCopy, label, desc
           hover:scale-105 hover:shadow-md transition-all active:scale-95
         "
       >
-        {item}
+        {item.text}
       </button>
 
       {/* Custom Rich Tooltip */}
       {isHovered && (
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-xl border border-slate-700 dark:border-slate-200 z-50 w-max max-w-[200px] text-center pointer-events-none animate-in fade-in zoom-in-95 duration-200">
-           {/* Emotion Description (Instead of repeating the item) */}
+           {/* Specific Meaning */}
            <div className="text-sm font-bold font-sans leading-tight mb-1">
-             {description}
+             {item.meaning}
            </div>
            
            {/* Click to Copy CTA */}
@@ -79,7 +78,6 @@ const KaomojiCategory: React.FC<KaomojiCategoryProps> = ({ group, onCopy, locale
             item={item}
             onCopy={onCopy}
             label={labels.clickToCopy} 
-            description={group.name} // Pass the emotion category
           />
         ))}
       </div>

@@ -7,6 +7,7 @@ export interface EmojiRaw {
   hexcode: string;      // Unique identifier in emojibase
   emoji: string;        // The actual char
   label: string;        // Name in selected language
+  baseLabel?: string;   // Original English name (for reference/search)
   tags?: string[];      // Keywords for search
   searchTags?: string;  // COMBINED keywords from ALL languages for universal search
   group: number;        // ID for category
@@ -20,9 +21,16 @@ export interface EmojiGroup {
   emojis: EmojiRaw[];
 }
 
+export interface KaomojiItem {
+  text: string;       // The kaomoji string
+  meaning: string;    // Specific meaning (e.g., "Blushing Smile")
+  tags: string[];     // Search tags (e.g., "shy", "happy")
+  keywords: string;   // Multilingual search string
+}
+
 export interface KaomojiGroup {
   name: string;
-  items: string[];
+  items: KaomojiItem[];
 }
 
 export type CategoryId = 

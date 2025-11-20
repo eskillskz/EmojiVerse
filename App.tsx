@@ -126,6 +126,24 @@ const App: React.FC = () => {
     })).filter(group => group.emojis.length > 0);
   }, [allGroups, searchQuery]);
 
+  const filteredKaomoji = useMemo(() => {
+    if (!searchQuery.trim()) return KAOMOJI_DATA;
+    const query = searchQuery.toLowerCase();
+    
+    return KAOMOJI_DATA.map(group => ({
+      ...group,
+      items: group.items.filter(item => {
+        // Search in text, meaning, tags, and keywords
+        return (
+          item.text.includes(query) || 
+          item.meaning.toLowerCase().includes(query) ||
+          item.tags.some(t => t.toLowerCase().includes(query)) ||
+          item.keywords.toLowerCase().includes(query)
+        );
+      })
+    })).filter(group => group.items.length > 0);
+  }, [searchQuery]);
+
   const handleCategorySelect = (groupName: string) => {
     if (viewState !== 'home') setViewState('home'); 
     setActiveCategory(groupName);
@@ -321,7 +339,7 @@ const App: React.FC = () => {
                   locale={locale}
                 />
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                   {KAOMOJI_DATA.map((group, index) => (
+                   {filteredKaomoji.map((group, index) => (
                      <KaomojiCategory 
                         key={index}
                         group={group}
