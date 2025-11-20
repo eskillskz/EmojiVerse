@@ -1,0 +1,243 @@
+import { Locale } from '../types';
+
+interface UITranslation {
+  searchPlaceholder: string;
+  lightMode: string;
+  darkMode: string;
+  fontSize: string;
+  instagramFonts: string;
+  igLimit: string;
+  copyText: string;
+  clearText: string;
+  copied: string;
+  noEmojisFound: string;
+  trySearching: string;
+  favorites: string;
+  recent: string;
+  footer: string;
+  selectStyle: string;
+}
+
+export const UI_LABELS: Record<Locale, UITranslation> = {
+  en: {
+    searchPlaceholder: "Search emojis...",
+    lightMode: "Light",
+    darkMode: "Dark",
+    fontSize: "Font Size",
+    instagramFonts: "Instagram Fonts",
+    igLimit: "IG Limit",
+    copyText: "Copy Text",
+    clearText: "Clear",
+    copied: "Copied to clipboard!",
+    noEmojisFound: "No emojis found",
+    trySearching: "Try searching for something else.",
+    favorites: "Favorites",
+    recent: "Recently Used",
+    footer: "Designed for the World 🌍",
+    selectStyle: "Select Style"
+  },
+  ru: {
+    searchPlaceholder: "Поиск эмодзи...",
+    lightMode: "Светлая",
+    darkMode: "Темная",
+    fontSize: "Размер",
+    instagramFonts: "Шрифты Инстаграм",
+    igLimit: "Лимит IG",
+    copyText: "Копировать",
+    clearText: "Очистить",
+    copied: "Скопировано!",
+    noEmojisFound: "Эмодзи не найдены",
+    trySearching: "Попробуйте другой запрос.",
+    favorites: "Избранное",
+    recent: "Недавние",
+    footer: "Создано для всего мира 🌍",
+    selectStyle: "Выберите стиль"
+  },
+  es: {
+    searchPlaceholder: "Buscar emojis...",
+    lightMode: "Claro",
+    darkMode: "Oscuro",
+    fontSize: "Tamaño",
+    instagramFonts: "Fuentes Instagram",
+    igLimit: "Límite IG",
+    copyText: "Copiar Texto",
+    clearText: "Borrar",
+    copied: "¡Copiado!",
+    noEmojisFound: "No se encontraron emojis",
+    trySearching: "Intenta buscar otra cosa.",
+    favorites: "Favoritos",
+    recent: "Recientes",
+    footer: "Diseñado para el mundo 🌍",
+    selectStyle: "Seleccionar estilo"
+  },
+  fr: {
+    searchPlaceholder: "Rechercher des émojis...",
+    lightMode: "Clair",
+    darkMode: "Sombre",
+    fontSize: "Taille",
+    instagramFonts: "Polices Insta",
+    igLimit: "Limite IG",
+    copyText: "Copier le texte",
+    clearText: "Effacer",
+    copied: "Copié !",
+    noEmojisFound: "Aucun émoji trouvé",
+    trySearching: "Essayez une autre recherche.",
+    favorites: "Favoris",
+    recent: "Récents",
+    footer: "Conçu pour le monde 🌍",
+    selectStyle: "Choisir le style"
+  },
+  de: {
+    searchPlaceholder: "Emojis suchen...",
+    lightMode: "Hell",
+    darkMode: "Dunkel",
+    fontSize: "Schriftgröße",
+    instagramFonts: "Insta Schriften",
+    igLimit: "IG Limit",
+    copyText: "Text kopieren",
+    clearText: "Löschen",
+    copied: "Kopiert!",
+    noEmojisFound: "Keine Emojis gefunden",
+    trySearching: "Versuchen Sie eine andere Suche.",
+    favorites: "Favoriten",
+    recent: "Zuletzt",
+    footer: "Für die Welt entworfen 🌍",
+    selectStyle: "Stil wählen"
+  },
+  it: {
+    searchPlaceholder: "Cerca emoji...",
+    lightMode: "Chiaro",
+    darkMode: "Scuro",
+    fontSize: "Dimensione",
+    instagramFonts: "Font Instagram",
+    igLimit: "Limite IG",
+    copyText: "Copia testo",
+    clearText: "Cancella",
+    copied: "Copiato!",
+    noEmojisFound: "Nessun emoji trovato",
+    trySearching: "Prova a cercare altro.",
+    favorites: "Preferiti",
+    recent: "Recenti",
+    footer: "Progettato per il mondo 🌍",
+    selectStyle: "Seleziona stile"
+  },
+  pt: {
+    searchPlaceholder: "Pesquisar emojis...",
+    lightMode: "Claro",
+    darkMode: "Escuro",
+    fontSize: "Tamanho",
+    instagramFonts: "Fontes Instagram",
+    igLimit: "Limite IG",
+    copyText: "Copiar Texto",
+    clearText: "Limpar",
+    copied: "Copiado!",
+    noEmojisFound: "Nenhum emoji encontrado",
+    trySearching: "Tente pesquisar outra coisa.",
+    favorites: "Favoritos",
+    recent: "Recentes",
+    footer: "Projetado para o mundo 🌍",
+    selectStyle: "Selecionar estilo"
+  },
+  zh: {
+    searchPlaceholder: "搜索表情符号...",
+    lightMode: "亮色",
+    darkMode: "暗色",
+    fontSize: "字体大小",
+    instagramFonts: "Instagram 字体",
+    igLimit: "IG 限制",
+    copyText: "复制文本",
+    clearText: "清除",
+    copied: "已复制！",
+    noEmojisFound: "未找到表情符号",
+    trySearching: "尝试搜索其他内容。",
+    favorites: "收藏夹",
+    recent: "最近使用",
+    footer: "为世界设计 🌍",
+    selectStyle: "选择样式"
+  },
+  ja: {
+    searchPlaceholder: "絵文字を検索...",
+    lightMode: "ライト",
+    darkMode: "ダーク",
+    fontSize: "サイズ",
+    instagramFonts: "インスタフォント",
+    igLimit: "IG制限",
+    copyText: "テキストをコピー",
+    clearText: "クリア",
+    copied: "コピーしました！",
+    noEmojisFound: "絵文字が見つかりません",
+    trySearching: "他のキーワードで検索してください。",
+    favorites: "お気に入り",
+    recent: "最近",
+    footer: "世界のために設計されました 🌍",
+    selectStyle: "スタイルを選択"
+  },
+  ko: {
+    searchPlaceholder: "이모티콘 검색...",
+    lightMode: "라이트",
+    darkMode: "다크",
+    fontSize: "글꼴 크기",
+    instagramFonts: "인스타 폰트",
+    igLimit: "IG 제한",
+    copyText: "텍스트 복사",
+    clearText: "지우기",
+    copied: "복사되었습니다!",
+    noEmojisFound: "이모티콘을 찾을 수 없습니다",
+    trySearching: "다른 검색어를 입력해보세요.",
+    favorites: "즐겨찾기",
+    recent: "최근 사용",
+    footer: "세상을 위해 디자인됨 🌍",
+    selectStyle: "스타일 선택"
+  },
+  ar: {
+    searchPlaceholder: "البحث عن الرموز التعبيرية...",
+    lightMode: "فاتح",
+    darkMode: "داكن",
+    fontSize: "حجم الخط",
+    instagramFonts: "خطوط انستغرام",
+    igLimit: "حد انستغرام",
+    copyText: "نسخ النص",
+    clearText: "مسح",
+    copied: "تم النسخ!",
+    noEmojisFound: "لم يتم العثور على رموز تعبيرية",
+    trySearching: "جرب البحث عن شيء آخر.",
+    favorites: "المفضلات",
+    recent: "استخدمت مؤخرا",
+    footer: "صمم للعالم 🌍",
+    selectStyle: "اختر النمط"
+  },
+  hi: {
+    searchPlaceholder: "इमوجी खोजें...",
+    lightMode: "लाइट",
+    darkMode: "डार्क",
+    fontSize: "फ़ॉन्ट आकार",
+    instagramFonts: "इंस्टाग्राम फ़ॉन्ट्स",
+    igLimit: "IG सीमा",
+    copyText: "टेक्स्ट कॉपी करें",
+    clearText: "साफ़ करें",
+    copied: "कॉपी किया गया!",
+    noEmojisFound: "कोई इमोजी नहीं मिला",
+    trySearching: "कुछ और खोजने का प्रयास करें।",
+    favorites: "पसंदीदा",
+    recent: "हाल ही में इस्तेमाल किया",
+    footer: "दुनिया के लिए डिज़ाइन किया गया 🌍",
+    selectStyle: "शैली चुनें"
+  },
+  kk: {
+    searchPlaceholder: "Эмодзи іздеу...",
+    lightMode: "Жарық",
+    darkMode: "Қараңғы",
+    fontSize: "Қаріп өлшемі",
+    instagramFonts: "Instagram қаріптері",
+    igLimit: "IG шегі",
+    copyText: "Мәтінді көшіру",
+    clearText: "Тазалау",
+    copied: "Көшірілді!",
+    noEmojisFound: "Эмодзи табылмады",
+    trySearching: "Басқа нәрсені іздеп көріңіз.",
+    favorites: "Таңдаулылар",
+    recent: "Соңғы",
+    footer: "Әлем үшін жасалған 🌍",
+    selectStyle: "Стильді таңдаңыз"
+  }
+};
