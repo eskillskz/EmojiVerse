@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X, BookOpen, Globe, Type } from 'lucide-react';
+import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X, BookOpen, Globe, Type, CaseUpper } from 'lucide-react';
 import { EmojiGroup, Locale, LOCALE_DATA } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
@@ -16,8 +16,8 @@ interface HeaderProps {
   toggleTheme: () => void;
   onOpenBlog: () => void;
   isBlogActive: boolean;
-  activeTab: 'emoji' | 'translit' | 'kaomoji';
-  onTabChange: (tab: 'emoji' | 'translit' | 'kaomoji') => void;
+  activeTab: 'emoji' | 'translit' | 'kaomoji' | 'capslock';
+  onTabChange: (tab: 'emoji' | 'translit' | 'kaomoji' | 'capslock') => void;
 }
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -198,7 +198,7 @@ const Header: React.FC<HeaderProps> = ({
              </div>
           </div>
 
-          {/* Row 3: MAIN TABS (Emoji vs Kaomoji vs Translit) */}
+          {/* Row 3: MAIN TABS (Emoji vs Kaomoji vs Translit vs CapsLock) */}
           {!isBlogActive && (
             <div className="border-t border-slate-200 dark:border-white/5 pt-4">
               <div className="flex items-center gap-4 mb-4">
@@ -215,7 +215,7 @@ const Header: React.FC<HeaderProps> = ({
                    {labels.tabEmoji}
                  </button>
 
-                 {/* 2. Kaomoji Tab (NEW) */}
+                 {/* 2. Kaomoji Tab */}
                  <button
                    onClick={() => onTabChange('kaomoji')}
                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all ${
@@ -239,6 +239,19 @@ const Header: React.FC<HeaderProps> = ({
                  >
                    <Globe size={18} />
                    {labels.tabSeo}
+                 </button>
+
+                 {/* 4. CapsLock Tab (New) */}
+                 <button
+                   onClick={() => onTabChange('capslock')}
+                   className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all ${
+                     activeTab === 'capslock'
+                     ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
+                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                   }`}
+                 >
+                   <CaseUpper size={18} />
+                   {labels.tabCapsLock}
                  </button>
               </div>
 
@@ -287,24 +300,30 @@ const Header: React.FC<HeaderProps> = ({
             </button>
 
             {!isBlogActive && (
-              <div className="flex gap-2 mb-2">
+              <div className="grid grid-cols-2 gap-2 mb-2">
                  <button
                    onClick={() => onTabChange('emoji')}
-                   className={`flex-1 py-2 rounded-xl font-bold text-xs ${activeTab === 'emoji' ? 'bg-indigo-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
+                   className={`py-2 rounded-xl font-bold text-xs ${activeTab === 'emoji' ? 'bg-indigo-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
                  >
                    {labels.tabEmoji}
                  </button>
                  <button
                    onClick={() => onTabChange('kaomoji')}
-                   className={`flex-1 py-2 rounded-xl font-bold text-xs ${activeTab === 'kaomoji' ? 'bg-pink-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
+                   className={`py-2 rounded-xl font-bold text-xs ${activeTab === 'kaomoji' ? 'bg-pink-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
                  >
                    {labels.tabKaomoji}
                  </button>
                  <button
                    onClick={() => onTabChange('translit')}
-                   className={`flex-1 py-2 rounded-xl font-bold text-xs ${activeTab === 'translit' ? 'bg-blue-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
+                   className={`py-2 rounded-xl font-bold text-xs ${activeTab === 'translit' ? 'bg-blue-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
                  >
                    {labels.tabSeo}
+                 </button>
+                 <button
+                   onClick={() => onTabChange('capslock')}
+                   className={`py-2 rounded-xl font-bold text-xs ${activeTab === 'capslock' ? 'bg-orange-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
+                 >
+                   {labels.tabCapsLock}
                  </button>
               </div>
             )}

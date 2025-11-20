@@ -7,8 +7,9 @@ import Loader from './components/Loader';
 import Toast from './components/Toast';
 import TextEditor from './components/TextEditor';
 import TranslitTool from './components/TranslitTool';
+import CapsLockTool from './components/CapsLockTool'; // New Import
 import EmojiCategory from './components/EmojiCategory';
-import KaomojiCategory from './components/KaomojiCategory'; // New
+import KaomojiCategory from './components/KaomojiCategory';
 import EmojiButton from './components/EmojiButton';
 import FloatingControls from './components/FloatingControls';
 import SEOSection from './components/SEOSection';
@@ -18,7 +19,7 @@ import ShareModal from './components/ShareModal';
 import ReactionOverlay from './components/ReactionOverlay';
 import { getSEOData } from './data/seoContent';
 import { BLOG_POSTS } from './data/blogPosts';
-import { KAOMOJI_DATA } from './data/kaomoji'; // New
+import { KAOMOJI_DATA } from './data/kaomoji';
 import { UI_LABELS } from './data/uiTranslations';
 import { Clock, Heart } from 'lucide-react';
 
@@ -35,8 +36,8 @@ const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [editorText, setEditorText] = useState('');
   
-  // Tab State: emoji | translit | kaomoji
-  const [activeTab, setActiveTab] = useState<'emoji' | 'translit' | 'kaomoji'>('emoji');
+  // Tab State: emoji | translit | kaomoji | capslock
+  const [activeTab, setActiveTab] = useState<'emoji' | 'translit' | 'kaomoji' | 'capslock'>('emoji');
 
   const [forceOpenState, setForceOpenState] = useState<boolean | null>(null);
   const [favorites, setFavorites] = useState<EmojiRaw[]>([]);
@@ -60,7 +61,9 @@ const App: React.FC = () => {
   }, [locale]);
 
   useEffect(() => {
-    const seoData = getSEOData(locale);
+    // Use 'emoji' data as default for meta title if not on a specific article/blog page
+    // Ideally, this could also be dynamic based on activeTab, but keeping it simple for now as per request
+    const seoData = getSEOData(locale, activeTab); 
     if (viewState === 'article' && currentPost) {
       document.title = `${currentPost.title} - EmojiVerse`;
     } else if (viewState === 'blog') {
@@ -76,7 +79,7 @@ const App: React.FC = () => {
         metaDesc.setAttribute('content', seoData.metaDescription);
       }
     }
-  }, [locale, viewState, currentPost]);
+  }, [locale, viewState, currentPost, activeTab]);
 
   useEffect(() => {
     const savedFavs = localStorage.getItem('emoji-favs');
@@ -166,7 +169,6 @@ const App: React.FC = () => {
     setTriggerEmoji(emoji.emoji);
   }, [updateRecent]);
 
-  // Handler for Kaomoji copy
   const handleKaomojiSelect = useCallback((text: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setToast({ message: `Copied ${text} to clipboard!`, visible: true });
@@ -226,7 +228,7 @@ const App: React.FC = () => {
   };
 
   const labels = UI_LABELS[locale];
-  const seoData = getSEOData(locale);
+  const seoData = getSEOData(locale, activeTab);
 
   return (
     <div className="min-h-screen pb-32 bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300 relative overflow-x-hidden">
@@ -331,7 +333,12 @@ const App: React.FC = () => {
               <TranslitTool locale={locale} />
             )}
 
-            {!loading && <SEOSection locale={locale} />}
+            {/* === CAPS LOCK TAB (New) === */}
+            {activeTab === 'capslock' && (
+              <CapsLockTool locale={locale} />
+            )}
+
+            {!loading && <SEOSection locale={locale} activeTab={activeTab} />}
           </>
         )}
 
