@@ -10,6 +10,7 @@ interface EmojiCategoryProps {
   forceOpen?: boolean | null; // null = use internal state, true/false = force
   favoriteIds?: string[];
   onToggleFavorite?: (emoji: EmojiRaw) => void;
+  localizedName?: string; // New prop for translation
 }
 
 const EmojiCategory: React.FC<EmojiCategoryProps> = ({ 
@@ -18,7 +19,8 @@ const EmojiCategory: React.FC<EmojiCategoryProps> = ({
   onCopy, 
   forceOpen = null,
   favoriteIds = [],
-  onToggleFavorite
+  onToggleFavorite,
+  localizedName
 }) => {
   // Default to false as requested ("application to open with a fully closed set")
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +47,8 @@ const EmojiCategory: React.FC<EmojiCategoryProps> = ({
   // Get a preview of first 7 emojis (more density)
   const previewEmojis = group.emojis.slice(0, 7);
 
+  const displayName = localizedName || group.groupName;
+
   return (
     <section 
       id={id}
@@ -57,7 +61,7 @@ const EmojiCategory: React.FC<EmojiCategoryProps> = ({
       >
         <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
           <h2 className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2 whitespace-nowrap">
-            {group.groupName}
+            {displayName}
             <span className="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
               {group.emojis.length}
             </span>

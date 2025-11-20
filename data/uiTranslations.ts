@@ -18,6 +18,19 @@ interface UITranslation {
   selectStyle: string;
   backToArticles: string;
   mainMenu: string;
+  share: string;
+  shareTitle: string;
+  categories: {
+    'Smileys & Emotion': string;
+    'People & Body': string;
+    'Animals & Nature': string;
+    'Food & Drink': string;
+    'Travel & Places': string;
+    'Activities': string;
+    'Objects': string;
+    'Symbols': string;
+    'Flags': string;
+  };
 }
 
 export const UI_LABELS: Record<Locale, UITranslation> = {
@@ -38,7 +51,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "Designed for the World 🌍",
     selectStyle: "Select Style",
     backToArticles: "Back to Articles",
-    mainMenu: "Main Menu"
+    mainMenu: "Main Menu",
+    share: "Share",
+    shareTitle: "Share this with the world",
+    categories: {
+      'Smileys & Emotion': 'Smileys & Emotion',
+      'People & Body': 'People & Body',
+      'Animals & Nature': 'Animals & Nature',
+      'Food & Drink': 'Food & Drink',
+      'Travel & Places': 'Travel & Places',
+      'Activities': 'Activities',
+      'Objects': 'Objects',
+      'Symbols': 'Symbols',
+      'Flags': 'Flags',
+    }
   },
   ru: {
     searchPlaceholder: "Поиск эмодзи...",
@@ -57,7 +83,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "Создано для всего мира 🌍",
     selectStyle: "Выберите стиль",
     backToArticles: "К статьям",
-    mainMenu: "Главное меню"
+    mainMenu: "Главное меню",
+    share: "Поделиться",
+    shareTitle: "Поделиться с друзьями",
+    categories: {
+      'Smileys & Emotion': 'Смайлы и Эмоции',
+      'People & Body': 'Люди и Тело',
+      'Animals & Nature': 'Животные и Природа',
+      'Food & Drink': 'Еда и Напитки',
+      'Travel & Places': 'Путешествия',
+      'Activities': 'Активности',
+      'Objects': 'Предметы',
+      'Symbols': 'Символы',
+      'Flags': 'Флаги',
+    }
   },
   es: {
     searchPlaceholder: "Buscar emojis...",
@@ -76,7 +115,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "Diseñado para el mundo 🌍",
     selectStyle: "Seleccionar estilo",
     backToArticles: "Volver a Artículos",
-    mainMenu: "Menú Principal"
+    mainMenu: "Menú Principal",
+    share: "Compartir",
+    shareTitle: "Compartir con el mundo",
+    categories: {
+      'Smileys & Emotion': 'Emociones',
+      'People & Body': 'Personas',
+      'Animals & Nature': 'Animales',
+      'Food & Drink': 'Comida',
+      'Travel & Places': 'Viajes',
+      'Activities': 'Actividades',
+      'Objects': 'Objetos',
+      'Symbols': 'Símbolos',
+      'Flags': 'Banderas',
+    }
   },
   fr: {
     searchPlaceholder: "Rechercher des émojis...",
@@ -95,7 +147,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "Conçu pour le monde 🌍",
     selectStyle: "Choisir le style",
     backToArticles: "Retour aux articles",
-    mainMenu: "Menu Principal"
+    mainMenu: "Menu Principal",
+    share: "Partager",
+    shareTitle: "Partager ceci",
+    categories: {
+      'Smileys & Emotion': 'Émotions',
+      'People & Body': 'Personnes',
+      'Animals & Nature': 'Animaux',
+      'Food & Drink': 'Nourriture',
+      'Travel & Places': 'Voyages',
+      'Activities': 'Activités',
+      'Objects': 'Objets',
+      'Symbols': 'Symboles',
+      'Flags': 'Drapeaux',
+    }
   },
   de: {
     searchPlaceholder: "Emojis suchen...",
@@ -114,7 +179,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "Für die Welt entworfen 🌍",
     selectStyle: "Stil wählen",
     backToArticles: "Zurück zu Artikeln",
-    mainMenu: "Hauptmenü"
+    mainMenu: "Hauptmenü",
+    share: "Teilen",
+    shareTitle: "Teilen Sie dies",
+    categories: {
+      'Smileys & Emotion': 'Smileys',
+      'People & Body': 'Leute',
+      'Animals & Nature': 'Tiere',
+      'Food & Drink': 'Essen',
+      'Travel & Places': 'Reisen',
+      'Activities': 'Aktivitäten',
+      'Objects': 'Objekte',
+      'Symbols': 'Symbole',
+      'Flags': 'Flaggen',
+    }
   },
   it: {
     searchPlaceholder: "Cerca emoji...",
@@ -133,7 +211,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "Progettato per il mondo 🌍",
     selectStyle: "Seleziona stile",
     backToArticles: "Torna agli articoli",
-    mainMenu: "Menu Principale"
+    mainMenu: "Menu Principale",
+    share: "Condividi",
+    shareTitle: "Condividi con il mondo",
+    categories: {
+      'Smileys & Emotion': 'Emozioni',
+      'People & Body': 'Persone',
+      'Animals & Nature': 'Animali',
+      'Food & Drink': 'Cibo',
+      'Travel & Places': 'Viaggi',
+      'Activities': 'Attività',
+      'Objects': 'Oggetti',
+      'Symbols': 'Simboli',
+      'Flags': 'Bandiere',
+    }
   },
   pt: {
     searchPlaceholder: "Pesquisar emojis...",
@@ -152,7 +243,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "Projetado para o mundo 🌍",
     selectStyle: "Selecionar estilo",
     backToArticles: "Voltar aos Artigos",
-    mainMenu: "Menu Principal"
+    mainMenu: "Menu Principal",
+    share: "Compartilhar",
+    shareTitle: "Compartilhar",
+    categories: {
+      'Smileys & Emotion': 'Emoções',
+      'People & Body': 'Pessoas',
+      'Animals & Nature': 'Animais',
+      'Food & Drink': 'Comida',
+      'Travel & Places': 'Viagens',
+      'Activities': 'Atividades',
+      'Objects': 'Objetos',
+      'Symbols': 'Símbolos',
+      'Flags': 'Bandeiras',
+    }
   },
   zh: {
     searchPlaceholder: "搜索表情符号...",
@@ -171,7 +275,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "为世界设计 🌍",
     selectStyle: "选择样式",
     backToArticles: "返回文章",
-    mainMenu: "主菜单"
+    mainMenu: "主菜单",
+    share: "分享",
+    shareTitle: "分享给朋友",
+    categories: {
+      'Smileys & Emotion': '表情与情感',
+      'People & Body': '人物与身体',
+      'Animals & Nature': '动物与自然',
+      'Food & Drink': '食物与饮料',
+      'Travel & Places': '旅行与地点',
+      'Activities': '活动',
+      'Objects': '物体',
+      'Symbols': '符号',
+      'Flags': '旗帜',
+    }
   },
   ja: {
     searchPlaceholder: "絵文字を検索...",
@@ -190,7 +307,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "世界のために設計されました 🌍",
     selectStyle: "スタイルを選択",
     backToArticles: "記事に戻る",
-    mainMenu: "メインメニュー"
+    mainMenu: "メインメニュー",
+    share: "共有",
+    shareTitle: "シェアする",
+    categories: {
+      'Smileys & Emotion': '顔文字と感情',
+      'People & Body': '人と体',
+      'Animals & Nature': '動物と自然',
+      'Food & Drink': '食べ物と飲み物',
+      'Travel & Places': '旅行と場所',
+      'Activities': '活動',
+      'Objects': '物',
+      'Symbols': '記号',
+      'Flags': '旗',
+    }
   },
   ko: {
     searchPlaceholder: "이모티콘 검색...",
@@ -209,7 +339,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "세상을 위해 디자인됨 🌍",
     selectStyle: "스타일 선택",
     backToArticles: "기사로 돌아가기",
-    mainMenu: "메인 메뉴"
+    mainMenu: "메인 메뉴",
+    share: "공유",
+    shareTitle: "공유하기",
+    categories: {
+      'Smileys & Emotion': '이모티콘 및 감정',
+      'People & Body': '사람 및 신체',
+      'Animals & Nature': '동물 및 자연',
+      'Food & Drink': '음식 및 음료',
+      'Travel & Places': '여행 및 장소',
+      'Activities': '활동',
+      'Objects': '사물',
+      'Symbols': '기호',
+      'Flags': '깃발',
+    }
   },
   ar: {
     searchPlaceholder: "البحث عن الرموز التعبيرية...",
@@ -228,7 +371,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "صمم للعالم 🌍",
     selectStyle: "اختر النمط",
     backToArticles: "عودة للمقالات",
-    mainMenu: "القائمة الرئيسية"
+    mainMenu: "القائمة الرئيسية",
+    share: "مشاركة",
+    shareTitle: "مشاركة هذا",
+    categories: {
+      'Smileys & Emotion': 'الابتسامات والعواطف',
+      'People & Body': 'الناس والجسم',
+      'Animals & Nature': 'الحيوانات والطبيعة',
+      'Food & Drink': 'الطعام والشراب',
+      'Travel & Places': 'السفر والأماكن',
+      'Activities': 'الأنشطة',
+      'Objects': 'الأشياء',
+      'Symbols': 'الرموز',
+      'Flags': 'الأعلام',
+    }
   },
   hi: {
     searchPlaceholder: "इमوجी खोजें...",
@@ -247,7 +403,20 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "दुनिया के लिए डिज़ाइन किया गया 🌍",
     selectStyle: "शैली चुनें",
     backToArticles: "लेखों पर वापस",
-    mainMenu: "मुख्य मेनू"
+    mainMenu: "मुख्य मेनू",
+    share: "साझा करें",
+    shareTitle: "शेयर करें",
+    categories: {
+      'Smileys & Emotion': 'स्माइलीज और भावनाएं',
+      'People & Body': 'लोग और शरीर',
+      'Animals & Nature': 'जानवर और प्रकृति',
+      'Food & Drink': 'खाना और पीना',
+      'Travel & Places': 'यात्रा और स्थान',
+      'Activities': 'गतिविधियां',
+      'Objects': 'वस्तुएं',
+      'Symbols': 'प्रतीक',
+      'Flags': 'झंडे',
+    }
   },
   kk: {
     searchPlaceholder: "Эмодзи іздеу...",
@@ -266,6 +435,19 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     footer: "Әлем үшін жасалған 🌍",
     selectStyle: "Стильді таңдаңыз",
     backToArticles: "Мақалаларға оралу",
-    mainMenu: "Басты мәзір"
+    mainMenu: "Басты мәзір",
+    share: "Бөлісу",
+    shareTitle: "Бөлісу",
+    categories: {
+      'Smileys & Emotion': 'Смайликтер',
+      'People & Body': 'Адамдар',
+      'Animals & Nature': 'Жануарлар',
+      'Food & Drink': 'Тамақ',
+      'Travel & Places': 'Саяхат',
+      'Activities': 'Белсенділік',
+      'Objects': 'Заттар',
+      'Symbols': 'Таңбалар',
+      'Flags': 'Жалаулар',
+    }
   }
 };

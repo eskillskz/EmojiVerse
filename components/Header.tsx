@@ -13,8 +13,8 @@ interface HeaderProps {
   onLocaleChange: (l: Locale) => void;
   isDarkMode: boolean;
   toggleTheme: () => void;
-  onOpenBlog: () => void; // New Prop
-  isBlogActive: boolean; // New Prop
+  onOpenBlog: () => void;
+  isBlogActive: boolean;
 }
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -210,6 +210,9 @@ const Header: React.FC<HeaderProps> = ({
                 {groups.map((group) => {
                   const Icon = ICON_MAP[group.groupName] || Grid3X3;
                   const isActive = activeCategory === group.groupName;
+                  // Translate group name
+                  const displayName = (labels.categories as any)[group.groupName] || group.groupName;
+
                   return (
                     <button
                       key={group.groupName}
@@ -223,7 +226,7 @@ const Header: React.FC<HeaderProps> = ({
                       `}
                     >
                       <Icon size={14} className={isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-600'} />
-                      {group.groupName}
+                      {displayName}
                     </button>
                   );
                 })}
@@ -250,6 +253,9 @@ const Header: React.FC<HeaderProps> = ({
                 {groups.map((group) => {
                   const Icon = ICON_MAP[group.groupName] || Grid3X3;
                   const isActive = activeCategory === group.groupName;
+                   // Translate group name
+                  const displayName = (labels.categories as any)[group.groupName] || group.groupName;
+
                   return (
                     <button
                       key={group.groupName}
@@ -263,7 +269,7 @@ const Header: React.FC<HeaderProps> = ({
                       `}
                     >
                       <Icon size={16} />
-                      {group.groupName}
+                      {displayName}
                     </button>
                   );
                 })}

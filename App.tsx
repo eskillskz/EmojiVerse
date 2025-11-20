@@ -9,10 +9,12 @@ import EmojiCategory from './components/EmojiCategory';
 import EmojiButton from './components/EmojiButton';
 import FloatingControls from './components/FloatingControls';
 import SEOSection from './components/SEOSection';
-import BlogList from './components/BlogList'; // Import Blog List
-import BlogPostView from './components/BlogPost'; // Import Single Post View
+import BlogList from './components/BlogList';
+import BlogPostView from './components/BlogPost';
+import ShareModal from './components/ShareModal';
 import { getSEOData } from './data/seoContent';
 import { BLOG_POSTS } from './data/blogPosts';
+import { UI_LABELS } from './data/uiTranslations';
 import { Clock, Heart } from 'lucide-react';
 
 // Helper to clean group names for IDs
@@ -46,6 +48,9 @@ const App: React.FC = () => {
   const [viewState, setViewState] = useState<ViewState>('home');
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
 
+  // --- SHARE STATE ---
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
   // Initialize Theme
   useEffect(() => {
     const html = document.documentElement;
@@ -56,22 +61,18 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
-  // Dynamic SEO: Update Page Title and Meta Description based on Language AND View State
+  // Dynamic SEO
   useEffect(() => {
     const seoData = getSEOData(locale);
     
     if (viewState === 'article' && currentPost) {
-      // Article View SEO
       document.title = `${currentPost.title} - EmojiVerse`;
     } else if (viewState === 'blog') {
-      // Blog List SEO
       document.title = `EmojiVerse Blog - Stories & History (${locale.toUpperCase()})`;
     } else {
-      // Home SEO
       document.title = seoData.appTitle;
     }
     
-    // Update meta description if it exists
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       if (viewState === 'article' && currentPost) {
@@ -101,23 +102,18 @@ const App: React.FC = () => {
     init();
   }, [locale]);
 
-  // --- LANGUAGE SWITCH PERSISTENCE LOGIC ---
+  // Language Switch Logic for Blog
   useEffect(() => {
-    // If we are reading an article and the locale changes, try to find the same article in the new language
     if (viewState === 'article' && currentPost) {
       const newPost = BLOG_POSTS.find(p => p.slug === currentPost.slug && p.locale === locale);
       if (newPost) {
-        // Translation exists, switch to it
         setCurrentPost(newPost);
       } else {
-        // Translation doesn't exist, stay on the English version (or fallback) to prevent page exit
-        // Ideally, we try to find the English version if we were on another lang
         const fallbackPost = BLOG_POSTS.find(p => p.slug === currentPost.slug && p.locale === 'en');
         if (fallbackPost) setCurrentPost(fallbackPost);
       }
     }
-    // If viewState is 'blog', BlogList component automatically re-renders with new locale, so we stay there.
-  }, [locale]); // Dependency on locale is key here
+  }, [locale]); 
 
 
   // Filter Data based on Search
@@ -136,10 +132,9 @@ const App: React.FC = () => {
   }, [allGroups, searchQuery]);
 
   const handleCategorySelect = (groupName: string) => {
-    if (viewState !== 'home') setViewState('home'); // Switch back to home if in blog
+    if (viewState !== 'home') setViewState('home'); 
     setActiveCategory(groupName);
     
-    // Small delay to allow render if switching views
     setTimeout(() => {
       const element = document.getElementById(getGroupId(groupName));
       if (element) {
@@ -155,7 +150,7 @@ const App: React.FC = () => {
     }, 100);
   };
 
-  // --- Logic for Favorites & Recent ---
+  // Favorites & Recent
   const updateRecent = useCallback((emoji: EmojiRaw) => {
     setRecent(prev => {
       const filtered = prev.filter(e => e.hexcode !== emoji.hexcode);
@@ -201,7 +196,7 @@ const App: React.FC = () => {
 
   const favIds = useMemo(() => favorites.map(f => f.hexcode), [favorites]);
 
-  // --- Navigation Handlers ---
+  // Navigation Handlers
   const toggleBlog = () => {
     if (viewState === 'home') {
       setViewState('blog');
@@ -216,7 +211,7 @@ const App: React.FC = () => {
     setViewState('article');
   };
 
-  // --- Special Sections Components ---
+  // Special Sections
   const SpecialSection = ({ title, icon: Icon, list }: { title: string, icon: any, list: EmojiRaw[] }) => {
     if (list.length === 0) return null;
     return (
@@ -240,10 +235,11 @@ const App: React.FC = () => {
     );
   };
 
+  const labels = UI_LABELS[locale];
+
   return (
     <div className="min-h-screen pb-32 bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300 relative overflow-x-hidden">
       
-      {/* BACKGROUND DESIGNER SHAPES */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 dark:bg-indigo-500/10 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3 animate-pulse"></div>
           <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-pink-500/20 dark:bg-purple-500/10 rounded-full blur-[80px] translate-x-1/3 translate-y-1/3 opacity-70"></div>
@@ -261,17 +257,14 @@ const App: React.FC = () => {
         onLocaleChange={setLocale}
         isDarkMode={isDarkMode}
         toggleTheme={() => setIsDarkMode(!isDarkMode)}
-        onOpenBlog={toggleBlog} // Pass handler
-        isBlogActive={viewState !== 'home'} // Pass state
+        onOpenBlog={toggleBlog}
+        isBlogActive={viewState !== 'home'}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
         
-        {/* CONDITIONAL RENDERING BASED ON VIEW STATE */}
-        
         {viewState === 'home' && (
           <>
-            {/* Text Editor Section */}
             <TextEditor 
               text={editorText} 
               setText={setEditorText} 
@@ -286,20 +279,18 @@ const App: React.FC = () => {
               ) : filteredGroups.length === 0 ? (
                 <div className="text-center py-20 animate-fade-in bg-white dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm">
                   <p className="text-6xl mb-4 opacity-50">🧐</p>
-                  <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">No emojis found</p>
-                  <p className="text-slate-500 mt-2">Try searching for something else.</p>
+                  <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">{labels.noEmojisFound}</p>
+                  <p className="text-slate-500 mt-2">{labels.trySearching}</p>
                 </div>
               ) : (
                 <>
-                  {/* Special Standalone Windows */}
                   {!searchQuery && (
                     <>
-                      <SpecialSection title="Favorites" icon={Heart} list={favorites} />
-                      <SpecialSection title="Recently Used" icon={Clock} list={recent} />
+                      <SpecialSection title={labels.favorites} icon={Heart} list={favorites} />
+                      <SpecialSection title={labels.recent} icon={Clock} list={recent} />
                     </>
                   )}
 
-                  {/* Main Categories */}
                   {filteredGroups.map((group) => (
                     <EmojiCategory 
                       key={group.groupName}
@@ -309,18 +300,17 @@ const App: React.FC = () => {
                       forceOpen={forceOpenState}
                       favoriteIds={favIds}
                       onToggleFavorite={toggleFavorite}
+                      localizedName={(labels.categories as any)[group.groupName]}
                     />
                   ))}
                 </>
               )}
             </main>
 
-            {/* SEO Section (Home Only) */}
             {!loading && <SEOSection locale={locale} />}
           </>
         )}
 
-        {/* BLOG LIST VIEW */}
         {viewState === 'blog' && (
           <BlogList 
             locale={locale} 
@@ -329,7 +319,6 @@ const App: React.FC = () => {
           />
         )}
 
-        {/* SINGLE POST VIEW */}
         {viewState === 'article' && currentPost && (
           <BlogPostView 
             post={currentPost} 
@@ -347,20 +336,31 @@ const App: React.FC = () => {
         onClose={closeToast} 
       />
 
-      {/* Only show scroll controls on Home View */}
-      {viewState === 'home' && (
-        <FloatingControls 
-          onScrollTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          onCollapseAll={() => setForceOpenState(false)}
-          onExpandAll={() => setForceOpenState(true)}
-        />
-      )}
+      {/* Floating Controls with Share */}
+      <FloatingControls 
+        onScrollTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onCollapseAll={() => setForceOpenState(false)}
+        onExpandAll={() => setForceOpenState(true)}
+        onShare={() => setIsShareModalOpen(true)}
+      />
+
+      {/* Global Share Modal */}
+      <ShareModal 
+        isOpen={isShareModalOpen} 
+        onClose={() => setIsShareModalOpen(false)} 
+        url={window.location.href}
+        title={seoData.appTitle} // Using default English for generic share title, or could use localized SEO
+        modalTitle={labels.shareTitle}
+      />
       
       <footer className="text-center py-10 text-slate-400 dark:text-slate-600 text-sm mb-8 md:mb-0 border-t border-slate-200 dark:border-white/5 mt-8 relative z-10">
-        <p>© {new Date().getFullYear()} EmojiVerse. Designed for the World 🌍</p>
+        <p>© {new Date().getFullYear()} EmojiVerse. {labels.footer}</p>
       </footer>
     </div>
   );
 };
+
+// Helper needed inside App component since we can't use hook there easily without refactoring SEOSection logic out
+const seoData = { appTitle: "EmojiVerse - The Best Emoji Picker & Editor" }; 
 
 export default App;

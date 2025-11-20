@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BlogPost, Locale } from '../types';
-import { ArrowLeft, Calendar, Clock, Share2, Home, BookOpen } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Share2, Home } from 'lucide-react';
 import { UI_LABELS } from '../data/uiTranslations';
+import ShareModal from './ShareModal';
 
 interface BlogPostProps {
   post: BlogPost;
@@ -12,24 +13,13 @@ interface BlogPostProps {
 
 const BlogPostView: React.FC<BlogPostProps> = ({ post, onBack, onHome, locale }) => {
   
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const labels = UI_LABELS[locale];
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: post.title,
-        text: post.excerpt,
-        url: window.location.href,
-      }).catch(console.error);
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
-    }
-  };
 
   return (
     <div className="max-w-4xl mx-auto py-8 animate-in slide-in-from-bottom-4 duration-500">
@@ -91,17 +81,26 @@ const BlogPostView: React.FC<BlogPostProps> = ({ post, onBack, onHome, locale })
 
            {/* Footer Share */}
            <div className="mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <span className="font-bold text-slate-900 dark:text-white">Share this article:</span>
+              <span className="font-bold text-slate-900 dark:text-white">{labels.shareTitle}:</span>
               <button 
-                onClick={handleShare}
+                onClick={() => setIsShareModalOpen(true)}
                 className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 dark:bg-indigo-600 text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg"
               >
                 <Share2 size={18} />
-                Share
+                {labels.share}
               </button>
            </div>
         </div>
       </article>
+
+      {/* Share Modal Instance */}
+      <ShareModal 
+        isOpen={isShareModalOpen} 
+        onClose={() => setIsShareModalOpen(false)}
+        url={window.location.href}
+        title={post.title}
+        modalTitle={labels.shareTitle}
+      />
     </div>
   );
 };

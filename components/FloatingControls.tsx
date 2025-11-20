@@ -1,17 +1,25 @@
 import React from 'react';
-import { ArrowUp, Minimize2, Maximize2 } from 'lucide-react';
+import { ArrowUp, Minimize2, Maximize2, Share2 } from 'lucide-react';
 
 interface FloatingControlsProps {
   onScrollTop: () => void;
   onCollapseAll: () => void;
   onExpandAll: () => void;
+  onShare: () => void;
 }
 
-const FloatingControls: React.FC<FloatingControlsProps> = ({ onScrollTop, onCollapseAll, onExpandAll }) => {
+const FloatingControls: React.FC<FloatingControlsProps> = ({ onScrollTop, onCollapseAll, onExpandAll, onShare }) => {
   return (
     <>
       {/* PC Version: Vertical, Bottom Right */}
       <div className="hidden md:flex fixed bottom-10 right-10 z-40 flex-col gap-3">
+        <button 
+          onClick={onShare}
+          title="Share"
+          className="p-3 bg-indigo-500 text-white shadow-xl shadow-indigo-500/30 rounded-full border border-transparent hover:scale-110 active:scale-95 transition-all"
+        >
+          <Share2 size={24} />
+        </button>
         <button 
           onClick={onScrollTop}
           title="Scroll to Top"
@@ -49,9 +57,18 @@ const FloatingControls: React.FC<FloatingControlsProps> = ({ onScrollTop, onColl
 
           <button 
             onClick={onScrollTop}
-            className="p-2.5 bg-indigo-500 text-white rounded-xl shadow-lg shadow-indigo-500/30 active:scale-95 transition-transform"
+            className="p-2.5 bg-white dark:bg-slate-800 text-indigo-600 rounded-xl shadow-sm active:scale-95 transition-transform"
           >
             <ArrowUp size={20} />
+          </button>
+          
+          <div className="w-px h-6 bg-slate-300 dark:bg-slate-700"></div>
+
+          <button 
+            onClick={onShare}
+            className="p-2.5 bg-indigo-500 text-white rounded-xl shadow-lg shadow-indigo-500/30 active:scale-95 transition-transform"
+          >
+            <Share2 size={20} />
           </button>
 
           <div className="w-px h-6 bg-slate-300 dark:bg-slate-700"></div>
