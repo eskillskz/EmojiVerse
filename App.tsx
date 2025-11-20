@@ -12,6 +12,7 @@ import SEOSection from './components/SEOSection';
 import BlogList from './components/BlogList';
 import BlogPostView from './components/BlogPost';
 import ShareModal from './components/ShareModal';
+import ReactionOverlay from './components/ReactionOverlay'; // Import Reaction Overlay
 import { getSEOData } from './data/seoContent';
 import { BLOG_POSTS } from './data/blogPosts';
 import { UI_LABELS } from './data/uiTranslations';
@@ -51,6 +52,9 @@ const App: React.FC = () => {
   // --- SHARE STATE ---
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
+  // --- REACTION STATE ---
+  const [triggerEmoji, setTriggerEmoji] = useState<string | null>(null);
+
   // Initialize Theme
   useEffect(() => {
     const html = document.documentElement;
@@ -61,7 +65,12 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
-  // Dynamic SEO
+  // SEO: Dynamic HTML Language Attribute
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
+  // Dynamic SEO Title & Meta
   useEffect(() => {
     const seoData = getSEOData(locale);
     
@@ -182,11 +191,15 @@ const App: React.FC = () => {
     });
     setEditorText(prev => prev + emoji.emoji);
     updateRecent(emoji);
+    
+    // Trigger Visual Reaction
+    setTriggerEmoji(emoji.emoji);
   }, [updateRecent]);
 
   const handleCopyText = useCallback(() => {
     navigator.clipboard.writeText(editorText).then(() => {
       setToast({ message: 'Text copied to clipboard!', visible: true });
+      setTriggerEmoji('🎉'); // Celebration trigger on copy text
     });
   }, [editorText]);
 
@@ -236,6 +249,7 @@ const App: React.FC = () => {
   };
 
   const labels = UI_LABELS[locale];
+  const seoData = getSEOData(locale);
 
   return (
     <div className="min-h-screen pb-32 bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300 relative overflow-x-hidden">
@@ -246,6 +260,9 @@ const App: React.FC = () => {
           <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-blue-500/10 dark:bg-blue-900/10 rounded-full blur-[120px] translate-y-1/2"></div>
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
       </div>
+
+      {/* Visual Effects Overlay */}
+      <ReactionOverlay triggerEmoji={triggerEmoji} onComplete={() => setTriggerEmoji(null)} />
 
       <Header 
         groups={allGroups} 
@@ -349,7 +366,7 @@ const App: React.FC = () => {
         isOpen={isShareModalOpen} 
         onClose={() => setIsShareModalOpen(false)} 
         url={window.location.href}
-        title={seoData.appTitle} // Using default English for generic share title, or could use localized SEO
+        title={seoData.appTitle}
         modalTitle={labels.shareTitle}
       />
       
@@ -359,8 +376,5 @@ const App: React.FC = () => {
     </div>
   );
 };
-
-// Helper needed inside App component since we can't use hook there easily without refactoring SEOSection logic out
-const seoData = { appTitle: "EmojiVerse - The Best Emoji Picker & Editor" }; 
 
 export default App;
