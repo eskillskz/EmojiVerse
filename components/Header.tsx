@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X, BookOpen } from 'lucide-react';
+import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X, BookOpen, Globe } from 'lucide-react';
 import { EmojiGroup, Locale, LOCALE_DATA } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
@@ -15,6 +16,8 @@ interface HeaderProps {
   toggleTheme: () => void;
   onOpenBlog: () => void;
   isBlogActive: boolean;
+  activeTab: 'emoji' | 'translit';
+  onTabChange: (tab: 'emoji' | 'translit') => void;
 }
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -40,7 +43,9 @@ const Header: React.FC<HeaderProps> = ({
   isDarkMode,
   toggleTheme,
   onOpenBlog,
-  isBlogActive
+  isBlogActive,
+  activeTab,
+  onTabChange
 }) => {
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -203,35 +208,64 @@ const Header: React.FC<HeaderProps> = ({
              </div>
           </div>
 
-          {/* Row 3: Navigation Categories (Only show if NOT in blog mode) */}
+          {/* Row 3: MAIN TABS (Emoji vs Translit) */}
           {!isBlogActive && (
-            <nav className="border-t border-slate-200 dark:border-white/5 pt-2">
-              <div className="flex flex-wrap justify-between gap-2">
-                {groups.map((group) => {
-                  const Icon = ICON_MAP[group.groupName] || Grid3X3;
-                  const isActive = activeCategory === group.groupName;
-                  // Translate group name
-                  const displayName = (labels.categories as any)[group.groupName] || group.groupName;
-
-                  return (
-                    <button
-                      key={group.groupName}
-                      onClick={() => onCategorySelect(group.groupName)}
-                      className={`
-                        flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-300 border
-                        ${isActive 
-                          ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/50 shadow-lg dark:shadow-[0_0_15px_rgba(99,102,241,0.3)]' 
-                          : 'bg-transparent border-transparent text-slate-500 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
-                        }
-                      `}
-                    >
-                      <Icon size={14} className={isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-600'} />
-                      {displayName}
-                    </button>
-                  );
-                })}
+            <div className="border-t border-slate-200 dark:border-white/5 pt-4">
+              <div className="flex items-center gap-4 mb-4">
+                 <button
+                   onClick={() => onTabChange('emoji')}
+                   className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all ${
+                     activeTab === 'emoji'
+                     ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25'
+                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                   }`}
+                 >
+                   <Smile size={18} />
+                   {labels.tabEmoji}
+                 </button>
+                 <button
+                   onClick={() => onTabChange('translit')}
+                   className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all ${
+                     activeTab === 'translit'
+                     ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
+                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                   }`}
+                 >
+                   <Globe size={18} />
+                   {labels.tabSeo}
+                 </button>
               </div>
-            </nav>
+
+              {/* Categories (Only show if Emoji Tab is active) */}
+              {activeTab === 'emoji' && (
+                <nav className="animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex flex-wrap justify-between gap-2">
+                    {groups.map((group) => {
+                      const Icon = ICON_MAP[group.groupName] || Grid3X3;
+                      const isActive = activeCategory === group.groupName;
+                      const displayName = (labels.categories as any)[group.groupName] || group.groupName;
+
+                      return (
+                        <button
+                          key={group.groupName}
+                          onClick={() => onCategorySelect(group.groupName)}
+                          className={`
+                            flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-300 border
+                            ${isActive 
+                              ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/50 shadow-lg dark:shadow-[0_0_15px_rgba(99,102,241,0.3)]' 
+                              : 'bg-transparent border-transparent text-slate-500 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
+                            }
+                          `}
+                        >
+                          <Icon size={14} className={isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-600'} />
+                          {displayName}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </nav>
+              )}
+            </div>
           )}
         </div>
 
@@ -246,9 +280,27 @@ const Header: React.FC<HeaderProps> = ({
               <BookOpen size={16} />
               Blog & Stories
             </button>
-            
-            {/* Categories (Only if not in blog mode) */}
+
+            {/* Mobile Tabs */}
             {!isBlogActive && (
+              <div className="flex gap-2 mb-2">
+                 <button
+                   onClick={() => onTabChange('emoji')}
+                   className={`flex-1 py-2 rounded-xl font-bold text-xs ${activeTab === 'emoji' ? 'bg-indigo-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
+                 >
+                   {labels.tabEmoji}
+                 </button>
+                 <button
+                   onClick={() => onTabChange('translit')}
+                   className={`flex-1 py-2 rounded-xl font-bold text-xs ${activeTab === 'translit' ? 'bg-blue-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
+                 >
+                   {labels.tabSeo}
+                 </button>
+              </div>
+            )}
+            
+            {/* Categories (Only if not in blog mode AND in Emoji Tab) */}
+            {!isBlogActive && activeTab === 'emoji' && (
               <div className="grid grid-cols-2 gap-2">
                 {groups.map((group) => {
                   const Icon = ICON_MAP[group.groupName] || Grid3X3;

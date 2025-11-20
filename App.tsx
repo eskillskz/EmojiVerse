@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { fetchEmojis } from './services/emojiService';
 import { EmojiGroup, EmojiRaw, Locale, BlogPost } from './types';
@@ -5,6 +6,7 @@ import Header from './components/Header';
 import Loader from './components/Loader';
 import Toast from './components/Toast';
 import TextEditor from './components/TextEditor';
+import TranslitTool from './components/TranslitTool'; // New Import
 import EmojiCategory from './components/EmojiCategory';
 import EmojiButton from './components/EmojiButton';
 import FloatingControls from './components/FloatingControls';
@@ -12,7 +14,7 @@ import SEOSection from './components/SEOSection';
 import BlogList from './components/BlogList';
 import BlogPostView from './components/BlogPost';
 import ShareModal from './components/ShareModal';
-import ReactionOverlay from './components/ReactionOverlay'; // Import Reaction Overlay
+import ReactionOverlay from './components/ReactionOverlay';
 import { getSEOData } from './data/seoContent';
 import { BLOG_POSTS } from './data/blogPosts';
 import { UI_LABELS } from './data/uiTranslations';
@@ -37,6 +39,9 @@ const App: React.FC = () => {
   
   // Text Editor State
   const [editorText, setEditorText] = useState('');
+
+  // NEW: Active Tab State (Emoji vs SEO Translit)
+  const [activeTab, setActiveTab] = useState<'emoji' | 'translit'>('emoji');
 
   // Global Expand/Collapse State for Categories
   const [forceOpenState, setForceOpenState] = useState<boolean | null>(null);
@@ -276,53 +281,65 @@ const App: React.FC = () => {
         toggleTheme={() => setIsDarkMode(!isDarkMode)}
         onOpenBlog={toggleBlog}
         isBlogActive={viewState !== 'home'}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
         
         {viewState === 'home' && (
           <>
-            <TextEditor 
-              text={editorText} 
-              setText={setEditorText} 
-              onCopy={handleCopyText}
-              onClear={() => setEditorText('')}
-              locale={locale}
-            />
+            {/* CONDITIONAL RENDERING BASED ON ACTIVE TAB */}
+            
+            {activeTab === 'emoji' ? (
+              /* === EMOJI TAB CONTENT === */
+              <>
+                <TextEditor 
+                  text={editorText} 
+                  setText={setEditorText} 
+                  onCopy={handleCopyText}
+                  onClear={() => setEditorText('')}
+                  locale={locale}
+                />
 
-            <main className="min-w-0">
-              {loading ? (
-                <Loader />
-              ) : filteredGroups.length === 0 ? (
-                <div className="text-center py-20 animate-fade-in bg-white dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm">
-                  <p className="text-6xl mb-4 opacity-50">🧐</p>
-                  <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">{labels.noEmojisFound}</p>
-                  <p className="text-slate-500 mt-2">{labels.trySearching}</p>
-                </div>
-              ) : (
-                <>
-                  {!searchQuery && (
+                <main className="min-w-0">
+                  {loading ? (
+                    <Loader />
+                  ) : filteredGroups.length === 0 ? (
+                    <div className="text-center py-20 animate-fade-in bg-white dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm">
+                      <p className="text-6xl mb-4 opacity-50">🧐</p>
+                      <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">{labels.noEmojisFound}</p>
+                      <p className="text-slate-500 mt-2">{labels.trySearching}</p>
+                    </div>
+                  ) : (
                     <>
-                      <SpecialSection title={labels.favorites} icon={Heart} list={favorites} />
-                      <SpecialSection title={labels.recent} icon={Clock} list={recent} />
+                      {!searchQuery && (
+                        <>
+                          <SpecialSection title={labels.favorites} icon={Heart} list={favorites} />
+                          <SpecialSection title={labels.recent} icon={Clock} list={recent} />
+                        </>
+                      )}
+
+                      {filteredGroups.map((group) => (
+                        <EmojiCategory 
+                          key={group.groupName}
+                          group={group}
+                          id={getGroupId(group.groupName)}
+                          onCopy={handleEmojiSelect}
+                          forceOpen={forceOpenState}
+                          favoriteIds={favIds}
+                          onToggleFavorite={toggleFavorite}
+                          localizedName={(labels.categories as any)[group.groupName]}
+                        />
+                      ))}
                     </>
                   )}
-
-                  {filteredGroups.map((group) => (
-                    <EmojiCategory 
-                      key={group.groupName}
-                      group={group}
-                      id={getGroupId(group.groupName)}
-                      onCopy={handleEmojiSelect}
-                      forceOpen={forceOpenState}
-                      favoriteIds={favIds}
-                      onToggleFavorite={toggleFavorite}
-                      localizedName={(labels.categories as any)[group.groupName]}
-                    />
-                  ))}
-                </>
-              )}
-            </main>
+                </main>
+              </>
+            ) : (
+              /* === SEO / TRANSLIT TAB CONTENT === */
+              <TranslitTool locale={locale} />
+            )}
 
             {!loading && <SEOSection locale={locale} />}
           </>

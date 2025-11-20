@@ -1,3 +1,4 @@
+
 import { Locale } from '../types';
 
 interface UITranslation {
@@ -20,6 +21,13 @@ interface UITranslation {
   mainMenu: string;
   share: string;
   shareTitle: string;
+  tabEmoji: string;
+  tabSeo: string;
+  translitTitle: string;
+  translitPlaceholder: string;
+  translitGoogle: string;
+  translitYandex: string;
+  generate: string;
   categories: {
     'Smileys & Emotion': string;
     'People & Body': string;
@@ -54,6 +62,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "Main Menu",
     share: "Share",
     shareTitle: "Share this with the world",
+    tabEmoji: "Emoji Editor",
+    tabSeo: "SEO / Translit",
+    translitTitle: "SEO URL Generator",
+    translitPlaceholder: "Enter article title here...",
+    translitGoogle: "Google URL (Standard)",
+    translitYandex: "Yandex URL (RU Standard)",
+    generate: "Generate URL",
     categories: {
       'Smileys & Emotion': 'Smileys & Emotion',
       'People & Body': 'People & Body',
@@ -86,6 +101,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "Главное меню",
     share: "Поделиться",
     shareTitle: "Поделиться с друзьями",
+    tabEmoji: "Эмодзи Редактор",
+    tabSeo: "SEO / Транслит",
+    translitTitle: "Генератор URL (Транслит)",
+    translitPlaceholder: "Введите заголовок статьи...",
+    translitGoogle: "Google URL (Стандарт)",
+    translitYandex: "Яндекс URL",
+    generate: "Создать ссылки",
     categories: {
       'Smileys & Emotion': 'Смайлы и Эмоции',
       'People & Body': 'Люди и Тело',
@@ -118,6 +140,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "Menú Principal",
     share: "Compartir",
     shareTitle: "Compartir con el mundo",
+    tabEmoji: "Editor Emoji",
+    tabSeo: "SEO / Translit",
+    translitTitle: "Generador URL SEO",
+    translitPlaceholder: "Escribe el título aquí...",
+    translitGoogle: "Google URL (Estándar)",
+    translitYandex: "Yandex URL",
+    generate: "Generar URL",
     categories: {
       'Smileys & Emotion': 'Emociones',
       'People & Body': 'Personas',
@@ -150,6 +179,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "Menu Principal",
     share: "Partager",
     shareTitle: "Partager ceci",
+    tabEmoji: "Éditeur Émoji",
+    tabSeo: "SEO / Translit",
+    translitTitle: "Générateur URL SEO",
+    translitPlaceholder: "Entrez le titre ici...",
+    translitGoogle: "URL Google",
+    translitYandex: "URL Yandex",
+    generate: "Générer URL",
     categories: {
       'Smileys & Emotion': 'Émotions',
       'People & Body': 'Personnes',
@@ -182,6 +218,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "Hauptmenü",
     share: "Teilen",
     shareTitle: "Teilen Sie dies",
+    tabEmoji: "Emoji Editor",
+    tabSeo: "SEO / Translit",
+    translitTitle: "SEO URL Generator",
+    translitPlaceholder: "Titel hier eingeben...",
+    translitGoogle: "Google URL",
+    translitYandex: "Yandex URL",
+    generate: "URL Generieren",
     categories: {
       'Smileys & Emotion': 'Smileys',
       'People & Body': 'Leute',
@@ -214,6 +257,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "Menu Principale",
     share: "Condividi",
     shareTitle: "Condividi con il mondo",
+    tabEmoji: "Editor Emoji",
+    tabSeo: "SEO / Translit",
+    translitTitle: "Generatore URL SEO",
+    translitPlaceholder: "Inserisci titolo...",
+    translitGoogle: "URL Google",
+    translitYandex: "URL Yandex",
+    generate: "Genera URL",
     categories: {
       'Smileys & Emotion': 'Emozioni',
       'People & Body': 'Persone',
@@ -246,6 +296,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "Menu Principal",
     share: "Compartilhar",
     shareTitle: "Compartilhar",
+    tabEmoji: "Editor Emoji",
+    tabSeo: "SEO / Translit",
+    translitTitle: "Gerador URL SEO",
+    translitPlaceholder: "Digite o título...",
+    translitGoogle: "URL Google",
+    translitYandex: "URL Yandex",
+    generate: "Gerar URL",
     categories: {
       'Smileys & Emotion': 'Emoções',
       'People & Body': 'Pessoas',
@@ -278,6 +335,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "主菜单",
     share: "分享",
     shareTitle: "分享给朋友",
+    tabEmoji: "表情编辑器",
+    tabSeo: "SEO / 转写",
+    translitTitle: "SEO 网址生成器",
+    translitPlaceholder: "在此输入标题...",
+    translitGoogle: "Google 网址",
+    translitYandex: "Yandex 网址",
+    generate: "生成网址",
     categories: {
       'Smileys & Emotion': '表情与情感',
       'People & Body': '人物与身体',
@@ -310,6 +374,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "メインメニュー",
     share: "共有",
     shareTitle: "シェアする",
+    tabEmoji: "絵文字エディタ",
+    tabSeo: "SEO / 翻訳",
+    translitTitle: "SEO URL生成",
+    translitPlaceholder: "タイトルを入力...",
+    translitGoogle: "Google URL",
+    translitYandex: "Yandex URL",
+    generate: "生成する",
     categories: {
       'Smileys & Emotion': '顔文字と感情',
       'People & Body': '人と体',
@@ -342,6 +413,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "메인 메뉴",
     share: "공유",
     shareTitle: "공유하기",
+    tabEmoji: "이모티콘 에디터",
+    tabSeo: "SEO / 음역",
+    translitTitle: "SEO URL 생성기",
+    translitPlaceholder: "제목을 입력하세요...",
+    translitGoogle: "Google URL",
+    translitYandex: "Yandex URL",
+    generate: "URL 생성",
     categories: {
       'Smileys & Emotion': '이모티콘 및 감정',
       'People & Body': '사람 및 신체',
@@ -374,6 +452,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "القائمة الرئيسية",
     share: "مشاركة",
     shareTitle: "مشاركة هذا",
+    tabEmoji: "محرر الرموز",
+    tabSeo: "أدوات SEO",
+    translitTitle: "مولد روابط SEO",
+    translitPlaceholder: "أدخل العنوان هنا...",
+    translitGoogle: "رابط Google",
+    translitYandex: "رابط Yandex",
+    generate: "توليد الرابط",
     categories: {
       'Smileys & Emotion': 'الابتسامات والعواطف',
       'People & Body': 'الناس والجسم',
@@ -406,6 +491,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "मुख्य मेनू",
     share: "साझा करें",
     shareTitle: "शेयर करें",
+    tabEmoji: "इमोजी एडिटर",
+    tabSeo: "SEO / लिप्यंतरण",
+    translitTitle: "SEO URL जेनरेटर",
+    translitPlaceholder: "यहाँ शीर्षक दर्ज करें...",
+    translitGoogle: "Google URL",
+    translitYandex: "Yandex URL",
+    generate: "URL उत्पन्न करें",
     categories: {
       'Smileys & Emotion': 'स्माइलीज और भावनाएं',
       'People & Body': 'लोग और शरीर',
@@ -438,6 +530,13 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     mainMenu: "Басты мәзір",
     share: "Бөлісу",
     shareTitle: "Бөлісу",
+    tabEmoji: "Эмодзи редакторы",
+    tabSeo: "SEO / Транслит",
+    translitTitle: "SEO URL генераторы",
+    translitPlaceholder: "Мақала тақырыбын енгізіңіз...",
+    translitGoogle: "Google URL",
+    translitYandex: "Yandex URL",
+    generate: "URL жасау",
     categories: {
       'Smileys & Emotion': 'Смайликтер',
       'People & Body': 'Адамдар',
