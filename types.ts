@@ -59,3 +59,15 @@ export const LOCALE_DATA: { code: Locale; label: string; flag: string }[] = [
   { code: 'ar', label: 'العربية', flag: '🇸🇦' },
   { code: 'kk', label: 'Қазақ', flag: '🇰🇿' },
 ];
+
+export interface BlogPost {
+  id: string;
+  slug: string; // Shared ID across languages (e.g. 'history')
+  locale: Locale;
+  title: string;
+  excerpt: string;
+  content: string[]; // Paragraphs
+  date: string;
+  readTime: string;
+  imageGradient: string; // CSS gradient for cover
+}

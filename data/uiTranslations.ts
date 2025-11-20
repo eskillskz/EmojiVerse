@@ -16,6 +16,8 @@ interface UITranslation {
   recent: string;
   footer: string;
   selectStyle: string;
+  backToArticles: string;
+  mainMenu: string;
 }
 
 export const UI_LABELS: Record<Locale, UITranslation> = {
@@ -34,7 +36,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "Favorites",
     recent: "Recently Used",
     footer: "Designed for the World 🌍",
-    selectStyle: "Select Style"
+    selectStyle: "Select Style",
+    backToArticles: "Back to Articles",
+    mainMenu: "Main Menu"
   },
   ru: {
     searchPlaceholder: "Поиск эмодзи...",
@@ -51,7 +55,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "Избранное",
     recent: "Недавние",
     footer: "Создано для всего мира 🌍",
-    selectStyle: "Выберите стиль"
+    selectStyle: "Выберите стиль",
+    backToArticles: "К статьям",
+    mainMenu: "Главное меню"
   },
   es: {
     searchPlaceholder: "Buscar emojis...",
@@ -68,7 +74,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "Favoritos",
     recent: "Recientes",
     footer: "Diseñado para el mundo 🌍",
-    selectStyle: "Seleccionar estilo"
+    selectStyle: "Seleccionar estilo",
+    backToArticles: "Volver a Artículos",
+    mainMenu: "Menú Principal"
   },
   fr: {
     searchPlaceholder: "Rechercher des émojis...",
@@ -85,7 +93,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "Favoris",
     recent: "Récents",
     footer: "Conçu pour le monde 🌍",
-    selectStyle: "Choisir le style"
+    selectStyle: "Choisir le style",
+    backToArticles: "Retour aux articles",
+    mainMenu: "Menu Principal"
   },
   de: {
     searchPlaceholder: "Emojis suchen...",
@@ -102,7 +112,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "Favoriten",
     recent: "Zuletzt",
     footer: "Für die Welt entworfen 🌍",
-    selectStyle: "Stil wählen"
+    selectStyle: "Stil wählen",
+    backToArticles: "Zurück zu Artikeln",
+    mainMenu: "Hauptmenü"
   },
   it: {
     searchPlaceholder: "Cerca emoji...",
@@ -119,7 +131,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "Preferiti",
     recent: "Recenti",
     footer: "Progettato per il mondo 🌍",
-    selectStyle: "Seleziona stile"
+    selectStyle: "Seleziona stile",
+    backToArticles: "Torna agli articoli",
+    mainMenu: "Menu Principale"
   },
   pt: {
     searchPlaceholder: "Pesquisar emojis...",
@@ -136,7 +150,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "Favoritos",
     recent: "Recentes",
     footer: "Projetado para o mundo 🌍",
-    selectStyle: "Selecionar estilo"
+    selectStyle: "Selecionar estilo",
+    backToArticles: "Voltar aos Artigos",
+    mainMenu: "Menu Principal"
   },
   zh: {
     searchPlaceholder: "搜索表情符号...",
@@ -153,7 +169,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "收藏夹",
     recent: "最近使用",
     footer: "为世界设计 🌍",
-    selectStyle: "选择样式"
+    selectStyle: "选择样式",
+    backToArticles: "返回文章",
+    mainMenu: "主菜单"
   },
   ja: {
     searchPlaceholder: "絵文字を検索...",
@@ -170,7 +188,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "お気に入り",
     recent: "最近",
     footer: "世界のために設計されました 🌍",
-    selectStyle: "スタイルを選択"
+    selectStyle: "スタイルを選択",
+    backToArticles: "記事に戻る",
+    mainMenu: "メインメニュー"
   },
   ko: {
     searchPlaceholder: "이모티콘 검색...",
@@ -187,7 +207,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "즐겨찾기",
     recent: "최근 사용",
     footer: "세상을 위해 디자인됨 🌍",
-    selectStyle: "스타일 선택"
+    selectStyle: "스타일 선택",
+    backToArticles: "기사로 돌아가기",
+    mainMenu: "메인 메뉴"
   },
   ar: {
     searchPlaceholder: "البحث عن الرموز التعبيرية...",
@@ -204,7 +226,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "المفضلات",
     recent: "استخدمت مؤخرا",
     footer: "صمم للعالم 🌍",
-    selectStyle: "اختر النمط"
+    selectStyle: "اختر النمط",
+    backToArticles: "عودة للمقالات",
+    mainMenu: "القائمة الرئيسية"
   },
   hi: {
     searchPlaceholder: "इमوجी खोजें...",
@@ -221,7 +245,9 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "पसंदीदा",
     recent: "हाल ही में इस्तेमाल किया",
     footer: "दुनिया के लिए डिज़ाइन किया गया 🌍",
-    selectStyle: "शैली चुनें"
+    selectStyle: "शैली चुनें",
+    backToArticles: "लेखों पर वापस",
+    mainMenu: "मुख्य मेनू"
   },
   kk: {
     searchPlaceholder: "Эмодзи іздеу...",
@@ -238,6 +264,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
     favorites: "Таңдаулылар",
     recent: "Соңғы",
     footer: "Әлем үшін жасалған 🌍",
-    selectStyle: "Стильді таңдаңыз"
+    selectStyle: "Стильді таңдаңыз",
+    backToArticles: "Мақалаларға оралу",
+    mainMenu: "Басты мәзір"
   }
 };

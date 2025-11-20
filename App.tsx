@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { fetchEmojis } from './services/emojiService';
-import { EmojiGroup, EmojiRaw, Locale } from './types';
+import { EmojiGroup, EmojiRaw, Locale, BlogPost } from './types';
 import Header from './components/Header';
 import Loader from './components/Loader';
 import Toast from './components/Toast';
@@ -8,12 +8,18 @@ import TextEditor from './components/TextEditor';
 import EmojiCategory from './components/EmojiCategory';
 import EmojiButton from './components/EmojiButton';
 import FloatingControls from './components/FloatingControls';
-import SEOSection from './components/SEOSection'; // Imported SEO Section
-import { getSEOData } from './data/seoContent'; // Helper for title updates
+import SEOSection from './components/SEOSection';
+import BlogList from './components/BlogList'; // Import Blog List
+import BlogPostView from './components/BlogPost'; // Import Single Post View
+import { getSEOData } from './data/seoContent';
+import { BLOG_POSTS } from './data/blogPosts';
 import { Clock, Heart } from 'lucide-react';
 
 // Helper to clean group names for IDs
 const getGroupId = (name: string) => name.replace(/\s+/g, '-').toLowerCase();
+
+// Define View State
+type ViewState = 'home' | 'blog' | 'article';
 
 const App: React.FC = () => {
   const [allGroups, setAllGroups] = useState<EmojiGroup[]>([]);
@@ -36,6 +42,10 @@ const App: React.FC = () => {
   const [favorites, setFavorites] = useState<EmojiRaw[]>([]);
   const [recent, setRecent] = useState<EmojiRaw[]>([]);
 
+  // --- BLOG STATES ---
+  const [viewState, setViewState] = useState<ViewState>('home');
+  const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
+
   // Initialize Theme
   useEffect(() => {
     const html = document.documentElement;
@@ -46,17 +56,31 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
-  // Dynamic SEO: Update Page Title and Meta Description based on Language
+  // Dynamic SEO: Update Page Title and Meta Description based on Language AND View State
   useEffect(() => {
     const seoData = getSEOData(locale);
-    document.title = seoData.appTitle;
+    
+    if (viewState === 'article' && currentPost) {
+      // Article View SEO
+      document.title = `${currentPost.title} - EmojiVerse`;
+    } else if (viewState === 'blog') {
+      // Blog List SEO
+      document.title = `EmojiVerse Blog - Stories & History (${locale.toUpperCase()})`;
+    } else {
+      // Home SEO
+      document.title = seoData.appTitle;
+    }
     
     // Update meta description if it exists
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', seoData.metaDescription);
+      if (viewState === 'article' && currentPost) {
+        metaDesc.setAttribute('content', currentPost.excerpt);
+      } else {
+        metaDesc.setAttribute('content', seoData.metaDescription);
+      }
     }
-  }, [locale]);
+  }, [locale, viewState, currentPost]);
 
   // Load Persistence
   useEffect(() => {
@@ -77,6 +101,25 @@ const App: React.FC = () => {
     init();
   }, [locale]);
 
+  // --- LANGUAGE SWITCH PERSISTENCE LOGIC ---
+  useEffect(() => {
+    // If we are reading an article and the locale changes, try to find the same article in the new language
+    if (viewState === 'article' && currentPost) {
+      const newPost = BLOG_POSTS.find(p => p.slug === currentPost.slug && p.locale === locale);
+      if (newPost) {
+        // Translation exists, switch to it
+        setCurrentPost(newPost);
+      } else {
+        // Translation doesn't exist, stay on the English version (or fallback) to prevent page exit
+        // Ideally, we try to find the English version if we were on another lang
+        const fallbackPost = BLOG_POSTS.find(p => p.slug === currentPost.slug && p.locale === 'en');
+        if (fallbackPost) setCurrentPost(fallbackPost);
+      }
+    }
+    // If viewState is 'blog', BlogList component automatically re-renders with new locale, so we stay there.
+  }, [locale]); // Dependency on locale is key here
+
+
   // Filter Data based on Search
   const filteredGroups = useMemo(() => {
     if (!searchQuery.trim()) return allGroups;
@@ -85,42 +128,38 @@ const App: React.FC = () => {
     return allGroups.map(group => ({
       ...group,
       emojis: group.emojis.filter(emoji => {
-        // Universal Search using the 'searchTags' string which contains 
-        // merged keywords from ALL supported languages.
         if (emoji.searchTags && emoji.searchTags.includes(query)) return true;
-
-        // Also check variants/skins just in case
         if (emoji.skins && emoji.skins.some(skin => skin.label && skin.label.toLowerCase().includes(query))) return true;
-        
         return false;
       })
     })).filter(group => group.emojis.length > 0);
   }, [allGroups, searchQuery]);
 
   const handleCategorySelect = (groupName: string) => {
+    if (viewState !== 'home') setViewState('home'); // Switch back to home if in blog
     setActiveCategory(groupName);
     
-    const element = document.getElementById(getGroupId(groupName));
-    if (element) {
-      const headerOffset = 220; 
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    // Small delay to allow render if switching views
+    setTimeout(() => {
+      const element = document.getElementById(getGroupId(groupName));
+      if (element) {
+        const headerOffset = 220; 
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }, 100);
   };
 
   // --- Logic for Favorites & Recent ---
-
   const updateRecent = useCallback((emoji: EmojiRaw) => {
     setRecent(prev => {
-      // Remove if exists (to move to top)
       const filtered = prev.filter(e => e.hexcode !== emoji.hexcode);
-      // Add to front
-      const updated = [emoji, ...filtered].slice(1, 16); // Keep 15
+      const updated = [emoji, ...filtered].slice(1, 16); 
       localStorage.setItem('emoji-recent', JSON.stringify(updated));
       return updated;
     });
@@ -140,23 +179,16 @@ const App: React.FC = () => {
     });
   }, []);
 
-  // Handle Emoji Selection (Copy + Append + Recent)
   const handleEmojiSelect = useCallback((emoji: EmojiRaw) => {
-    // 1. Copy to clipboard
     navigator.clipboard.writeText(emoji.emoji).then(() => {
       setToast({ message: `Copied ${emoji.emoji} to clipboard!`, visible: true });
     }).catch(err => {
       console.error('Failed to copy: ', err);
     });
-
-    // 2. Append to text editor
     setEditorText(prev => prev + emoji.emoji);
-
-    // 3. Add to Recent
     updateRecent(emoji);
   }, [updateRecent]);
 
-  // Handle Copy Entire Text
   const handleCopyText = useCallback(() => {
     navigator.clipboard.writeText(editorText).then(() => {
       setToast({ message: 'Text copied to clipboard!', visible: true });
@@ -169,7 +201,22 @@ const App: React.FC = () => {
 
   const favIds = useMemo(() => favorites.map(f => f.hexcode), [favorites]);
 
-  // --- Special Sections Components (Inline for simplicity) ---
+  // --- Navigation Handlers ---
+  const toggleBlog = () => {
+    if (viewState === 'home') {
+      setViewState('blog');
+      window.scrollTo(0, 0);
+    } else {
+      setViewState('home');
+    }
+  };
+
+  const openArticle = (post: BlogPost) => {
+    setCurrentPost(post);
+    setViewState('article');
+  };
+
+  // --- Special Sections Components ---
   const SpecialSection = ({ title, icon: Icon, list }: { title: string, icon: any, list: EmojiRaw[] }) => {
     if (list.length === 0) return null;
     return (
@@ -198,14 +245,9 @@ const App: React.FC = () => {
       
       {/* BACKGROUND DESIGNER SHAPES */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-          {/* Gradient Orb 1 */}
           <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 dark:bg-indigo-500/10 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3 animate-pulse"></div>
-          {/* Gradient Orb 2 */}
           <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-pink-500/20 dark:bg-purple-500/10 rounded-full blur-[80px] translate-x-1/3 translate-y-1/3 opacity-70"></div>
-          {/* Gradient Orb 3 */}
           <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-blue-500/10 dark:bg-blue-900/10 rounded-full blur-[120px] translate-y-1/2"></div>
-          
-          {/* Subtle Grid Overlay */}
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
       </div>
 
@@ -219,56 +261,83 @@ const App: React.FC = () => {
         onLocaleChange={setLocale}
         isDarkMode={isDarkMode}
         toggleTheme={() => setIsDarkMode(!isDarkMode)}
+        onOpenBlog={toggleBlog} // Pass handler
+        isBlogActive={viewState !== 'home'} // Pass state
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
         
-        {/* Text Editor Section */}
-        <TextEditor 
-          text={editorText} 
-          setText={setEditorText} 
-          onCopy={handleCopyText}
-          onClear={() => setEditorText('')}
-          locale={locale}
-        />
+        {/* CONDITIONAL RENDERING BASED ON VIEW STATE */}
+        
+        {viewState === 'home' && (
+          <>
+            {/* Text Editor Section */}
+            <TextEditor 
+              text={editorText} 
+              setText={setEditorText} 
+              onCopy={handleCopyText}
+              onClear={() => setEditorText('')}
+              locale={locale}
+            />
 
-        <main className="min-w-0">
-          {loading ? (
-            <Loader />
-          ) : filteredGroups.length === 0 ? (
-            <div className="text-center py-20 animate-fade-in bg-white dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm">
-              <p className="text-6xl mb-4 opacity-50">🧐</p>
-              <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">No emojis found</p>
-              <p className="text-slate-500 mt-2">Try searching for something else.</p>
-            </div>
-          ) : (
-            <>
-              {/* Special Standalone Windows (Not Accordions) */}
-              {!searchQuery && (
+            <main className="min-w-0">
+              {loading ? (
+                <Loader />
+              ) : filteredGroups.length === 0 ? (
+                <div className="text-center py-20 animate-fade-in bg-white dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm">
+                  <p className="text-6xl mb-4 opacity-50">🧐</p>
+                  <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">No emojis found</p>
+                  <p className="text-slate-500 mt-2">Try searching for something else.</p>
+                </div>
+              ) : (
                 <>
-                  <SpecialSection title="Favorites" icon={Heart} list={favorites} />
-                  <SpecialSection title="Recently Used" icon={Clock} list={recent} />
+                  {/* Special Standalone Windows */}
+                  {!searchQuery && (
+                    <>
+                      <SpecialSection title="Favorites" icon={Heart} list={favorites} />
+                      <SpecialSection title="Recently Used" icon={Clock} list={recent} />
+                    </>
+                  )}
+
+                  {/* Main Categories */}
+                  {filteredGroups.map((group) => (
+                    <EmojiCategory 
+                      key={group.groupName}
+                      group={group}
+                      id={getGroupId(group.groupName)}
+                      onCopy={handleEmojiSelect}
+                      forceOpen={forceOpenState}
+                      favoriteIds={favIds}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  ))}
                 </>
               )}
+            </main>
 
-              {/* Main Categories */}
-              {filteredGroups.map((group) => (
-                <EmojiCategory 
-                  key={group.groupName}
-                  group={group}
-                  id={getGroupId(group.groupName)}
-                  onCopy={handleEmojiSelect}
-                  forceOpen={forceOpenState}
-                  favoriteIds={favIds}
-                  onToggleFavorite={toggleFavorite}
-                />
-              ))}
-            </>
-          )}
-        </main>
+            {/* SEO Section (Home Only) */}
+            {!loading && <SEOSection locale={locale} />}
+          </>
+        )}
 
-        {/* SEO Section */}
-        {!loading && <SEOSection locale={locale} />}
+        {/* BLOG LIST VIEW */}
+        {viewState === 'blog' && (
+          <BlogList 
+            locale={locale} 
+            onReadPost={openArticle} 
+            onBackToHome={() => setViewState('home')} 
+          />
+        )}
+
+        {/* SINGLE POST VIEW */}
+        {viewState === 'article' && currentPost && (
+          <BlogPostView 
+            post={currentPost} 
+            onBack={() => setViewState('blog')} 
+            onHome={() => setViewState('home')}
+            locale={locale}
+          />
+        )}
 
       </div>
 
@@ -278,11 +347,14 @@ const App: React.FC = () => {
         onClose={closeToast} 
       />
 
-      <FloatingControls 
-        onScrollTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        onCollapseAll={() => setForceOpenState(false)}
-        onExpandAll={() => setForceOpenState(true)}
-      />
+      {/* Only show scroll controls on Home View */}
+      {viewState === 'home' && (
+        <FloatingControls 
+          onScrollTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onCollapseAll={() => setForceOpenState(false)}
+          onExpandAll={() => setForceOpenState(true)}
+        />
+      )}
       
       <footer className="text-center py-10 text-slate-400 dark:text-slate-600 text-sm mb-8 md:mb-0 border-t border-slate-200 dark:border-white/5 mt-8 relative z-10">
         <p>© {new Date().getFullYear()} EmojiVerse. Designed for the World 🌍</p>

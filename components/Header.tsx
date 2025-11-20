@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X } from 'lucide-react';
+import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X, BookOpen } from 'lucide-react';
 import { EmojiGroup, Locale, LOCALE_DATA } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
@@ -13,6 +13,8 @@ interface HeaderProps {
   onLocaleChange: (l: Locale) => void;
   isDarkMode: boolean;
   toggleTheme: () => void;
+  onOpenBlog: () => void; // New Prop
+  isBlogActive: boolean; // New Prop
 }
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -36,7 +38,9 @@ const Header: React.FC<HeaderProps> = ({
   currentLocale,
   onLocaleChange,
   isDarkMode,
-  toggleTheme
+  toggleTheme,
+  onOpenBlog,
+  isBlogActive
 }) => {
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -139,7 +143,7 @@ const Header: React.FC<HeaderProps> = ({
             </h1>
           </div>
 
-          {/* Row 2: Search | Mode | Language */}
+          {/* Row 2: Search | Mode | Language | BLOG BUTTON */}
           <div className="flex items-center gap-4">
             {/* Search Bar */}
             <div className="flex-1 relative">
@@ -155,6 +159,15 @@ const Header: React.FC<HeaderProps> = ({
               />
             </div>
 
+            {/* Blog Button */}
+            <button 
+              onClick={onOpenBlog}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all shadow-sm min-w-[100px] justify-center font-bold ${isBlogActive ? 'bg-indigo-500 text-white border-indigo-500' : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800'}`}
+             >
+                <BookOpen size={18} />
+                <span>Blog</span>
+             </button>
+
             {/* Theme Toggle Text */}
             <button 
               onClick={toggleTheme}
@@ -164,7 +177,7 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="font-medium">{isDarkMode ? labels.lightMode : labels.darkMode}</span>
              </button>
 
-             {/* Language Full - UPDATED TO GRID LAYOUT */}
+             {/* Language Full - GRID LAYOUT */}
              <div className="relative group">
                 <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2.5 rounded-xl cursor-pointer transition-all shadow-sm min-w-[160px]">
                     <span className="text-xl leading-none">{currentFlag}</span>
@@ -190,56 +203,72 @@ const Header: React.FC<HeaderProps> = ({
              </div>
           </div>
 
-          {/* Row 3: Navigation Categories */}
-          <nav className="border-t border-slate-200 dark:border-white/5 pt-2">
-            <div className="flex flex-wrap justify-between gap-2">
-              {groups.map((group) => {
-                const Icon = ICON_MAP[group.groupName] || Grid3X3;
-                const isActive = activeCategory === group.groupName;
-                return (
-                  <button
-                    key={group.groupName}
-                    onClick={() => onCategorySelect(group.groupName)}
-                    className={`
-                      flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-300 border
-                      ${isActive 
-                        ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/50 shadow-lg dark:shadow-[0_0_15px_rgba(99,102,241,0.3)]' 
-                        : 'bg-transparent border-transparent text-slate-500 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
-                      }
-                    `}
-                  >
-                    <Icon size={14} className={isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-600'} />
-                    {group.groupName}
-                  </button>
-                );
-              })}
-            </div>
-          </nav>
+          {/* Row 3: Navigation Categories (Only show if NOT in blog mode) */}
+          {!isBlogActive && (
+            <nav className="border-t border-slate-200 dark:border-white/5 pt-2">
+              <div className="flex flex-wrap justify-between gap-2">
+                {groups.map((group) => {
+                  const Icon = ICON_MAP[group.groupName] || Grid3X3;
+                  const isActive = activeCategory === group.groupName;
+                  return (
+                    <button
+                      key={group.groupName}
+                      onClick={() => onCategorySelect(group.groupName)}
+                      className={`
+                        flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-300 border
+                        ${isActive 
+                          ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/50 shadow-lg dark:shadow-[0_0_15px_rgba(99,102,241,0.3)]' 
+                          : 'bg-transparent border-transparent text-slate-500 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
+                        }
+                      `}
+                    >
+                      <Icon size={14} className={isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-600'} />
+                      {group.groupName}
+                    </button>
+                  );
+                })}
+              </div>
+            </nav>
+          )}
         </div>
 
         {/* Mobile Nav Menu Dropdown (Hamburger Content) */}
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-[500px] opacity-100 pb-4 border-t border-slate-200 dark:border-white/10 mt-2' : 'max-h-0 opacity-0'}`}>
-          <div className="grid grid-cols-2 gap-2 pt-4">
-            {groups.map((group) => {
-              const Icon = ICON_MAP[group.groupName] || Grid3X3;
-              const isActive = activeCategory === group.groupName;
-              return (
-                <button
-                  key={group.groupName}
-                  onClick={() => handleMobileCategoryClick(group.groupName)}
-                  className={`
-                    flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all border text-left
-                    ${isActive 
-                      ? 'bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/50' 
-                      : 'bg-slate-50 dark:bg-slate-900/50 border-transparent text-slate-600 dark:text-slate-400'
-                    }
-                  `}
-                >
-                  <Icon size={16} />
-                  {group.groupName}
-                </button>
-              );
-            })}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-[600px] opacity-100 pb-4 border-t border-slate-200 dark:border-white/10 mt-2' : 'max-h-0 opacity-0'}`}>
+          <div className="flex flex-col gap-2 pt-4">
+            {/* Mobile Blog Button */}
+            <button
+               onClick={() => { onOpenBlog(); setIsMobileMenuOpen(false); }}
+               className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all border text-left ${isBlogActive ? 'bg-indigo-500 text-white' : 'bg-slate-50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-200'}`}
+            >
+              <BookOpen size={16} />
+              Blog & Stories
+            </button>
+            
+            {/* Categories (Only if not in blog mode) */}
+            {!isBlogActive && (
+              <div className="grid grid-cols-2 gap-2">
+                {groups.map((group) => {
+                  const Icon = ICON_MAP[group.groupName] || Grid3X3;
+                  const isActive = activeCategory === group.groupName;
+                  return (
+                    <button
+                      key={group.groupName}
+                      onClick={() => handleMobileCategoryClick(group.groupName)}
+                      className={`
+                        flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all border text-left
+                        ${isActive 
+                          ? 'bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/50' 
+                          : 'bg-slate-50 dark:bg-slate-900/50 border-transparent text-slate-600 dark:text-slate-400'
+                        }
+                      `}
+                    >
+                      <Icon size={16} />
+                      {group.groupName}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
