@@ -1,5 +1,6 @@
+
 import React, { useMemo, useRef, useEffect, useState } from 'react';
-import { Copy, Trash2, Instagram, Smile, Type, Minus, Plus, Wand2, ChevronDown } from 'lucide-react';
+import { Copy, Trash2, Instagram, Smile, Type, Minus, Plus, Wand2, ChevronDown, CaseUpper, BoxSelect } from 'lucide-react';
 import { Locale } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
@@ -30,7 +31,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [fontSizeLvl, setFontSizeLvl] = useState(0); // 0 to 6
   const [isFontsMenuOpen, setIsFontsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [isCaseMenuOpen, setIsCaseMenuOpen] = useState(false);
+  
+  const fontsMenuRef = useRef<HTMLDivElement>(null);
+  const caseMenuRef = useRef<HTMLDivElement>(null);
 
   // Get translations
   const labels = UI_LABELS[locale];
@@ -43,11 +47,14 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
     }
   }, [text, fontSizeLvl]);
 
-  // Close menu when clicking outside
+  // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      if (fontsMenuRef.current && !fontsMenuRef.current.contains(event.target as Node)) {
         setIsFontsMenuOpen(false);
+      }
+      if (caseMenuRef.current && !caseMenuRef.current.contains(event.target as Node)) {
+        setIsCaseMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -75,7 +82,9 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
     });
   };
 
-  // Helper function to transform string based on style
+  // ------------------------------------------------
+  // FEATURE 1: TEXT TRANSFORMATION (Magic Fonts)
+  // ------------------------------------------------
   const transformString = (str: string, targetAlphabet: string, sourceAlphabet: string) => {
     return str.split('').map(char => {
       const index = sourceAlphabet.indexOf(char);
@@ -97,7 +106,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
 
     if (styleName === 'Normal' && !hasSelection) {
         setIsFontsMenuOpen(false);
-        return; // Normal on full text usually implies reset, but let's keep it simple
+        return;
     }
 
     const targetAlphabet = ALPHABET_MAP[styleName];
@@ -106,27 +115,69 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
     if (!targetAlphabet) return;
 
     if (hasSelection) {
-      // Variant 1: Transform ONLY selected text
       const beforeText = text.substring(0, start);
       const selectedText = text.substring(start, end);
       const afterText = text.substring(end);
       
       const transformedSelection = styleName === 'Normal' 
-        ? selectedText // No reverse transform logic implemented purely, but usually not needed if typing raw
+        ? selectedText 
         : transformString(selectedText, targetAlphabet, sourceAlphabet);
 
       const newText = beforeText + transformedSelection + afterText;
       setText(newText);
-      
-      // Restore cursor/selection is tricky in React state updates, 
-      // but we simply update the text here.
     } else {
-      // Variant 2: Transform ENTIRE text
       const newText = transformString(text, targetAlphabet, sourceAlphabet);
       setText(newText);
     }
-
     setIsFontsMenuOpen(false);
+  };
+
+  // ------------------------------------------------
+  // FEATURE 2: CASE CONVERTER
+  // ------------------------------------------------
+  const changeCase = (type: 'upper' | 'lower' | 'title' | 'alternating') => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const hasSelection = start !== end;
+
+    const processText = (str: string) => {
+        switch (type) {
+            case 'upper': return str.toUpperCase();
+            case 'lower': return str.toLowerCase();
+            case 'title': return str.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            case 'alternating': return str.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join('');
+            default: return str;
+        }
+    };
+
+    if (hasSelection) {
+        const beforeText = text.substring(0, start);
+        const selectedText = text.substring(start, end);
+        const afterText = text.substring(end);
+        setText(beforeText + processText(selectedText) + afterText);
+    } else {
+        setText(processText(text));
+    }
+    setIsCaseMenuOpen(false);
+  };
+
+  // ------------------------------------------------
+  // FEATURE 3: INVISIBLE SPACE
+  // ------------------------------------------------
+  const insertInvisibleSpace = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    // Braille Pattern Blank (commonly used for IG line breaks)
+    const invisibleChar = '\u2800'; 
+
+    const newText = text.substring(0, start) + invisibleChar + text.substring(end);
+    setText(newText);
   };
 
   return (
@@ -143,7 +194,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
             ref={textareaRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder={labels.searchPlaceholder} // Reusing search placeholder or make a new one? using search for now or generic
+            placeholder={labels.searchPlaceholder}
             style={{ fontSize: `${currentFontSize}px`, minHeight: '160px' }}
             className="w-full bg-white dark:bg-slate-950/50 rounded-2xl border border-indigo-100 dark:border-indigo-500/20 p-6 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all resize-none overflow-hidden shadow-inner"
           />
@@ -161,7 +212,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
         {/* Controls Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4">
           
-          {/* Font & Stats & Magic Wand */}
+          {/* Font & Stats & Tools */}
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             {/* Font Size Control */}
             <div className="flex items-center gap-1 px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl mr-2 shadow-sm">
@@ -190,31 +241,25 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
               <span>{stats.chars}</span>
             </div>
             <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-slate-800/50 border border-indigo-100 dark:border-slate-700 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400">
-              <span className="font-serif italic">Aa</span>
-              <span>{stats.words}</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-slate-800/50 border border-indigo-100 dark:border-slate-700 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400">
               <Smile size={14} />
               <span>{stats.emojis}</span>
             </div>
 
-            {/* Instagram Fonts Button */}
-            <div className="relative" ref={menuRef}>
+            {/* 1. Instagram Fonts Button */}
+            <div className="relative" ref={fontsMenuRef}>
               <button
-                onClick={() => setIsFontsMenuOpen(!isFontsMenuOpen)}
-                className={`flex items-center gap-2 px-4 py-2 ml-2 rounded-xl border text-sm font-semibold transition-all shadow-sm ${
+                onClick={() => { setIsFontsMenuOpen(!isFontsMenuOpen); setIsCaseMenuOpen(false); }}
+                className={`flex items-center gap-2 px-3 py-2 ml-2 rounded-xl border text-sm font-semibold transition-all shadow-sm ${
                    isFontsMenuOpen 
                    ? 'bg-indigo-500 text-white border-indigo-500 shadow-indigo-500/30' 
                    : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-500/50'
                 }`}
+                title={labels.instagramFonts}
               >
-                <Wand2 size={16} className={isFontsMenuOpen ? 'animate-pulse' : 'text-indigo-500'} />
-                <span className="hidden sm:inline">{labels.instagramFonts}</span>
-                <span className="sm:hidden">Fonts</span>
+                <Wand2 size={16} />
                 <ChevronDown size={14} className={`transition-transform ${isFontsMenuOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* Dropdown Menu */}
               {isFontsMenuOpen && (
                 <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200 origin-top-left">
                   <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
@@ -229,15 +274,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
                       >
                         <div className="font-medium">{style}</div>
                         <div className="text-xs text-slate-400 mt-0.5 truncate">
-                          {style === 'Normal' ? 'Normal Text' : 
-                           style === 'Bold' ? '𝐁𝐨𝐥𝐝 𝐓𝐞𝐱𝐭' :
-                           style === 'Italic' ? '𝐼𝑡𝑎𝑙𝑖𝑐 𝑇𝑒𝑥𝑡' :
-                           style === 'Script (Cursive)' ? '𝒞𝓊𝓇𝓈𝒾𝓋ℯ 𝒯ℯ𝓍𝓉' :
-                           style === 'Bold Script' ? '𝓑𝓸𝓵𝓭 𝓢𝓬𝓻𝓲𝓹𝓽' :
-                           style === 'Double Struck' ? '𝔻𝕠𝕦𝕓𝕝𝕖 𝕊𝕥𝕣𝕦𝕔𝕜' :
-                           style === 'Gothic (Fraktur)' ? '𝔊𝔬𝔱𝔥𝔦𝔠 𝔗𝔢𝔵𝔱' :
-                           style === 'Monospace' ? '𝙼𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎' :
-                           style === 'Circles' ? 'Ⓒⓘⓡⓒⓛⓔⓢ' : 'Preview'}
+                          Preview: 𝐀𝐁𝐂, 𝐴𝐵𝐶, 𝓐𝓑𝓒
                         </div>
                       </button>
                     ))}
@@ -245,6 +282,51 @@ const TextEditor: React.FC<TextEditorProps> = ({ text, setText, onCopy, onClear,
                 </div>
               )}
             </div>
+
+            {/* 2. Case Converter Button */}
+            <div className="relative" ref={caseMenuRef}>
+              <button
+                onClick={() => { setIsCaseMenuOpen(!isCaseMenuOpen); setIsFontsMenuOpen(false); }}
+                className={`flex items-center gap-2 px-3 py-2 ml-1 rounded-xl border text-sm font-semibold transition-all shadow-sm ${
+                   isCaseMenuOpen
+                   ? 'bg-purple-500 text-white border-purple-500 shadow-purple-500/30' 
+                   : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-500/50'
+                }`}
+                title={labels.textCase}
+              >
+                <CaseUpper size={16} />
+                <ChevronDown size={14} className={`transition-transform ${isCaseMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isCaseMenuOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-slate-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200 origin-top-left">
+                  <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
+                    {labels.selectCase}
+                  </div>
+                  <button onClick={() => changeCase('upper')} className="w-full text-left px-4 py-3 text-sm hover:bg-purple-50 dark:hover:bg-purple-500/20 transition-colors text-slate-700 dark:text-slate-200">
+                    UPPERCASE
+                  </button>
+                  <button onClick={() => changeCase('lower')} className="w-full text-left px-4 py-3 text-sm hover:bg-purple-50 dark:hover:bg-purple-500/20 transition-colors text-slate-700 dark:text-slate-200">
+                    lowercase
+                  </button>
+                  <button onClick={() => changeCase('title')} className="w-full text-left px-4 py-3 text-sm hover:bg-purple-50 dark:hover:bg-purple-500/20 transition-colors text-slate-700 dark:text-slate-200">
+                    Title Case
+                  </button>
+                  <button onClick={() => changeCase('alternating')} className="w-full text-left px-4 py-3 text-sm hover:bg-purple-50 dark:hover:bg-purple-500/20 transition-colors text-slate-700 dark:text-slate-200">
+                    aLtErNaTiNg
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* 3. Invisible Space Button */}
+            <button
+                onClick={insertInvisibleSpace}
+                className="flex items-center gap-2 px-3 py-2 ml-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-semibold transition-all shadow-sm hover:border-emerald-300 dark:hover:border-emerald-500/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600"
+                title={labels.invisibleSpace}
+            >
+                <BoxSelect size={16} />
+            </button>
 
           </div>
 

@@ -1,3 +1,4 @@
+
 export type Locale = 
   | 'en' | 'es' | 'ru' | 'zh' | 'ko' | 'ja' 
   | 'fr' | 'it' | 'kk' | 'ar' | 'hi' | 'pt' | 'de';
@@ -17,6 +18,11 @@ export interface EmojiRaw {
 export interface EmojiGroup {
   groupName: string;
   emojis: EmojiRaw[];
+}
+
+export interface KaomojiGroup {
+  name: string;
+  items: string[];
 }
 
 export type CategoryId = 

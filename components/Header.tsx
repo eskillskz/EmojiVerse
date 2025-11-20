@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X, BookOpen, Globe } from 'lucide-react';
+import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X, BookOpen, Globe, Type } from 'lucide-react';
 import { EmojiGroup, Locale, LOCALE_DATA } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
@@ -16,8 +16,8 @@ interface HeaderProps {
   toggleTheme: () => void;
   onOpenBlog: () => void;
   isBlogActive: boolean;
-  activeTab: 'emoji' | 'translit';
-  onTabChange: (tab: 'emoji' | 'translit') => void;
+  activeTab: 'emoji' | 'translit' | 'kaomoji';
+  onTabChange: (tab: 'emoji' | 'translit' | 'kaomoji') => void;
 }
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -86,7 +86,6 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Row 2: Theme (Compact) & Language (Full Name) */}
           <div className="flex items-center gap-2">
-             {/* Theme Toggle: Reduced size (Icon + Text "Mode") */}
              <button 
               onClick={toggleTheme}
               className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs shadow-sm active:scale-95 transition-all shrink-0"
@@ -95,7 +94,6 @@ const Header: React.FC<HeaderProps> = ({
                 <span>{isDarkMode ? labels.lightMode : labels.darkMode}</span>
              </button>
 
-             {/* Language: Full Name (Expanded) */}
              <div className="relative group flex-1">
                 <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-3 py-2.5 rounded-xl cursor-pointer shadow-sm">
                     <div className="flex items-center gap-2 overflow-hidden">
@@ -105,7 +103,6 @@ const Header: React.FC<HeaderProps> = ({
                       </span>
                     </div>
                 </div>
-                 {/* Dropdown */}
                  <div className="absolute right-0 mt-2 w-full min-w-[200px] bg-white dark:bg-slate-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-[60] max-h-[300px] overflow-y-auto">
                     {LOCALE_DATA.map(loc => (
                         <button
@@ -138,7 +135,6 @@ const Header: React.FC<HeaderProps> = ({
         {/* ================= DESKTOP LAYOUT (>= md) ================= */}
         <div className="hidden md:flex flex-col gap-4">
           
-          {/* Row 1: Logo Only */}
           <div className="flex items-center py-2" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth'})}>
             <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-2.5 rounded-2xl text-white shadow-lg shadow-indigo-500/30 mr-3 hover:scale-105 transition-transform cursor-pointer">
               <Smile size={28} strokeWidth={2.5} />
@@ -148,9 +144,7 @@ const Header: React.FC<HeaderProps> = ({
             </h1>
           </div>
 
-          {/* Row 2: Search | Mode | Language | BLOG BUTTON */}
           <div className="flex items-center gap-4">
-            {/* Search Bar */}
             <div className="flex-1 relative">
                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-slate-400" />
@@ -164,7 +158,6 @@ const Header: React.FC<HeaderProps> = ({
               />
             </div>
 
-            {/* Blog Button */}
             <button 
               onClick={onOpenBlog}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all shadow-sm min-w-[100px] justify-center font-bold ${isBlogActive ? 'bg-indigo-500 text-white border-indigo-500' : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800'}`}
@@ -173,7 +166,6 @@ const Header: React.FC<HeaderProps> = ({
                 <span>Blog</span>
              </button>
 
-            {/* Theme Toggle Text */}
             <button 
               onClick={toggleTheme}
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm min-w-[140px] justify-center"
@@ -182,7 +174,6 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="font-medium">{isDarkMode ? labels.lightMode : labels.darkMode}</span>
              </button>
 
-             {/* Language Full - GRID LAYOUT */}
              <div className="relative group">
                 <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2.5 rounded-xl cursor-pointer transition-all shadow-sm min-w-[160px]">
                     <span className="text-xl leading-none">{currentFlag}</span>
@@ -190,7 +181,6 @@ const Header: React.FC<HeaderProps> = ({
                       {currentLangLabel}
                     </span>
                 </div>
-                {/* Wide Dropdown Container with Grid */}
                 <div className="absolute right-0 mt-2 w-[600px] bg-white dark:bg-slate-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-[60] transform origin-top-right scale-95 group-hover:scale-100">
                     <div className="grid grid-cols-3 gap-2">
                       {LOCALE_DATA.map(loc => (
@@ -208,10 +198,11 @@ const Header: React.FC<HeaderProps> = ({
              </div>
           </div>
 
-          {/* Row 3: MAIN TABS (Emoji vs Translit) */}
+          {/* Row 3: MAIN TABS (Emoji vs Kaomoji vs Translit) */}
           {!isBlogActive && (
             <div className="border-t border-slate-200 dark:border-white/5 pt-4">
               <div className="flex items-center gap-4 mb-4">
+                 {/* 1. Emoji Tab */}
                  <button
                    onClick={() => onTabChange('emoji')}
                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all ${
@@ -223,6 +214,21 @@ const Header: React.FC<HeaderProps> = ({
                    <Smile size={18} />
                    {labels.tabEmoji}
                  </button>
+
+                 {/* 2. Kaomoji Tab (NEW) */}
+                 <button
+                   onClick={() => onTabChange('kaomoji')}
+                   className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all ${
+                     activeTab === 'kaomoji'
+                     ? 'bg-pink-500 text-white shadow-lg shadow-pink-500/25'
+                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                   }`}
+                 >
+                   <Type size={18} />
+                   {labels.tabKaomoji}
+                 </button>
+
+                 {/* 3. SEO Tab */}
                  <button
                    onClick={() => onTabChange('translit')}
                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all ${
@@ -272,7 +278,6 @@ const Header: React.FC<HeaderProps> = ({
         {/* Mobile Nav Menu Dropdown (Hamburger Content) */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-[600px] opacity-100 pb-4 border-t border-slate-200 dark:border-white/10 mt-2' : 'max-h-0 opacity-0'}`}>
           <div className="flex flex-col gap-2 pt-4">
-            {/* Mobile Blog Button */}
             <button
                onClick={() => { onOpenBlog(); setIsMobileMenuOpen(false); }}
                className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all border text-left ${isBlogActive ? 'bg-indigo-500 text-white' : 'bg-slate-50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-200'}`}
@@ -281,7 +286,6 @@ const Header: React.FC<HeaderProps> = ({
               Blog & Stories
             </button>
 
-            {/* Mobile Tabs */}
             {!isBlogActive && (
               <div className="flex gap-2 mb-2">
                  <button
@@ -289,6 +293,12 @@ const Header: React.FC<HeaderProps> = ({
                    className={`flex-1 py-2 rounded-xl font-bold text-xs ${activeTab === 'emoji' ? 'bg-indigo-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
                  >
                    {labels.tabEmoji}
+                 </button>
+                 <button
+                   onClick={() => onTabChange('kaomoji')}
+                   className={`flex-1 py-2 rounded-xl font-bold text-xs ${activeTab === 'kaomoji' ? 'bg-pink-500 text-white' : 'bg-slate-100 dark:bg-slate-800'}`}
+                 >
+                   {labels.tabKaomoji}
                  </button>
                  <button
                    onClick={() => onTabChange('translit')}
@@ -299,13 +309,11 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             )}
             
-            {/* Categories (Only if not in blog mode AND in Emoji Tab) */}
             {!isBlogActive && activeTab === 'emoji' && (
               <div className="grid grid-cols-2 gap-2">
                 {groups.map((group) => {
                   const Icon = ICON_MAP[group.groupName] || Grid3X3;
                   const isActive = activeCategory === group.groupName;
-                   // Translate group name
                   const displayName = (labels.categories as any)[group.groupName] || group.groupName;
 
                   return (

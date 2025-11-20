@@ -6,8 +6,9 @@ import Header from './components/Header';
 import Loader from './components/Loader';
 import Toast from './components/Toast';
 import TextEditor from './components/TextEditor';
-import TranslitTool from './components/TranslitTool'; // New Import
+import TranslitTool from './components/TranslitTool';
 import EmojiCategory from './components/EmojiCategory';
+import KaomojiCategory from './components/KaomojiCategory'; // New
 import EmojiButton from './components/EmojiButton';
 import FloatingControls from './components/FloatingControls';
 import SEOSection from './components/SEOSection';
@@ -17,13 +18,11 @@ import ShareModal from './components/ShareModal';
 import ReactionOverlay from './components/ReactionOverlay';
 import { getSEOData } from './data/seoContent';
 import { BLOG_POSTS } from './data/blogPosts';
+import { KAOMOJI_DATA } from './data/kaomoji'; // New
 import { UI_LABELS } from './data/uiTranslations';
 import { Clock, Heart } from 'lucide-react';
 
-// Helper to clean group names for IDs
 const getGroupId = (name: string) => name.replace(/\s+/g, '-').toLowerCase();
-
-// Define View State
 type ViewState = 'home' | 'blog' | 'article';
 
 const App: React.FC = () => {
@@ -33,34 +32,20 @@ const App: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('Smileys & Emotion');
   const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: '', visible: false });
   const [locale, setLocale] = useState<Locale>('en');
-  
-  // Theme State
   const [isDarkMode, setIsDarkMode] = useState(true);
-  
-  // Text Editor State
   const [editorText, setEditorText] = useState('');
+  
+  // Tab State: emoji | translit | kaomoji
+  const [activeTab, setActiveTab] = useState<'emoji' | 'translit' | 'kaomoji'>('emoji');
 
-  // NEW: Active Tab State (Emoji vs SEO Translit)
-  const [activeTab, setActiveTab] = useState<'emoji' | 'translit'>('emoji');
-
-  // Global Expand/Collapse State for Categories
   const [forceOpenState, setForceOpenState] = useState<boolean | null>(null);
-
-  // Storage States
   const [favorites, setFavorites] = useState<EmojiRaw[]>([]);
   const [recent, setRecent] = useState<EmojiRaw[]>([]);
-
-  // --- BLOG STATES ---
   const [viewState, setViewState] = useState<ViewState>('home');
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
-
-  // --- SHARE STATE ---
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-
-  // --- REACTION STATE ---
   const [triggerEmoji, setTriggerEmoji] = useState<string | null>(null);
 
-  // Initialize Theme
   useEffect(() => {
     const html = document.documentElement;
     if (isDarkMode) {
@@ -70,15 +55,12 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
-  // SEO: Dynamic HTML Language Attribute
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
 
-  // Dynamic SEO Title & Meta
   useEffect(() => {
     const seoData = getSEOData(locale);
-    
     if (viewState === 'article' && currentPost) {
       document.title = `${currentPost.title} - EmojiVerse`;
     } else if (viewState === 'blog') {
@@ -86,7 +68,6 @@ const App: React.FC = () => {
     } else {
       document.title = seoData.appTitle;
     }
-    
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       if (viewState === 'article' && currentPost) {
@@ -97,7 +78,6 @@ const App: React.FC = () => {
     }
   }, [locale, viewState, currentPost]);
 
-  // Load Persistence
   useEffect(() => {
     const savedFavs = localStorage.getItem('emoji-favs');
     const savedRecent = localStorage.getItem('emoji-recent');
@@ -105,7 +85,6 @@ const App: React.FC = () => {
     if (savedRecent) setRecent(JSON.parse(savedRecent));
   }, []);
 
-  // Fetch Data when locale changes
   useEffect(() => {
     const init = async () => {
       setLoading(true);
@@ -116,7 +95,6 @@ const App: React.FC = () => {
     init();
   }, [locale]);
 
-  // Language Switch Logic for Blog
   useEffect(() => {
     if (viewState === 'article' && currentPost) {
       const newPost = BLOG_POSTS.find(p => p.slug === currentPost.slug && p.locale === locale);
@@ -129,11 +107,8 @@ const App: React.FC = () => {
     }
   }, [locale]); 
 
-
-  // Filter Data based on Search
   const filteredGroups = useMemo(() => {
     if (!searchQuery.trim()) return allGroups;
-
     const query = searchQuery.toLowerCase();
     return allGroups.map(group => ({
       ...group,
@@ -148,23 +123,17 @@ const App: React.FC = () => {
   const handleCategorySelect = (groupName: string) => {
     if (viewState !== 'home') setViewState('home'); 
     setActiveCategory(groupName);
-    
     setTimeout(() => {
       const element = document.getElementById(getGroupId(groupName));
       if (element) {
         const headerOffset = 220; 
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth"
-        });
+        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
       }
     }, 100);
   };
 
-  // Favorites & Recent
   const updateRecent = useCallback((emoji: EmojiRaw) => {
     setRecent(prev => {
       const filtered = prev.filter(e => e.hexcode !== emoji.hexcode);
@@ -191,20 +160,25 @@ const App: React.FC = () => {
   const handleEmojiSelect = useCallback((emoji: EmojiRaw) => {
     navigator.clipboard.writeText(emoji.emoji).then(() => {
       setToast({ message: `Copied ${emoji.emoji} to clipboard!`, visible: true });
-    }).catch(err => {
-      console.error('Failed to copy: ', err);
-    });
+    }).catch(err => console.error('Failed to copy: ', err));
     setEditorText(prev => prev + emoji.emoji);
     updateRecent(emoji);
-    
-    // Trigger Visual Reaction
     setTriggerEmoji(emoji.emoji);
   }, [updateRecent]);
+
+  // Handler for Kaomoji copy
+  const handleKaomojiSelect = useCallback((text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setToast({ message: `Copied ${text} to clipboard!`, visible: true });
+    });
+    setEditorText(prev => prev + text);
+    setTriggerEmoji('🎉');
+  }, []);
 
   const handleCopyText = useCallback(() => {
     navigator.clipboard.writeText(editorText).then(() => {
       setToast({ message: 'Text copied to clipboard!', visible: true });
-      setTriggerEmoji('🎉'); // Celebration trigger on copy text
+      setTriggerEmoji('🎉');
     });
   }, [editorText]);
 
@@ -214,7 +188,6 @@ const App: React.FC = () => {
 
   const favIds = useMemo(() => favorites.map(f => f.hexcode), [favorites]);
 
-  // Navigation Handlers
   const toggleBlog = () => {
     if (viewState === 'home') {
       setViewState('blog');
@@ -229,7 +202,6 @@ const App: React.FC = () => {
     setViewState('article');
   };
 
-  // Special Sections
   const SpecialSection = ({ title, icon: Icon, list }: { title: string, icon: any, list: EmojiRaw[] }) => {
     if (list.length === 0) return null;
     return (
@@ -266,7 +238,6 @@ const App: React.FC = () => {
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
       </div>
 
-      {/* Visual Effects Overlay */}
       <ReactionOverlay triggerEmoji={triggerEmoji} onComplete={() => setTriggerEmoji(null)} />
 
       <Header 
@@ -289,10 +260,8 @@ const App: React.FC = () => {
         
         {viewState === 'home' && (
           <>
-            {/* CONDITIONAL RENDERING BASED ON ACTIVE TAB */}
-            
-            {activeTab === 'emoji' ? (
-              /* === EMOJI TAB CONTENT === */
+            {/* === EMOJI TAB === */}
+            {activeTab === 'emoji' && (
               <>
                 <TextEditor 
                   text={editorText} 
@@ -301,7 +270,6 @@ const App: React.FC = () => {
                   onClear={() => setEditorText('')}
                   locale={locale}
                 />
-
                 <main className="min-w-0">
                   {loading ? (
                     <Loader />
@@ -309,7 +277,6 @@ const App: React.FC = () => {
                     <div className="text-center py-20 animate-fade-in bg-white dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm">
                       <p className="text-6xl mb-4 opacity-50">🧐</p>
                       <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">{labels.noEmojisFound}</p>
-                      <p className="text-slate-500 mt-2">{labels.trySearching}</p>
                     </div>
                   ) : (
                     <>
@@ -319,7 +286,6 @@ const App: React.FC = () => {
                           <SpecialSection title={labels.recent} icon={Clock} list={recent} />
                         </>
                       )}
-
                       {filteredGroups.map((group) => (
                         <EmojiCategory 
                           key={group.groupName}
@@ -336,8 +302,32 @@ const App: React.FC = () => {
                   )}
                 </main>
               </>
-            ) : (
-              /* === SEO / TRANSLIT TAB CONTENT === */
+            )}
+
+            {/* === KAOMOJI TAB === */}
+            {activeTab === 'kaomoji' && (
+               <>
+                <TextEditor 
+                  text={editorText} 
+                  setText={setEditorText} 
+                  onCopy={handleCopyText}
+                  onClear={() => setEditorText('')}
+                  locale={locale}
+                />
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                   {KAOMOJI_DATA.map((group, index) => (
+                     <KaomojiCategory 
+                        key={index}
+                        group={group}
+                        onCopy={handleKaomojiSelect}
+                     />
+                   ))}
+                </div>
+               </>
+            )}
+
+            {/* === SEO TAB === */}
+            {activeTab === 'translit' && (
               <TranslitTool locale={locale} />
             )}
 
@@ -370,7 +360,6 @@ const App: React.FC = () => {
         onClose={closeToast} 
       />
 
-      {/* Floating Controls with Share */}
       <FloatingControls 
         onScrollTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         onCollapseAll={() => setForceOpenState(false)}
@@ -378,7 +367,6 @@ const App: React.FC = () => {
         onShare={() => setIsShareModalOpen(true)}
       />
 
-      {/* Global Share Modal */}
       <ShareModal 
         isOpen={isShareModalOpen} 
         onClose={() => setIsShareModalOpen(false)} 
