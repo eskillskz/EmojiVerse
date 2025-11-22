@@ -378,6 +378,7 @@ const App: React.FC = () => {
             post={currentPost} 
             onBack={() => setViewState('blog')} 
             onHome={() => setViewState('home')}
+            onOpenPost={openArticle} // Pass navigation handler for recommended posts
             locale={locale}
           />
         )}

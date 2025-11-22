@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { EmojiGroup, EmojiRaw } from '../types';
+import { EmojiGroup, EmojiRaw, Locale } from '../types';
 import EmojiButton from './EmojiButton';
 
 interface EmojiCategoryProps {
@@ -11,6 +11,7 @@ interface EmojiCategoryProps {
   favoriteIds?: string[];
   onToggleFavorite?: (emoji: EmojiRaw) => void;
   localizedName?: string; // New prop for translation
+  locale?: Locale;
 }
 
 const EmojiCategory: React.FC<EmojiCategoryProps> = ({ 
@@ -20,7 +21,8 @@ const EmojiCategory: React.FC<EmojiCategoryProps> = ({
   forceOpen = null,
   favoriteIds = [],
   onToggleFavorite,
-  localizedName
+  localizedName,
+  locale
 }) => {
   // Default to false as requested ("application to open with a fully closed set")
   const [isOpen, setIsOpen] = useState(false);
@@ -99,6 +101,7 @@ const EmojiCategory: React.FC<EmojiCategoryProps> = ({
                 onCopy={onCopy}
                 isFavorite={favoriteIds.includes(emoji.hexcode)}
                 onToggleFavorite={onToggleFavorite}
+                locale={locale}
               />
             ))}
           </div>

@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { BlogPost, Locale } from '../types';
 import { BLOG_POSTS } from '../data/blogPosts';
-import { Clock, ArrowRight, BookOpen, ArrowLeft, Home } from 'lucide-react';
+import { ArrowRight, BookOpen, Home } from 'lucide-react';
 import { UI_LABELS } from '../data/uiTranslations';
 
 interface BlogListProps {
@@ -69,12 +70,6 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
             </div>
 
             <div className="p-6 flex-1 flex flex-col">
-              <div className="flex items-center gap-2 text-xs font-bold text-indigo-500 mb-3 uppercase tracking-wider">
-                 <span>{post.date}</span>
-                 <span>•</span>
-                 <span className="flex items-center gap-1"><Clock size={12} /> {post.readTime}</span>
-              </div>
-              
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                 {post.title}
               </h3>
