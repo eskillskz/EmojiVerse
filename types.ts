@@ -76,12 +76,15 @@ export const LOCALE_DATA: { code: Locale; label: string; flag: string }[] = [
 
 export interface BlogPost {
   id: string;
-  slug: string; // Shared ID across languages (e.g. 'history')
+  slug: string; 
   locale: Locale;
   title: string;
   excerpt: string;
-  content: string[]; // Paragraphs
-  date: string;
-  readTime: string;
-  imageGradient: string; // CSS gradient for cover
+  date?: string;
+  readTime?: string;
+  content: string[]; // Legacy text array (fallback)
+  richText?: any;    // Contentful Rich Text Document
+  imageUrl?: string; // Contentful Image URL
+  imageGradient?: string; // CSS gradient (fallback if no image)
+  recommendedPosts?: BlogPost[]; // Array of linked posts
 }

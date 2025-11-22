@@ -7,7 +7,7 @@ import Loader from './components/Loader';
 import Toast from './components/Toast';
 import TextEditor from './components/TextEditor';
 import TranslitTool from './components/TranslitTool';
-import CapsLockTool from './components/CapsLockTool'; // New Import
+import CapsLockTool from './components/CapsLockTool'; 
 import EmojiCategory from './components/EmojiCategory';
 import KaomojiCategory from './components/KaomojiCategory';
 import EmojiButton from './components/EmojiButton';
@@ -18,7 +18,7 @@ import BlogPostView from './components/BlogPost';
 import ShareModal from './components/ShareModal';
 import ReactionOverlay from './components/ReactionOverlay';
 import { getSEOData } from './data/seoContent';
-import { BLOG_POSTS } from './data/blogPosts';
+import { fetchContentfulPosts } from './services/contentful'; // Updated import
 import { KAOMOJI_DATA } from './data/kaomoji';
 import { UI_LABELS } from './data/uiTranslations';
 import { Clock, Heart } from 'lucide-react';
@@ -46,6 +46,10 @@ const App: React.FC = () => {
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [triggerEmoji, setTriggerEmoji] = useState<string | null>(null);
+  
+  // New state for posts
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [blogLoading, setBlogLoading] = useState(false);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -61,7 +65,6 @@ const App: React.FC = () => {
   }, [locale]);
 
   useEffect(() => {
-    // Get SEO data based on the active tab
     const seoData = getSEOData(locale, activeTab);
     
     if (viewState === 'article' && currentPost) {
@@ -69,7 +72,6 @@ const App: React.FC = () => {
     } else if (viewState === 'blog') {
       document.title = `EmojiVerse Blog - Stories & History (${locale.toUpperCase()})`;
     } else {
-      // Use the tab-specific title
       document.title = seoData.appTitle;
     }
     
@@ -78,7 +80,6 @@ const App: React.FC = () => {
       if (viewState === 'article' && currentPost) {
         metaDesc.setAttribute('content', currentPost.excerpt);
       } else {
-        // Use the tab-specific description
         metaDesc.setAttribute('content', seoData.metaDescription);
       }
     }
@@ -101,17 +102,27 @@ const App: React.FC = () => {
     init();
   }, [locale]);
 
+  // Fetch Blog Posts from Contentful when locale changes
+  useEffect(() => {
+    const loadPosts = async () => {
+      setBlogLoading(true);
+      const posts = await fetchContentfulPosts(locale);
+      setBlogPosts(posts);
+      setBlogLoading(false);
+    };
+    loadPosts();
+  }, [locale]);
+
+  // Refresh current post content if locale changes while reading
   useEffect(() => {
     if (viewState === 'article' && currentPost) {
-      const newPost = BLOG_POSTS.find(p => p.slug === currentPost.slug && p.locale === locale);
+      // Try to find the same post in the new language (via slug or ID)
+      const newPost = blogPosts.find(p => p.slug === currentPost.slug);
       if (newPost) {
         setCurrentPost(newPost);
-      } else {
-        const fallbackPost = BLOG_POSTS.find(p => p.slug === currentPost.slug && p.locale === 'en');
-        if (fallbackPost) setCurrentPost(fallbackPost);
       }
     }
-  }, [locale]); 
+  }, [locale, blogPosts]); 
 
   const filteredGroups = useMemo(() => {
     if (!searchQuery.trim()) return allGroups;
@@ -133,7 +144,6 @@ const App: React.FC = () => {
     return KAOMOJI_DATA.map(group => ({
       ...group,
       items: group.items.filter(item => {
-        // Search in text, meaning, tags, and keywords
         return (
           item.text.includes(query) || 
           item.meaning.toLowerCase().includes(query) ||
@@ -366,11 +376,14 @@ const App: React.FC = () => {
         )}
 
         {viewState === 'blog' && (
-          <BlogList 
-            locale={locale} 
-            onReadPost={openArticle} 
-            onBackToHome={() => setViewState('home')} 
-          />
+          blogLoading ? <Loader /> : (
+            <BlogList 
+              posts={blogPosts} // Pass Contentful posts
+              locale={locale} 
+              onReadPost={openArticle} 
+              onBackToHome={() => setViewState('home')} 
+            />
+          )
         )}
 
         {viewState === 'article' && currentPost && (
@@ -378,7 +391,7 @@ const App: React.FC = () => {
             post={currentPost} 
             onBack={() => setViewState('blog')} 
             onHome={() => setViewState('home')}
-            onOpenPost={openArticle} // Pass navigation handler for recommended posts
+            onOpenPost={openArticle} 
             locale={locale}
           />
         )}
