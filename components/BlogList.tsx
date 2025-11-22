@@ -1,27 +1,55 @@
-
-import React from 'react';
-import { BlogPost, Locale } from '../types';
-import { BLOG_POSTS } from '../data/blogPosts';
+// components/BlogList.tsx
+import React, { useEffect, useState } from 'react';
+import { BlogPost as LocalBlogPost, Locale } from '../types';
+// убираем импорт статического набора
+// import { BLOG_POSTS } from '../data/blogPosts';
 import { ArrowRight, BookOpen, Home } from 'lucide-react';
 import { UI_LABELS } from '../data/uiTranslations';
 
+// импортируем сервис
+import { fetchMappedPosts } from '../services/contentfulService';
+
 interface BlogListProps {
   locale: Locale;
-  onReadPost: (post: BlogPost) => void;
+  onReadPost: (post: LocalBlogPost) => void;
   onBackToHome: () => void;
 }
 
 const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome }) => {
-  // Filter strategy:
-  // 1. Try to find posts in the selected locale.
-  // 2. If a specific article (by slug) doesn't exist in the selected locale, show the English version of it.
-  const uniqueSlugs = Array.from(new Set(BLOG_POSTS.map(p => p.slug)));
-  
+  const [posts, setPosts] = useState<any[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    fetchMappedPosts() // можно передать contentType если захотим
+      .then(list => {
+        if (!mounted) return;
+        setPosts(list);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('fetchMappedPosts error', err);
+        if (!mounted) return;
+        setError(err.message || 'Fetch error');
+        setLoading(false);
+      });
+    return () => { mounted = false; }
+  }, []);
+
+  if (loading) return <div className="py-8">Loading posts…</div>;
+  if (error) return <div className="py-8 text-red-600">Error: {error}</div>;
+  if (!posts || posts.length === 0) return <div className="py-8">No posts found.</div>;
+
+  // Filter strategy similar to original one:
+  const uniqueSlugs = Array.from(new Set(posts.map(p => p.slug)));
   const displayPosts = uniqueSlugs.map(slug => {
-    const exactMatch = BLOG_POSTS.find(p => p.slug === slug && p.locale === locale);
-    const fallback = BLOG_POSTS.find(p => p.slug === slug && p.locale === 'en');
-    return exactMatch || fallback;
-  }).filter((p): p is BlogPost => !!p);
+    // try find by locale first
+    const exact = posts.find((p:any) => p.slug === slug && p.locale === locale);
+    const fallback = posts.find((p:any) => p.slug === slug && p.locale === 'en');
+    return (exact || fallback) as any;
+  }).filter(Boolean);
 
   const labels = UI_LABELS[locale];
 
@@ -52,13 +80,27 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {displayPosts.map((post) => (
+        {displayPosts.map((post: any) => (
           <article 
             key={post.id}
-            onClick={() => onReadPost(post)}
+            onClick={() => {
+              // приводим объект в форму, которой ожидает BlogPost.tsx
+              const mappedPost: LocalBlogPost = {
+                id: post.id,
+                slug: post.slug,
+                locale: post.locale,
+                title: post.title,
+                excerpt: post.excerpt || '',
+                imageGradient: post.imageGradient || 'from-indigo-400 to-purple-500',
+                // если BlogPost.tsx ожидает content массив - попытка распарсить
+                content: post.content ? (typeof post.content === 'string' ? [post.content] : post.content) : [''],
+                // добавить поля по необходимости
+              } as unknown as LocalBlogPost;
+              onReadPost(mappedPost);
+            }}
             className="group bg-white dark:bg-slate-900/50 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full"
           >
-            <div className={`h-48 w-full bg-gradient-to-br ${post.imageGradient} opacity-80 group-hover:opacity-100 transition-opacity relative`}>
+            <div className={`h-48 w-full bg-gradient-to-br ${post.imageGradient || 'from-indigo-400 to-purple-500'} opacity-80 group-hover:opacity-100 transition-opacity relative`}>
                <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-6xl drop-shadow-lg filter group-hover:scale-110 transition-transform duration-300">📝</span>
                </div>
