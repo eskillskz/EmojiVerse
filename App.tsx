@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { fetchEmojis } from './services/emojiService';
-import { EmojiGroup, EmojiRaw, Locale, BlogPost } from './types';
+import { EmojiGroup, EmojiRaw, Locale, BlogPost, LOCALE_DATA } from './types';
 import Header from './components/Header';
 import Loader from './components/Loader';
 import Toast from './components/Toast';
@@ -18,9 +18,9 @@ import BlogPostView from './components/BlogPost';
 import ShareModal from './components/ShareModal';
 import ReactionOverlay from './components/ReactionOverlay';
 import { getSEOData } from './data/seoContent';
-import { fetchContentfulPosts } from './services/contentful'; // Updated import
 import { KAOMOJI_DATA } from './data/kaomoji';
 import { UI_LABELS } from './data/uiTranslations';
+import { BLOG_POSTS } from './data/blogPosts'; // Import to find post by slug
 import { Clock, Heart } from 'lucide-react';
 
 const getGroupId = (name: string) => name.replace(/\s+/g, '-').toLowerCase();
@@ -32,24 +32,54 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('Smileys & Emotion');
   const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: '', visible: false });
-  const [locale, setLocale] = useState<Locale>('en');
+  
+  // Initialize locale from URL query param or default to 'en'
+  const [locale, setLocale] = useState<Locale>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const langParam = params.get('lang');
+    const isSupported = LOCALE_DATA.some(l => l.code === langParam);
+    return (isSupported ? langParam : 'en') as Locale;
+  });
+
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [editorText, setEditorText] = useState('');
-  
-  // Tab State: emoji | translit | kaomoji | capslock
   const [activeTab, setActiveTab] = useState<'emoji' | 'translit' | 'kaomoji' | 'capslock'>('emoji');
-
   const [forceOpenState, setForceOpenState] = useState<boolean | null>(null);
   const [favorites, setFavorites] = useState<EmojiRaw[]>([]);
   const [recent, setRecent] = useState<EmojiRaw[]>([]);
+  
+  // View State Initialization with deep link support
   const [viewState, setViewState] = useState<ViewState>('home');
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
+
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [triggerEmoji, setTriggerEmoji] = useState<string | null>(null);
   
-  // New state for posts
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [blogLoading, setBlogLoading] = useState(false);
+  // Handle URL Parameters for Direct Post Access (SEO/Prerender)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const postSlug = params.get('post');
+    
+    if (postSlug) {
+      // Find post matching slug AND current locale
+      const targetPost = BLOG_POSTS.find(p => p.slug === postSlug && p.locale === locale);
+      // Fallback to English if locale specific not found
+      const fallbackPost = BLOG_POSTS.find(p => p.slug === postSlug && p.locale === 'en');
+      
+      if (targetPost || fallbackPost) {
+        setCurrentPost(targetPost || fallbackPost || null);
+        setViewState('article');
+      }
+    }
+  }, []); // Run once on mount
+
+  const handleLocaleChange = (newLocale: Locale) => {
+    setLocale(newLocale);
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', newLocale);
+    window.history.pushState({}, '', url);
+    document.documentElement.lang = newLocale;
+  };
 
   useEffect(() => {
     const html = document.documentElement;
@@ -101,28 +131,6 @@ const App: React.FC = () => {
     };
     init();
   }, [locale]);
-
-  // Fetch Blog Posts from Contentful when locale changes
-  useEffect(() => {
-    const loadPosts = async () => {
-      setBlogLoading(true);
-      const posts = await fetchContentfulPosts(locale);
-      setBlogPosts(posts);
-      setBlogLoading(false);
-    };
-    loadPosts();
-  }, [locale]);
-
-  // Refresh current post content if locale changes while reading
-  useEffect(() => {
-    if (viewState === 'article' && currentPost) {
-      // Try to find the same post in the new language (via slug or ID)
-      const newPost = blogPosts.find(p => p.slug === currentPost.slug);
-      if (newPost) {
-        setCurrentPost(newPost);
-      }
-    }
-  }, [locale, blogPosts]); 
 
   const filteredGroups = useMemo(() => {
     if (!searchQuery.trim()) return allGroups;
@@ -225,14 +233,32 @@ const App: React.FC = () => {
     if (viewState === 'home') {
       setViewState('blog');
       window.scrollTo(0, 0);
+      // Clean URL when entering blog home
+      const url = new URL(window.location.href);
+      url.searchParams.delete('post');
+      window.history.pushState({}, '', url);
     } else {
       setViewState('home');
+      const url = new URL(window.location.href);
+      url.searchParams.delete('post');
+      window.history.pushState({}, '', url);
     }
   };
 
   const openArticle = (post: BlogPost) => {
     setCurrentPost(post);
     setViewState('article');
+    // Update URL for SEO/Sharing
+    const url = new URL(window.location.href);
+    url.searchParams.set('post', post.slug);
+    window.history.pushState({}, '', url);
+  };
+
+  const handleBackToBlog = () => {
+    setViewState('blog');
+    const url = new URL(window.location.href);
+    url.searchParams.delete('post');
+    window.history.pushState({}, '', url);
   };
 
   const SpecialSection = ({ title, icon: Icon, list }: { title: string, icon: any, list: EmojiRaw[] }) => {
@@ -280,7 +306,7 @@ const App: React.FC = () => {
         onCategorySelect={handleCategorySelect}
         activeCategory={activeCategory}
         currentLocale={locale}
-        onLocaleChange={setLocale}
+        onLocaleChange={handleLocaleChange} 
         isDarkMode={isDarkMode}
         toggleTheme={() => setIsDarkMode(!isDarkMode)}
         onOpenBlog={toggleBlog}
@@ -366,7 +392,7 @@ const App: React.FC = () => {
               <TranslitTool locale={locale} />
             )}
 
-            {/* === CAPS LOCK TAB (New) === */}
+            {/* === CAPS LOCK TAB === */}
             {activeTab === 'capslock' && (
               <CapsLockTool locale={locale} />
             )}
@@ -376,23 +402,20 @@ const App: React.FC = () => {
         )}
 
         {viewState === 'blog' && (
-          blogLoading ? <Loader /> : (
-            <BlogList 
-              posts={blogPosts} // Pass Contentful posts
-              locale={locale} 
-              onReadPost={openArticle} 
-              onBackToHome={() => setViewState('home')} 
-            />
-          )
+          <BlogList 
+            locale={locale} 
+            onReadPost={openArticle} 
+            onBackToHome={() => setViewState('home')} 
+          />
         )}
 
         {viewState === 'article' && currentPost && (
           <BlogPostView 
             post={currentPost} 
-            onBack={() => setViewState('blog')} 
+            onBack={handleBackToBlog} 
             onHome={() => setViewState('home')}
-            onOpenPost={openArticle} 
             locale={locale}
+            onOpenPost={openArticle}
           />
         )}
 

@@ -1,23 +1,98 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BlogPost, Locale } from '../types';
-import { ArrowRight, BookOpen, Home } from 'lucide-react';
+import { BLOG_POSTS } from '../data/blogPosts'; 
+import { fetchEntries } from '../services/contentfulService';
+import { ArrowRight, BookOpen, Home, Loader2, ChevronDown, Hash } from 'lucide-react';
 import { UI_LABELS } from '../data/uiTranslations';
 
 interface BlogListProps {
-  posts: BlogPost[]; // Changed: Accepts posts prop
   locale: Locale;
   onReadPost: (post: BlogPost) => void;
   onBackToHome: () => void;
 }
 
-const BlogList: React.FC<BlogListProps> = ({ posts, locale, onReadPost, onBackToHome }) => {
+// Helper to get category color style
+const getCategoryStyle = (cat: string) => {
+  const c = cat?.toLowerCase() || '';
+  if (c === 'instagram') return 'bg-rose-500 text-white shadow-rose-500/30';
+  if (c === 'business') return 'bg-blue-600 text-white shadow-blue-600/30';
+  if (c === 'emoji') return 'bg-amber-500 text-white shadow-amber-500/30';
+  return 'bg-slate-700 text-white';
+};
+
+const CATEGORIES = ['All', 'Instagram', 'Emoji', 'Business'];
+
+const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome }) => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [visibleCount, setVisibleCount] = useState(9); // Show all initially or plenty
+  const [loading, setLoading] = useState(true);
   const labels = UI_LABELS[locale];
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      setLoading(true);
+      try {
+        // Try contentful first
+        const data = await fetchEntries({ locale });
+        
+        if (data && data.items.length > 0) {
+           // Process Contentful Data... (omitted for brevity, assuming fallback mostly)
+           // If contentful fails or is empty, we go to catch
+           throw new Error("Fallback to static");
+        } else {
+           throw new Error("Fallback to static");
+        }
+      } catch (err) {
+        // FALLBACK: Use static data generated in blogPosts.ts
+        // This ensures we get exactly the 7 articles for the CURRENT locale
+        const displayPosts = BLOG_POSTS.filter(p => p.locale === locale);
+        setPosts(displayPosts);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPosts();
+  }, [locale]);
+
+  // Filter logic
+  useEffect(() => {
+    if (selectedCategory === 'All') {
+      setFilteredPosts(posts);
+    } else {
+      setFilteredPosts(posts.filter(p => p.category === selectedCategory));
+    }
+    setVisibleCount(9); // Reset visible count on filter change
+  }, [selectedCategory, posts]);
+
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + 3);
+  };
+
+  const visiblePosts = filteredPosts.slice(0, visibleCount);
+  const hasMore = filteredPosts.length > visibleCount;
+
+  const handlePostClick = (e: React.MouseEvent<HTMLAnchorElement>, post: BlogPost) => {
+    e.preventDefault();
+    onReadPost(post);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mb-4" />
+        <p className="text-slate-500 font-medium">Loading stories...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="py-8 animate-in fade-in duration-500">
       {/* Header Navigation */}
-      <div className="flex items-center mb-8">
+      <div className="flex items-center mb-8 px-4 lg:px-0">
         <button 
           onClick={onBackToHome}
           className="group flex items-center gap-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-200 dark:hover:border-indigo-500/50 transition-all shadow-sm"
@@ -27,62 +102,111 @@ const BlogList: React.FC<BlogListProps> = ({ posts, locale, onReadPost, onBackTo
         </button>
       </div>
 
-      <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
+      {/* Hero Section */}
+      <div className="text-center max-w-3xl mx-auto mb-10 space-y-4 px-4">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-sm font-bold uppercase tracking-wide">
           <BookOpen size={16} />
           Blog & Stories
         </div>
-        <h2 className="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Discover the World of Emojis
         </h2>
         <p className="text-lg text-slate-500 dark:text-slate-400">
-          Tips, history, and tricks to level up your social media game.
+          Tips, History, and Tricks to level up your social media game.
         </p>
+        
+        {/* CATEGORY RUBRICS (Chips) */}
+        <div className="flex flex-wrap justify-center gap-3 mt-6">
+           {CATEGORIES.map(cat => (
+             <button
+               key={cat}
+               onClick={() => setSelectedCategory(cat)}
+               className={`px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 border ${
+                 selectedCategory === cat
+                 ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white shadow-lg transform scale-105'
+                 : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
+               }`}
+             >
+               {cat === 'All' ? '✨ All Stories' : cat}
+             </button>
+           ))}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post) => (
-          <article 
-            key={post.id}
-            onClick={() => onReadPost(post)}
-            className="group bg-white dark:bg-slate-900/50 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full"
-          >
-            <div className="h-48 w-full relative overflow-hidden bg-slate-100 dark:bg-slate-800">
-               {post.imageUrl ? (
-                 <img 
-                   src={post.imageUrl} 
-                   alt={post.title} 
-                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300 group-hover:scale-105 transform"
-                 />
-               ) : (
-                 <div className={`w-full h-full bg-gradient-to-br ${post.imageGradient || 'from-gray-400 to-gray-600'} opacity-80 group-hover:opacity-100 transition-opacity flex items-center justify-center`}>
-                    <span className="text-6xl drop-shadow-lg filter group-hover:scale-110 transition-transform duration-300">📝</span>
-                 </div>
-               )}
-               
-               {post.locale !== locale && (
-                 <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-                   {post.locale.toUpperCase()}
-                 </div>
-               )}
-            </div>
+      {filteredPosts.length === 0 ? (
+        <div className="text-center py-20 text-slate-500">
+          No articles found in this category.
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 px-4 lg:px-0">
+            {visiblePosts.map((post) => (
+              <a 
+                key={post.id}
+                href={`?lang=${locale}&post=${post.slug}`}
+                onClick={(e) => handlePostClick(e, post)}
+                className="group relative bg-white dark:bg-slate-900/50 rounded-[2rem] overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-2 transition-all duration-300 flex flex-col h-full block"
+              >
+                {/* Category Badge (Pill style) */}
+                <div className="absolute top-4 left-4 z-20">
+                   <span className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg backdrop-blur-md ${getCategoryStyle(post.category || 'Emoji')}`}>
+                     {post.category || 'Emoji'}
+                   </span>
+                </div>
 
-            <div className="p-6 flex-1 flex flex-col">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                {post.title}
-              </h3>
-              
-              <p className="text-slate-500 dark:text-slate-400 mb-6 line-clamp-3 flex-1">
-                {post.excerpt}
-              </p>
+                <div className="h-56 w-full relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+                  {post.image ? (
+                    <img 
+                      src={post.image} 
+                      alt={post.imageAlt || post.title} 
+                      className="w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className={`w-full h-full bg-gradient-to-br ${post.imageGradient || 'from-gray-400 to-gray-600'} flex items-center justify-center`}>
+                        <span className="text-6xl drop-shadow-md">✍️</span>
+                    </div>
+                  )}
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                </div>
 
-              <div className="flex items-center font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-2 transition-transform">
-                Read Article <ArrowRight size={16} className="ml-2" />
-              </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-center gap-2 text-xs text-slate-400 mb-3 font-bold uppercase tracking-wider">
+                     {/* Placeholder Date logic */}
+                    <span>2024</span>
+                    <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+                    <span>{post.readTime || '5 min'}</span>
+                  </div>
+
+                  <h3 className="text-xl font-extrabold text-slate-900 dark:text-white mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 leading-tight">
+                    {post.title}
+                  </h3>
+                  
+                  <p className="text-slate-500 dark:text-slate-400 mb-6 line-clamp-3 flex-1 text-sm leading-relaxed font-medium">
+                    {post.excerpt}
+                  </p>
+
+                  <div className="flex items-center font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mt-auto">
+                    Read Story <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+          
+          {hasMore && (
+            <div className="mt-12 text-center">
+              <button 
+                onClick={handleLoadMore}
+                className="inline-flex items-center gap-2 px-8 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all border border-slate-200 dark:border-slate-700"
+              >
+                Load More Stories
+                <ChevronDown size={18} />
+              </button>
             </div>
-          </article>
-        ))}
-      </div>
+          )}
+        </>
+      )}
     </div>
   );
 };

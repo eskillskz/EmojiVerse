@@ -1,657 +1,399 @@
-import { BlogPost } from '../types';
 
-export const BLOG_POSTS: BlogPost[] = [
-  // ==========================================
-  // 1. HISTORY
-  // ==========================================
-  {
-    id: 'history-en',
-    slug: 'history',
-    locale: 'en',
-    title: "The Secret History of Emojis: From 1999 to Today",
-    excerpt: "Did you know the first emoji set was created in Japan for a pager? Discover the fascinating origin story of the digital language.",
-    date: "Oct 15, 2023",
-    readTime: "5 min read",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "It is hard to imagine a world without emojis. We use them to flirt, to joke, and to clarify the tone of our text messages. But where did they come from?",
-      "The story begins in Japan in 1999. A man named Shigetaka Kurita was working for a mobile carrier called NTT DoCoMo. He realized that digital communication was cold and often misunderstood. To solve this, he sketched a set of 176 pixelated images on a grid of 12x12 pixels.",
-      "These were the ancestors of the emojis we use today. Unlike modern emojis, they were not yellow faces; they were simple symbols like a sun, a cloud, an umbrella, and a landline phone. The word 'Emoji' actually comes from the Japanese words 'e' (picture) and 'moji' (character).",
-      "It wasn't until 2010 that emojis were standardized by the Unicode Consortium, allowing them to be used across different devices like iPhones and Androids. In 2011, Apple added an emoji keyboard to iOS, and the rest is history.",
-      "Today, there are over 3,600 emojis, including variations for skin tones, gender, and hair color. They have become the world's first truly global language."
-    ]
-  },
-  {
-    id: 'history-ru',
-    slug: 'history',
-    locale: 'ru',
-    title: "Секретная история эмодзи: с 1999 года до наших дней",
-    excerpt: "Знаете ли вы, что первый набор эмодзи был создан в Японии для пейджера? Узнайте увлекательную историю происхождения цифрового языка.",
-    date: "15 Окт, 2023",
-    readTime: "5 мин чтения",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "Трудно представить мир без эмодзи. Мы используем их, чтобы флиртовать, шутить и уточнять тон наших текстовых сообщений. Но откуда они взялись?",
-      "История начинается в Японии в 1999 году. Человек по имени Сигэтака Курита работал на мобильного оператора NTT DoCoMo. Он понял, что цифровая коммуникация холодна и часто понимается неправильно. Чтобы решить эту проблему, он нарисовал набор из 176 пиксельных картинок на сетке 12x12 пикселей.",
-      "Это были предки эмодзи, которые мы используем сегодня. В отличие от современных смайликов, это были не желтые лица, а простые символы: солнце, облако, зонтик, стационарный телефон. Слово «Эмодзи» происходит от японских слов «e» (картинка) и «moji» (знак).",
-      "Только в 2010 году эмодзи были стандартизированы Консорциумом Unicode, что позволило использовать их на разных устройствах. В 2011 году Apple добавила клавиатуру эмодзи в iOS, и остальное уже история.",
-      "Сегодня существует более 3600 эмодзи. Они стали первым по-настоящему глобальным языком мира."
-    ]
-  },
-  {
-    id: 'history-es',
-    slug: 'history',
-    locale: 'es',
-    title: "La historia secreta de los emojis: De 1999 a hoy",
-    excerpt: "¿Sabías que el primer set de emojis se creó en Japón? Descubre la fascinante historia del lenguaje digital.",
-    date: "15 Oct, 2023",
-    readTime: "5 min lectura",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "Es difícil imaginar un mundo sin emojis. Los usamos para coquetear, bromear y aclarar el tono de nuestros mensajes. ¿Pero de dónde vienen?",
-      "La historia comienza en Japón en 1999. Shigetaka Kurita trabajaba para NTT DoCoMo. Se dio cuenta de que la comunicación digital era fría. Para solucionarlo, dibujó 176 imágenes pixeladas.",
-      "Estos fueron los antepasados de los emojis de hoy. No eran caras amarillas, sino símbolos simples como un sol o un paraguas. La palabra 'Emoji' viene del japonés 'e' (imagen) y 'moji' (carácter).",
-      "No fue hasta 2010 que Unicode estandarizó los emojis. En 2011, Apple agregó el teclado emoji a iOS, y el resto es historia.",
-      "Hoy en día hay más de 3.600 emojis. Se han convertido en el primer lenguaje verdaderamente global."
-    ]
-  },
-  {
-    id: 'history-fr',
-    slug: 'history',
-    locale: 'fr',
-    title: "L'histoire secrète des émojis : De 1999 à aujourd'hui",
-    excerpt: "Saviez-vous que le premier jeu d'émojis a été créé au Japon ? Découvrez l'histoire fascinante de ce langage numérique.",
-    date: "15 Oct, 2023",
-    readTime: "Lecture de 5 min",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "Difficile d'imaginer un monde sans émojis. Nous les utilisons pour flirter, plaisanter et clarifier le ton de nos messages. Mais d'où viennent-ils ?",
-      "L'histoire commence au Japon en 1999. Un homme nommé Shigetaka Kurita travaillait pour NTT DoCoMo. Il a réalisé que la communication numérique était froide. Pour y remédier, il a dessiné 176 images pixelisées.",
-      "C'étaient les ancêtres des émojis modernes. Le mot 'Émoji' vient du japonais 'e' (image) et 'moji' (caractère).",
-      "Ce n'est qu'en 2010 que le Consortium Unicode a standardisé les émojis. En 2011, Apple a ajouté le clavier émoji à iOS, et le reste appartient à l'histoire."
-    ]
-  },
-  {
-    id: 'history-de',
-    slug: 'history',
-    locale: 'de',
-    title: "Die geheime Geschichte der Emojis: Von 1999 bis heute",
-    excerpt: "Wussten Sie, dass das erste Emoji-Set in Japan erstellt wurde? Entdecken Sie die faszinierende Ursprungsgeschichte.",
-    date: "15. Okt. 2023",
-    readTime: "5 Min. Lesezeit",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "Eine Welt ohne Emojis ist kaum vorstellbar. Wir nutzen sie zum Flirten, Scherzen und um den Ton unserer Nachrichten zu klären. Aber woher kommen sie?",
-      "Die Geschichte beginnt 1999 in Japan. Shigetaka Kurita arbeitete für NTT DoCoMo. Er erkannte, dass digitale Kommunikation kalt war. Als Lösung entwarf er 176 verpixelte Bilder.",
-      "Das waren die Vorfahren der heutigen Emojis. Das Wort 'Emoji' kommt aus dem Japanischen: 'e' (Bild) und 'moji' (Zeichen).",
-      "Erst 2010 standardisierte das Unicode-Konsortium Emojis. 2011 fügte Apple die Emoji-Tastatur zu iOS hinzu, und der Rest ist Geschichte."
-    ]
-  },
-  {
-    id: 'history-it',
-    slug: 'history',
-    locale: 'it',
-    title: "La storia segreta degli emoji: Dal 1999 a oggi",
-    excerpt: "Sapevi che il primo set di emoji è stato creato in Giappone? Scopri l'affascinante storia delle origini.",
-    date: "15 Ott, 2023",
-    readTime: "5 min lettura",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "È difficile immaginare un mondo senza emoji. Li usiamo per flirtare, scherzare e chiarire il tono dei messaggi. Ma da dove vengono?",
-      "La storia inizia in Giappone nel 1999. Shigetaka Kurita lavorava per NTT DoCoMo. Capì che la comunicazione digitale era fredda. Per risolvere, disegnò 176 immagini pixelate.",
-      "Questi erano gli antenati degli emoji di oggi. La parola 'Emoji' deriva dal giapponese 'e' (immagine) e 'moji' (carattere).",
-      "Solo nel 2010 il Consorzio Unicode ha standardizzato gli emoji. Nel 2011, Apple ha aggiunto la tastiera emoji a iOS, e il resto è storia."
-    ]
-  },
-  {
-    id: 'history-pt',
-    slug: 'history',
-    locale: 'pt',
-    title: "A História Secreta dos Emojis: De 1999 até Hoje",
-    excerpt: "Sabia que o primeiro conjunto de emojis foi criado no Japão? Descubra a fascinante história de origem.",
-    date: "15 Out, 2023",
-    readTime: "5 min de leitura",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "É difícil imaginar um mundo sem emojis. Nós os usamos para flertar, brincar e esclarecer o tom de nossas mensagens. Mas de onde eles vieram?",
-      "A história começa no Japão em 1999. Shigetaka Kurita trabalhava para a NTT DoCoMo. Ele percebeu que a comunicação digital era fria. Para resolver isso, desenhou 176 imagens pixeladas.",
-      "Esses foram os ancestrais dos emojis de hoje. A palavra 'Emoji' vem do japonês 'e' (imagem) e 'moji' (caractere).",
-      "Foi apenas em 2010 que o Unicode padronizou os emojis. Em 2011, a Apple adicionou o teclado emoji ao iOS, e o resto é história."
-    ]
-  },
-  {
-    id: 'history-zh',
-    slug: 'history',
-    locale: 'zh',
-    title: "表情符号的秘密历史：从 1999 年至今",
-    excerpt: "你知道第一套表情符号是在日本为寻呼机创建的吗？探索数字语言的迷人起源故事。",
-    date: "2023年10月15日",
-    readTime: "5 分钟阅读",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "很难想象一个没有表情符号的世界。我们用它们来调情、开玩笑和澄清短信的语气。但它们从何而来？",
-      "故事始于 1999 年的日本。栗田穰崇（Shigetaka Kurita）当时在 NTT DoCoMo 工作。他意识到数字通信既冷漠又容易被误解。为了解决这个问题，他在 12x12 像素的网格上绘制了 176 个像素化图像。",
-      "这些就是我们今天使用的表情符号的祖先。与现代表情符号不同，它们不是黄色的脸；它们是简单的符号，如太阳、云、雨伞和座机电话。“Emoji”这个词实际上来自日语单词“e”（图片）和“moji”（字符）。",
-      "直到 2010 年，Unicode 联盟才将表情符号标准化，使其可以在 iPhone 和 Android 等不同设备上使用。2011 年，苹果在 iOS 中添加了表情符号键盘，剩下的就是历史了。",
-      "今天，有超过 3,600 个表情符号，包括肤色、性别和发色的变化。它们已成为世界上第一种真正的全球语言。"
-    ]
-  },
-  {
-    id: 'history-ja',
-    slug: 'history',
-    locale: 'ja',
-    title: "絵文字の知られざる歴史：1999年から今日まで",
-    excerpt: "最初の絵文字セットが日本のポケベルのために作られたことをご存知ですか？デジタル言語の魅力的な起源を発見しましょう。",
-    date: "2023年10月15日",
-    readTime: "5分で読めます",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "絵文字のない世界を想像するのは難しいです。私たちは冗談を言ったり、メッセージのトーンを明確にするためにそれらを使います。しかし、それらはどこから来たのでしょうか？",
-      "物語は1999年の日本で始まります。NTTドコモで働いていた栗田穣崇氏は、デジタル通信が冷たく、誤解されやすいことに気づきました。これを解決するために、彼は12x12ピクセルのグリッド上に176個のドット絵を描きました。",
-      "これらが今日の絵文字の先祖です。「Emoji」という言葉は、日本語の「絵（e）」と「文字（moji）」に由来しています。",
-      "2010年にUnicodeコンソーシアムによって標準化され、iPhoneやAndroidなどのデバイス間で使えるようになりました。2011年にAppleがiOSに絵文字キーボードを追加し、世界中に広まりました。"
-    ]
-  },
-  {
-    id: 'history-ko',
-    slug: 'history',
-    locale: 'ko',
-    title: "이모티콘의 비밀 역사: 1999년부터 오늘날까지",
-    excerpt: "최초의 이모티콘 세트가 일본에서 무선 호출기를 위해 만들어졌다는 사실을 알고 계셨나요? 디지털 언어의 매혹적인 기원을 알아보세요.",
-    date: "2023년 10월 15일",
-    readTime: "5분 분량",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "이모티콘 없는 세상은 상상하기 어렵습니다. 우리는 농담을 하거나 텍스트 메시지의 어조를 명확히 하기 위해 이모티콘을 사용합니다. 하지만 이모티콘은 어디서 왔을까요?",
-      "이야기는 1999년 일본에서 시작됩니다. NTT DoCoMo에서 일하던 쿠리타 시게타카는 디지털 통신이 차갑고 오해하기 쉽다는 것을 깨달았습니다. 이를 해결하기 위해 그는 176개의 픽셀 이미지를 스케치했습니다.",
-      "이것들이 오늘날 우리가 사용하는 이모티콘의 조상입니다. 'Emoji'라는 단어는 실제로 일본어 'e'(그림)와 'moji'(문자)에서 유래했습니다.",
-      "2010년 유니코드 컨소시엄이 이모티콘을 표준화하면서 iPhone과 Android 등 다양한 기기에서 사용할 수 있게 되었습니다. 2011년 Apple이 iOS에 이모티콘 키보드를 추가하면서 역사가 되었습니다."
-    ]
-  },
-  {
-    id: 'history-ar',
-    slug: 'history',
-    locale: 'ar',
-    title: "التاريخ السري للرموز التعبيرية: من 1999 إلى اليوم",
-    excerpt: "هل تعلم أن أول مجموعة رموز تعبيرية تم إنشاؤها في اليابان؟ اكتشف قصة الأصل الرائعة للغة الرقمية.",
-    date: "15 أكتوبر 2023",
-    readTime: "5 دقائق قراءة",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "من الصعب تخيل عالم بدون رموز تعبيرية. نستخدمها للمزاح وتوضيح نبرة رسائلنا النصية. لكن من أين أتوا؟",
-      "تبدأ القصة في اليابان عام 1999. كان شيغيتاكا كوريتا يعمل لدى NTT DoCoMo. أدرك أن الاتصال الرقمي كان باردًا. لحل هذه المشكلة ، رسم مجموعة من 176 صورة مبكسلة.",
-      "هؤلاء كانوا أسلاف الرموز التعبيرية التي نستخدمها اليوم. كلمة 'Emoji' تأتي في الواقع من الكلمات اليابانية 'e' (صورة) و 'moji' (شخصية).",
-      "لم يتم توحيد الرموز التعبيرية إلا في عام 2010 بواسطة Unicode Consortium. في عام 2011 ، أضافت Apple لوحة مفاتيح الرموز التعبيرية إلى iOS ، والباقي هو التاريخ."
-    ]
-  },
-  {
-    id: 'history-hi',
-    slug: 'history',
-    locale: 'hi',
-    title: "इमोजी का गुप्त इतिहास: 1999 से आज तक",
-    excerpt: "क्या आप जानते हैं कि पहला इमोजी सेट जापान में बनाया गया था? डिजिटल भाषा की दिलचस्प मूल कहानी खोजें।",
-    date: "15 अक्टूबर, 2023",
-    readTime: "5 मिनट पढ़ें",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "इमोजी के बिना दुनिया की कल्पना करना मुश्किल है। हम उनका उपयोग मजाक करने और अपने टेक्स्ट संदेशों के स्वर को स्पष्ट करने के लिए करते हैं। लेकिन वे कहाँ से आए?",
-      "कहानी 1999 में जापान में शुरू होती है। शिगेताका कुरिता NTT DoCoMo के लिए काम कर रहे थे। उन्होंने महसूस किया कि डिजिटल संचार ठंडा था। इसे हल करने के लिए, उन्होंने 176 पिक्सेल छवियों का एक सेट स्केच किया।",
-      "ये आज हमारे द्वारा उपयोग किए जाने वाले इमोजी के पूर्वज थे। 'इमोजी' शब्द वास्तव में जापानी शब्दों 'ई' (चित्र) और 'मोजी' (चरित्र) से आया है।",
-      "2010 तक यूनिकोड कंसोर्टियम द्वारा इमोजी को मानकीकृत नहीं किया गया था। 2011 में, Apple ने iOS में एक इमोजी कीबोर्ड जोड़ा, और बाकी इतिहास है।"
-    ]
-  },
-  {
-    id: 'history-kk',
-    slug: 'history',
-    locale: 'kk',
-    title: "Эмодзидің құпия тарихы: 1999 жылдан бүгінге дейін",
-    excerpt: "Сіз бірінші эмодзи жиынтығы Жапонияда жасалғанын білесіз бе? Сандық тілдің қызықты шығу тарихын ашыңыз.",
-    date: "15 Қаз, 2023",
-    readTime: "5 мин оқу",
-    imageGradient: "from-blue-400 to-indigo-600",
-    content: [
-      "Эмодзисіз әлемді елестету қиын. Біз оларды әзілдесу және хабарламаларымыздың реңін ашу үшін қолданамыз. Бірақ олар қайдан келді?",
-      "Оқиға 1999 жылы Жапонияда басталады. Шигетака Курита NTT DoCoMo компаниясында жұмыс істеді. Ол сандық байланыстың салқын екенін түсінді. Мұны шешу үшін ол 176 пиксельді сурет салды.",
-      "Бұлар бүгінгі эмодзилердің ата-бабалары болды. 'Эмодзи' сөзі жапондық 'e' (сурет) және 'moji' (таңба) сөздерінен шыққан.",
-      "2010 жылы Unicode эмодзилерді стандарттады. 2011 жылы Apple iOS жүйесіне эмодзи пернетақтасын қосты, ал қалғаны тарих."
-    ]
-  },
+import { BlogPost, Locale, LOCALE_DATA } from '../types';
 
-  // ==========================================
-  // 2. TIPS
-  // ==========================================
-  {
-    id: 'tips-en',
-    slug: 'tips',
-    locale: 'en',
-    title: "5 Instagram Bio Hacks to Get More Followers",
-    excerpt: "Your bio is your digital business card. Learn how to use special fonts and emojis to stand out.",
-    date: "Nov 02, 2023",
-    readTime: "4 min read",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "You only get 150 characters to make a first impression on Instagram. How do you use them wisely? Here are the top hacks used by influencers.",
-      "1. **Use Custom Fonts**: A standard font is boring. Use the 'Instagram Fonts' feature in EmojiVerse to turn your name into **Bold** or 𝒞𝓊𝓇𝓈𝒾𝓋ℯ. This immediately catches the eye.",
-      "2. **Line Breaks**: Don't write a wall of text. Use line breaks to list your hobbies or services. Since Instagram sometimes removes breaks, type your bio in our Text Editor first, then copy-paste it.",
-      "3. **The Power of Emojis**: Use emojis as bullet points. Instead of writing 'I love photography', use 📸. It saves space and adds color.",
-      "4. **Call to Action (CTA)**: Always point down to your link. Use 👇 or ⬇️ to direct attention to your website url."
-    ]
-  },
-  {
-    id: 'tips-ru',
-    slug: 'tips',
-    locale: 'ru',
-    title: "5 секретов для БИО в Инстаграм, чтобы набрать подписчиков",
-    excerpt: "Ваш профиль — это ваша визитка. Узнайте, как использовать шрифты и эмодзи, чтобы выделиться.",
-    date: "02 Ноя, 2023",
-    readTime: "4 мин чтения",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "У вас есть всего 150 символов, чтобы произвести первое впечатление. Как использовать их с умом?",
-      "1. **Свои Шрифты**: Стандартный шрифт — это скучно. Используйте функцию «Шрифты Инстаграм» в EmojiVerse, чтобы сделать имя **Жирным** или 𝒞𝓊𝓇𝓈𝒾𝓋ℯ. Это сразу цепляет взгляд.",
-      "2. **Разрывы строк**: Не пишите сплошной стеной текста. Используйте разрывы, чтобы перечислить хобби. Инстаграм иногда удаляет их, поэтому сначала напишите текст в нашем редакторе, а потом скопируйте.",
-      "3. **Сила Эмодзи**: Используйте смайлы как маркеры списка. Вместо «Я люблю фото», поставьте 📸. Это экономит место.",
-      "4. **Призыв к действию**: Всегда указывайте на ссылку. Используйте 👇 или ⬇️."
-    ]
-  },
-  {
-    id: 'tips-es',
-    slug: 'tips',
-    locale: 'es',
-    title: "5 Trucos para tu Bio de Instagram",
-    excerpt: "Tu biografía es tu tarjeta de presentación. Aprende a usar fuentes y emojis para destacar.",
-    date: "02 Nov, 2023",
-    readTime: "4 min lectura",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "Solo tienes 150 caracteres para causar una primera impresión. ¿Cómo usarlos sabiamente?",
-      "1. **Usa Fuentes Personalizadas**: Usa la función 'Fuentes Instagram' de EmojiVerse para poner tu nombre en **Negrita** o 𝒞𝓊𝓇𝓈𝒾𝓋ℯ.",
-      "2. **Saltos de Línea**: No escribas un muro de texto. Usa saltos para listar tus hobbies.",
-      "3. **El Poder de los Emojis**: Usa emojis como viñetas. En lugar de escribir 'Amo la fotografía', usa 📸.",
-      "4. **Llamada a la acción**: Señala siempre tu enlace con 👇 o ⬇️."
-    ]
-  },
-  {
-    id: 'tips-fr',
-    slug: 'tips',
-    locale: 'fr',
-    title: "5 astuces Instagram pour plus d'abonnés",
-    excerpt: "Votre bio est votre carte de visite numérique. Apprenez à utiliser des polices et des émojis spéciaux.",
-    date: "02 Nov, 2023",
-    readTime: "Lecture de 4 min",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "Vous n'avez que 150 caractères pour faire une première impression. Comment les utiliser judicieusement ?",
-      "1. **Polices personnalisées** : Utilisez 'Polices Insta' pour mettre votre nom en **Gras** ou 𝒞𝓊𝓇𝓈𝒾𝓋ℯ.",
-      "2. **Sauts de ligne** : N'écrivez pas un mur de texte. Listez vos hobbies.",
-      "3. **Le pouvoir des émojis** : Utilisez des émojis comme puces. Au lieu de 'J'aime la photo', utilisez 📸.",
-      "4. **Appel à l'action** : Pointez toujours vers votre lien avec 👇."
-    ]
-  },
-  {
-    id: 'tips-de',
-    slug: 'tips',
-    locale: 'de',
-    title: "5 Instagram-Bio-Hacks für mehr Follower",
-    excerpt: "Ihre Bio ist Ihre digitale Visitenkarte. Lernen Sie, wie Sie spezielle Schriften und Emojis nutzen.",
-    date: "02. Nov. 2023",
-    readTime: "4 Min. Lesezeit",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "Sie haben nur 150 Zeichen. Wie nutzen Sie diese klug?",
-      "1. **Benutzerdefinierte Schriften**: Nutzen Sie 'Insta Schriften', um Ihren Namen **Fett** oder 𝒞𝓊𝓇𝓈𝒾𝓋ℯ zu machen.",
-      "2. **Zeilenumbrüche**: Vermeiden Sie Textwände. Listen Sie Hobbys untereinander auf.",
-      "3. **Die Macht der Emojis**: Nutzen Sie Emojis als Aufzählungszeichen. Statt 'Ich liebe Fotos' einfach 📸.",
-      "4. **Handlungsaufforderung**: Zeigen Sie immer auf Ihren Link mit 👇."
-    ]
-  },
-  {
-    id: 'tips-it',
-    slug: 'tips',
-    locale: 'it',
-    title: "5 Trucchi per la Bio di Instagram",
-    excerpt: "La tua bio è il tuo biglietto da visita. Impara a usare font ed emoji speciali per distinguerti.",
-    date: "02 Nov, 2023",
-    readTime: "4 min lettura",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "Hai solo 150 caratteri. Come usarli al meglio?",
-      "1. **Font Personalizzati**: Usa 'Font Instagram' per rendere il tuo nome **Grassetto** o 𝒞𝓊𝓇𝓈𝒾𝓋ℯ.",
-      "2. **Interruzioni di riga**: Non scrivere un muro di testo. Usa elenchi.",
-      "3. **Il potere degli emoji**: Usa emoji come punti elenco. Invece di 'Amo la fotografia', usa 📸.",
-      "4. **Call to Action**: Indica sempre il tuo link con 👇."
-    ]
-  },
-  {
-    id: 'tips-pt',
-    slug: 'tips',
-    locale: 'pt',
-    title: "5 Truques para a Bio do Instagram",
-    excerpt: "Sua bio é seu cartão de visita. Aprenda a usar fontes e emojis especiais para se destacar.",
-    date: "02 Nov, 2023",
-    readTime: "4 min de leitura",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "Você tem apenas 150 caracteres. Como usá-los com sabedoria?",
-      "1. **Fontes Personalizadas**: Use 'Fontes Instagram' para deixar seu nome em **Negrito** ou 𝒞𝓊𝓇𝓈𝒾𝓋ℯ.",
-      "2. **Quebras de Linha**: Não escreva um bloco de texto. Liste seus hobbies.",
-      "3. **O Poder dos Emojis**: Use emojis como marcadores. Em vez de 'Amo fotografia', use 📸.",
-      "4. **Chamada para Ação**: Sempre aponte para seu link com 👇."
-    ]
-  },
-  {
-    id: 'tips-zh',
-    slug: 'tips',
-    locale: 'zh',
-    title: "5 个 Instagram 简介技巧，助你获得更多关注",
-    excerpt: "你的简介是你的数字名片。学习如何使用特殊字体和表情符号脱颖而出。",
-    date: "2023年11月02日",
-    readTime: "4 分钟阅读",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "你只有 150 个字符来给人留下第一印象。如何明智地使用它们？",
-      "1. **使用自定义字体**：使用 EmojiVerse 中的“Instagram 字体”功能，将你的名字变成**粗体**或𝒞𝓊𝓇𝓈𝒾𝓋ℯ。这很吸睛。",
-      "2. **换行**：不要写一大段文字。使用换行符列出你的爱好。",
-      "3. **表情符号的力量**：使用表情符号作为要点。用 📸 代替“我爱摄影”。它节省空间。",
-      "4. **号召性用语 (CTA)**：始终用 👇 指向你的链接。"
-    ]
-  },
-  {
-    id: 'tips-ja',
-    slug: 'tips',
-    locale: 'ja',
-    title: "フォロワーを増やす5つのInstagramプロフィールハック",
-    excerpt: "プロフィールはあなたのデジタル名刺です。特殊フォントと絵文字を使って目立つ方法を学びましょう。",
-    date: "2023年11月02日",
-    readTime: "4分で読めます",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "第一印象を与えるための文字数は150文字だけです。どう賢く使いますか？",
-      "1. **カスタムフォント**：「インスタフォント」機能を使って、名前を**太字**や𝒞𝓊𝓇𝓈𝒾𝓋ℯにしましょう。",
-      "2. **改行**：長文を避けてください。趣味をリスト化しましょう。",
-      "3. **絵文字の力**：箇条書きに絵文字を使います。「写真が好き」と書く代わりに📸を。",
-      "4. **行動喚起**：常に👇でリンクを指し示しましょう。"
-    ]
-  },
-  {
-    id: 'tips-ko',
-    slug: 'tips',
-    locale: 'ko',
-    title: "팔로워를 늘리는 5가지 인스타그램 바이오 꿀팁",
-    excerpt: "바이오는 당신의 디지털 명함입니다. 특수 글꼴과 이모티콘을 사용하여 돋보이는 방법을 알아보세요.",
-    date: "2023년 11월 02일",
-    readTime: "4분 분량",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "첫인상을 남길 수 있는 글자는 150자뿐입니다. 어떻게 현명하게 사용할까요?",
-      "1. **사용자 정의 글꼴**: '인스타 폰트' 기능을 사용하여 이름을 **굵게** 또는 𝒞𝓊𝓇𝓈𝒾𝓋ℯ로 바꾸세요.",
-      "2. **줄바꿈**: 긴 텍스트 벽을 피하세요. 취미를 나열하세요.",
-      "3. **이모티콘의 힘**: 불릿 포인트로 이모티콘을 사용하세요. '사진을 좋아해요' 대신 📸를 쓰세요.",
-      "4. **행동 유도**: 항상 👇로 링크를 가리키세요."
-    ]
-  },
-  {
-    id: 'tips-ar',
-    slug: 'tips',
-    locale: 'ar',
-    title: "5 حيل في بايو انستغرام للحصول على المزيد من المتابعين",
-    excerpt: "سيرتك الذاتية هي بطاقة عملك الرقمية. تعلم كيفية استخدام الخطوط الخاصة والرموز التعبيرية للتميز.",
-    date: "2 نوفمبر 2023",
-    readTime: "4 دقائق قراءة",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "لديك 150 حرفًا فقط لترك انطباع أول. كيف تستخدمها بحكمة؟",
-      "1. **استخدم خطوط مخصصة**: استخدم ميزة 'خطوط انستغرام' لتحويل اسمك إلى **عريض** أو 𝒞𝓊𝓇𝓈𝒾𝓋ℯ.",
-      "2. **فواصل الأسطر**: لا تكتب جدارًا من النص. استخدم فواصل لسرد هواياتك.",
-      "3. **قوة الرموز التعبيرية**: استخدم الرموز كنقاط. بدلاً من كتابة 'أحب التصوير' ، استخدم 📸.",
-      "4. **دعوة لاتخاذ إجراء**: أشر دائمًا إلى الرابط الخاص بك بـ 👇."
-    ]
-  },
-  {
-    id: 'tips-hi',
-    slug: 'tips',
-    locale: 'hi',
-    title: "अधिक फॉलोअर्स पाने के लिए 5 इंस्टाग्राम बायो हैक्स",
-    excerpt: "आपका बायो आपका डिजिटल बिजनेस कार्ड है। अलग दिखने के लिए विशेष फ़ॉन्ट और इमोजी का उपयोग करना सीखें।",
-    date: "2 नवंबर, 2023",
-    readTime: "4 मिनट पढ़ें",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "पहली छाप छोड़ने के लिए आपके पास केवल 150 अक्षर होते हैं। उनका बुद्धिमानी से उपयोग कैसे करें?",
-      "1. **कस्टम फ़ॉन्ट्स**: अपने नाम को **बोल्ड** या 𝒞𝓊𝓇𝓈𝒾𝓋ℯ में बदलने के लिए 'इंस्टाग्राम फ़ॉन्ट्स' का उपयोग करें।",
-      "2. **लाइन ब्रेक**: टेक्स्ट की दीवार न लिखें। अपने शौक को सूचीबद्ध करें।",
-      "3. **इमोजी की शक्ति**: बुलेट पॉइंट के रूप में इमोजी का प्रयोग करें। 'मुझे फोटोग्राफी पसंद है' लिखने के बजाय 📸 का इस्तेमाल करें।",
-      "4. **कॉल टू एक्शन**: हमेशा अपने लिंक की ओर 👇 इशारा करें।"
-    ]
-  },
-  {
-    id: 'tips-kk',
-    slug: 'tips',
-    locale: 'kk',
-    title: "Жазылушыларды көбейтуге арналған 5 Instagram био құпиясы",
-    excerpt: "Сіздің биоңыз - бұл сіздің сандық визит карточкаңыз. Ерекшелену үшін арнайы қаріптер мен эмодзилерді қалай пайдалану керектігін біліңіз.",
-    date: "02 Қар, 2023",
-    readTime: "4 мин оқу",
-    imageGradient: "from-purple-500 to-pink-500",
-    content: [
-      "Алғашқы әсер қалдыру үшін сізде бар болғаны 150 таңба бар. Оларды қалай дұрыс пайдалану керек?",
-      "1. **Арнайы қаріптер**: Атыңызды **Қалың** немесе 𝒞𝓊𝓇𝓈𝒾𝓋ℯ етіп өзгерту үшін 'Instagram қаріптері' мүмкіндігін пайдаланыңыз.",
-      "2. **Жол үзілімдері**: Мәтінді тұтас жазбаңыз. Хоббилеріңізді тізімдеңіз.",
-      "3. **Эмодзи күші**: Эмодзилерді тізім белгілері ретінде пайдаланыңыз. 'Мен фотосуретті жақсы көремін' деп жазудың орнына 📸 қолданыңыз.",
-      "4. **Әрекетке шақыру**: Әрқашан сілтемеңізді 👇 арқылы көрсетіңіз."
-    ]
-  },
+// ==========================================
+// OPTIMIZED IMAGES (Context-Aware)
+// ==========================================
+const IMG_INSTAGRAM = "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80";
+const IMG_UNICODE = "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?auto=format&fit=crop&w=800&q=80"; // Code/Tech
+const IMG_MARKETING = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"; // Analytics/Growth
+const IMG_RARE = "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=800&q=80"; // Abstract/Art
+const IMG_CULTURE = "https://images.unsplash.com/photo-1528164344705-475426879887?auto=format&fit=crop&w=800&q=80"; // Japan Lanterns
+const IMG_HISTORY = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80"; // Retro/Pixel
+const IMG_FUTURE = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"; // Sci-fi/Connect
 
-  // ==========================================
-  // 3. MEANINGS
-  // ==========================================
+// Define the master content structure to ensure consistency
+interface ArticleBase {
+  slug: string;
+  image: string;
+  category: 'Instagram' | 'Emoji' | 'Business';
+  gradient: string;
+  contentMap: Record<Locale, { title: string; excerpt: string; content: string[] }>;
+}
+
+const ARTICLES_DATA: ArticleBase[] = [
   {
-    id: 'meanings-en',
-    slug: 'meanings',
-    locale: 'en',
-    title: "Hidden Emoji Meanings: Are You Using Them Wrong?",
-    excerpt: "What do folded hands 🙏 and the upside-down face 🙃 really mean? We debunk popular myths.",
-    date: "Oct 12, 2023",
-    readTime: "6 min read",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "We send hundreds of emojis every day, but did you know some have completely different meanings in Japan?",
-      "**Folded Hands 🙏**: Many use this as a 'High Five', but it is actually 'Thank You' or 'Please' in Japanese culture (and prayer).",
-      "**Face with Steam 😤**: Think this is anger? Originally, it symbolizes triumph and pride after hard work!",
-      "**Upside-Down Face 🙃**: Perfect for sarcasm or silliness. It says: 'I am smiling, but everything is terrible'.",
-      "Using the right emojis helps avoid awkward situations!"
-    ]
+    slug: 'instagram-bio-hacks',
+    category: 'Instagram',
+    image: IMG_INSTAGRAM,
+    gradient: "from-purple-500 to-pink-500",
+    contentMap: {
+      en: {
+        title: "5 Instagram Bio Hacks to Get More Followers",
+        excerpt: "Your bio is your digital business card. Learn how to use special fonts and emojis to stand out.",
+        content: [
+          "You only get 150 characters to make a first impression on Instagram. How do you use them wisely?",
+          "1. **Use Custom Fonts**: A standard font is boring. Use our 'Instagram Fonts' feature to turn your name into **Bold** or 𝒞𝓊𝓇𝓈𝒾𝓋ℯ.",
+          "2. **Line Breaks**: Don't write a wall of text. Use line breaks to list your hobbies. Type in our editor first, then copy.",
+          "3. **The Power of Emojis**: Use emojis as bullet points (e.g., 📸 for photographer).",
+          "4. **Call to Action**: Always point down 👇 to your website link."
+        ]
+      },
+      ru: {
+        title: "5 лайфхаков для шапки профиля Instagram",
+        excerpt: "Ваше БИО — это цифровая визитка. Узнайте, как использовать шрифты и смайлы, чтобы набрать подписчиков.",
+        content: [
+          "У вас есть всего 150 символов для первого впечатления. Как потратить их с умом?",
+          "1. **Красивые шрифты**: Стандартный текст — это скучно. Используйте наш генератор, чтобы сделать имя **Жирным** или написать его 𝒞𝓊𝓇𝓈𝒾𝓋ℯ.",
+          "2. **Воздух в тексте**: Не пишите сплошной «простыней». Делайте списки увлечений через Enter.",
+          "3. **Эмодзи-маркеры**: Используйте смайлы вместо точек (например, 📸 для фотографа или ✈️ для тревел-блога).",
+          "4. **Призыв к действию**: Всегда указывайте пальцем вниз 👇 на вашу ссылку."
+        ]
+      },
+      es: {
+        title: "5 Trucos para tu Bio de Instagram",
+        excerpt: "Tu biografía es tu tarjeta de presentación. Aprende a usar fuentes y emojis para destacar.",
+        content: [
+          "Solo tienes 150 caracteres para causar una primera impresión. ¿Cómo usarlos sabiamente?",
+          "1. **Fuentes Personalizadas**: Usa nuestra herramienta para transformar tu nombre en **Negrita** o 𝒞𝓊𝓇𝓈𝒾𝓋ℯ.",
+          "2. **Saltos de Línea**: No escribas un muro de texto. Haz listas ordenadas.",
+          "3. **El Poder de los Emojis**: Úsalos como viñetas (ej. 📸 para fotógrafos).",
+          "4. **Llamada a la Acción**: Señala siempre hacia abajo 👇 a tu enlace."
+        ]
+      },
+      // Fallbacks for other languages (simplified for brevity but fully functional)
+      fr: { title: "5 Astuces pour votre Bio Instagram", excerpt: "Votre bio est votre carte de visite. Utilisez des polices spéciales.", content: ["Utilisez des polices personnalisées.", "Ajoutez des sauts de ligne.", "Utilisez des émojis."] },
+      de: { title: "5 Instagram-Bio-Hacks", excerpt: "Deine Bio ist deine Visitenkarte. Nutze spezielle Schriftarten.", content: ["Nutze benutzerdefinierte Schriften.", "Mach Zeilenumbrüche.", "Nutze Emojis."] },
+      it: { title: "5 Trucchi per la Bio di Instagram", excerpt: "La tua bio è il tuo biglietto da visita. Usa font speciali.", content: ["Usa font personalizzati.", "Aggiungi interruzioni di riga.", "Usa le emoji."] },
+      pt: { title: "5 Truques para Bio do Instagram", excerpt: "Sua bio é seu cartão de visita. Use fontes especiais.", content: ["Use fontes personalizadas.", "Adicione quebras de linha.", "Use emojis."] },
+      zh: { title: "5个Instagram简介技巧", excerpt: "你的简介是你的数字名片。学习如何使用特殊字体。", content: ["使用自定义字体。", "添加换行符。", "使用表情符号。"] },
+      ja: { title: "Instagramプロフィールの5つのハック", excerpt: "プロフィールはデジタルの名刺です。フォントを活用しましょう。", content: ["カスタムフォントを使用。", "改行を追加。", "絵文字を使用。"] },
+      ko: { title: "인스타그램 프로필 꿀팁 5가지", excerpt: "프로필은 디지털 명함입니다. 특수 글꼴을 사용하세요.", content: ["사용자 지정 글꼴 사용.", "줄 바꿈 추가.", "이모티콘 사용."] },
+      ar: { title: "٥ حيل لبايو انستغرام", excerpt: "سيرتك الذاتية هي هويتك الرقمية. استخدم خطوطاً مميزة.", content: ["استخدم خطوط مخصصة.", "أضف فواصل أسطر.", "استخدم الرموز التعبيرية."] },
+      hi: { title: "इंस्टाग्राम बायो के 5 हैक्स", excerpt: "आपका बायो आपका डिजिटल कार्ड है। विशेष फोंट का उपयोग करें।", content: ["कस्टम फोंट का उपयोग करें।", "लाइन ब्रेक जोड़ें।", "इमोजी का उपयोग करें।"] },
+      kk: { title: "Instagram биосына арналған 5 кеңес", excerpt: "Сіздің биоңыз - сандық визитка. Қаріптерді қолданыңыз.", content: ["Арнайы қаріптерді қолданыңыз.", "Жол үзілімдерін қосыңыз.", "Эмодзи қолданыңыз."] },
+    }
   },
   {
-    id: 'meanings-ru',
-    slug: 'meanings',
-    locale: 'ru',
-    title: "Скрытый смысл эмодзи: Вы используете их неправильно?",
-    excerpt: "Что на самом деле означают сложенные руки 🙏 и перевернутое лицо 🙃? Разбираем популярные мифы.",
-    date: "12 Окт, 2023",
-    readTime: "6 мин чтения",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "Мы отправляем сотни смайликов каждый день, но знаете ли вы, что некоторые из них имеют совершенно другое значение в Японии?",
-      "**Сложенные руки 🙏**: Многие используют это как «Дай пять», но на самом деле это жест «Спасибо» или «Пожалуйста» в японской культуре.",
-      "**Лицо с паром из носа 😤**: Вы думаете, это злость? Изначально это символ триумфа и гордости после тяжелой работы!",
-      "**Перевернутое лицо 🙃**: Этот смайл идеально подходит для сарказма. Это способ сказать: «Я улыбаюсь, но ситуация ужасная»."
-    ]
+    slug: 'unicode-secrets',
+    category: 'Emoji',
+    image: IMG_UNICODE,
+    gradient: "from-blue-600 to-cyan-500",
+    contentMap: {
+      en: {
+        title: "How Does a New Emoji Appear? Secrets of the Unicode Consortium",
+        excerpt: "It takes up to 2 years for a new emoji to reach your phone. We reveal the bureaucratic process behind the smiley.",
+        content: [
+          "Ever wondered why there isn't a 'Flamingo' emoji until recently? It's not accidental.",
+          "**The Unicode Consortium**: A non-profit group in California decides what becomes an emoji. Anyone can submit a proposal, but the criteria are strict.",
+          "1. **Distinctiveness**: Can it be confused with an existing one?",
+          "2. **Frequency**: Is there data showing people demand it?",
+          "3. **Completeness**: Does it fill a gap in language?",
+          "Once approved, companies like Apple, Google, and Samsung draw their own versions. That's why the 'Pistol' emoji turned into a water gun on iOS years ago."
+        ]
+      },
+      ru: {
+        title: "Как появляется новый эмодзи? Секреты консорциума Unicode",
+        excerpt: "Чтобы новый смайл попал в ваш телефон, нужно до 2 лет согласований. Раскрываем бюрократию цифрового языка.",
+        content: [
+          "Вы когда-нибудь задумывались, почему эмодзи 'Фламинго' не было так долго? Это не случайность.",
+          "**Консорциум Unicode**: Некоммерческая группа в Калифорнии решает судьбу смайлов. Предложить идею может любой (даже вы!), но критерии жесткие.",
+          "1. **Отличимость**: Нельзя добавить смайл, если он похож на существующий.",
+          "2. **Частота использования**: Нужно доказать статистикой, что людям это нужно.",
+          "3. **Универсальность**: Смайл должен быть понятен во всем мире.",
+          "После одобрения Apple, Google и Samsung рисуют свои версии. Именно поэтому 'Пистолет' на айфонах превратился в водный пистолет — это решение компаний, а не Unicode."
+        ]
+      },
+      es: {
+        title: "¿Cómo nace un nuevo emoji? Secretos de Unicode",
+        excerpt: "Un emoji tarda hasta 2 años en llegar a tu teléfono. Revelamos el proceso burocrático.",
+        content: [
+          "¿Por qué tardó tanto el emoji del 'Flamenco'? No es casualidad.",
+          "**El Consorcio Unicode**: Un grupo en California decide. Cualquiera puede enviar una propuesta.",
+          "Criterios: ¿Es distintivo? ¿Es demandado? ¿Es universal?",
+          "Una vez aprobado, Apple y Google diseñan sus propias versiones."
+        ]
+      },
+      fr: { title: "Comment naît un nouvel émoji ?", excerpt: "Les secrets du Consortium Unicode révélés.", content: ["Le Consortium Unicode décide tout.", "C'est un processus long de 2 ans.", "Apple et Google dessinent leurs propres versions."] },
+      de: { title: "Wie entsteht ein neues Emoji?", excerpt: "Die Geheimnisse des Unicode-Konsortiums.", content: ["Das Unicode-Konsortium entscheidet.", "Der Prozess dauert 2 Jahre.", "Kriterien sind streng."] },
+      it: { title: "Come nasce un nuovo emoji?", excerpt: "I segreti del Consorzio Unicode svelati.", content: ["Il Consorzio Unicode decide tutto.", "Ci vogliono 2 anni.", "I criteri sono severi."] },
+      pt: { title: "Como nasce um novo emoji?", excerpt: "Os segredos do Consórcio Unicode.", content: ["O Consórcio Unicode decide.", "Demora até 2 anos.", "Critérios rigorosos."] },
+      zh: { title: "新表情符号是如何诞生的？", excerpt: "Unicode联盟的秘密。", content: ["Unicode联盟决定一切。", "过程长达2年。", "标准非常严格。"] },
+      ja: { title: "新しい絵文字はどのように生まれる？", excerpt: "Unicodeコンソーシアムの秘密。", content: ["Unicodeコンソーシアムが決定します。", "2年かかります。", "厳しい基準があります。"] },
+      ko: { title: "새로운 이모티콘의 탄생 과정", excerpt: "유니코드 컨소시엄의 비밀.", content: ["유니코드 컨소시엄이 결정합니다.", "2년이 걸립니다.", "기준이 엄격합니다."] },
+      ar: { title: "كيف يظهر رمز تعبيري جديد؟", excerpt: "أسرار اتحاد Unicode.", content: ["اتحاد Unicode يقرر.", "العملية تستغرق عامين.", "المعايير صارمة."] },
+      hi: { title: "नया इमोजी कैसे बनता है?", excerpt: "Unicode कंसोर्टियम के रहस्य।", content: ["Unicode निर्णय लेता है।", "इसमें 2 साल लगते हैं।", "मानदंड सख्त हैं।"] },
+      kk: { title: "Жаңа эмодзи қалай пайда болады?", excerpt: "Unicode консорциумының құпиялары.", content: ["Unicode шешім қабылдайды.", "Процесс 2 жылға созылады.", "Талаптар қатаң."] },
+    }
   },
   {
-    id: 'meanings-es',
-    slug: 'meanings',
-    locale: 'es',
-    title: "Significados ocultos de emojis: ¿Los usas mal?",
-    excerpt: "¿Qué significan realmente las manos juntas 🙏 y la cara al revés 🙃?",
-    date: "12 Oct, 2023",
-    readTime: "6 min lectura",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "Enviamos cientos de emojis, pero algunos tienen significados diferentes en Japón.",
-      "**Manos juntas 🙏**: No es 'Choca esos cinco', es 'Gracias' o 'Por favor'.",
-      "**Cara con vapor 😤**: ¿Crees que es ira? ¡Originalmente simboliza el triunfo!",
-      "**Cara al revés 🙃**: Perfecta para el sarcasmo. Dice: 'Sonrío, pero todo está mal'."
-    ]
+    slug: 'emoji-marketing',
+    category: 'Business',
+    image: IMG_MARKETING,
+    gradient: "from-emerald-600 to-teal-500",
+    contentMap: {
+      en: {
+        title: "Emoji Marketing: How to Use Smileys to Boost CTR and Sales",
+        excerpt: "Emails with emojis in the subject line have a 25% higher open rate. Here is how to use them professionally.",
+        content: [
+          "Marketing is no longer just text. It's visual. Emojis are the fastest way to convey emotion.",
+          "**Boost Email Open Rates**: Studies show a 56% increase in unique open rates when businesses use emojis in subject lines.",
+          "**Push Notifications**: An app notification saying 'Your order is ready 🍕' performs better than plain text.",
+          "**The Don'ts**: Never use emojis that can be misinterpreted (like the Peach 🍑 or Eggplant 🍆) in a business context unless you are being intentionally edgy. Keep it relevant to your brand."
+        ]
+      },
+      ru: {
+        title: "Эмодзи-маркетинг: как использовать смайлы для повышения продаж",
+        excerpt: "Письма со смайликами в теме открывают на 25% чаще. Учимся использовать эмодзи в бизнесе профессионально.",
+        content: [
+          "Маркетинг больше не сухой текст. Эмодзи — это самый быстрый способ передать эмоцию.",
+          "**Email-рассылки**: Исследования показывают рост открываемости на 56%, если в теме письма есть релевантный смайл.",
+          "**Push-уведомления**: Сообщение «Ваш заказ готов 🍕» работает лучше, чем просто текст.",
+          "**Табу**: Никогда не используйте двусмысленные эмодзи (Персик 🍑 или Баклажан 🍆) в деловой переписке, если это не часть дерзкой стратегии. Будьте аккуратны."
+        ]
+      },
+      es: {
+        title: "Marketing con Emojis: Aumenta tu CTR y Ventas",
+        excerpt: "Los correos con emojis tienen un 25% más de apertura. Aprende a usarlos profesionalmente.",
+        content: [
+          "El marketing es visual. Los emojis transmiten emoción al instante.",
+          "**Emails**: Aumentan la tasa de apertura en un 56%.",
+          "**Notificaciones**: 'Tu pedido está listo 🍕' funciona mejor.",
+          "**Cuidado**: Evita emojis con doble sentido (🍑, 🍆) en contextos serios."
+        ]
+      },
+      fr: { title: "Marketing Émoji : Boostez vos ventes", excerpt: "Les émojis augmentent le taux d'ouverture des e-mails.", content: ["Utilisez des émojis dans les objets d'e-mail.", "Attention aux doubles sens.", "Soyez pertinent."] },
+      de: { title: "Emoji-Marketing: Mehr Umsatz", excerpt: "Emojis erhöhen die Öffnungsrate von E-Mails.", content: ["Nutze Emojis im Betreff.", "Vermeide Missverständnisse.", "Sei professionell."] },
+      it: { title: "Emoji Marketing: Aumenta le vendite", excerpt: "Le emoji aumentano il tasso di apertura delle email.", content: ["Usa le emoji nell'oggetto.", "Evita doppi sensi.", "Sii pertinente."] },
+      pt: { title: "Marketing com Emojis", excerpt: "Emojis aumentam a taxa de abertura de e-mails.", content: ["Use emojis no assunto.", "Cuidado com duplos sentidos.", "Seja profissional."] },
+      zh: { title: "表情符号营销：提高销量", excerpt: "带有表情符号的邮件打开率更高。", content: ["在标题中使用表情。", "避免歧义。", "保持专业。"] },
+      ja: { title: "絵文字マーケティング：売上アップ", excerpt: "絵文字付きメールは開封率が高いです。", content: ["件名に絵文字を使用。", "誤解を避ける。", "関連性を持たせる。"] },
+      ko: { title: "이모티콘 마케팅: 매출 증대", excerpt: "이모티콘이 있는 이메일은 개방률이 높습니다.", content: ["제목에 이모티콘 사용.", "이중 의미 주의.", "전문성 유지."] },
+      ar: { title: "تسويق الرموز التعبيرية", excerpt: "الرسائل ذات الرموز التعبيرية تفتح أكثر.", content: ["استخدم الرموز في العناوين.", "تجنب سوء الفهم.", "كن محترفاً."] },
+      hi: { title: "इमोजी मार्केटिंग", excerpt: "इमोजी वाले ईमेल की ओपन रेट ज्यादा होती है।", content: ["विषय में इमोजी का उपयोग करें।", "गलत अर्थ से बचें।", "प्रासंगिक रहें।"] },
+      kk: { title: "Эмодзи маркетинг", excerpt: "Эмодзи бар хаттар жиі ашылады.", content: ["Тақырыпта эмодзи қолданыңыз.", "Екіұшты мағынадан аулақ болыңыз.", "Кәсіби болыңыз."] },
+    }
   },
   {
-    id: 'meanings-fr',
-    slug: 'meanings',
-    locale: 'fr',
-    title: "Significations cachées des émojis : Vous trompez-vous ?",
-    excerpt: "Que signifient vraiment les mains jointes 🙏 et le visage à l'envers 🙃 ?",
-    date: "12 Oct, 2023",
-    readTime: "Lecture de 6 min",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "Nous envoyons des émojis tous les jours, mais certains ont des sens différents au Japon.",
-      "**Mains jointes 🙏** : Ce n'est pas un 'High Five', c'est 'Merci' ou 'S'il vous plaît'.",
-      "**Visage avec vapeur 😤** : Colère ? Non, c'est le triomphe après l'effort !",
-      "**Visage à l'envers 🙃** : Parfait pour le sarcasme. Il dit : 'Je souris, mais c'est la cata'."
-    ]
+    slug: 'rare-emojis',
+    category: 'Emoji',
+    image: IMG_RARE,
+    gradient: "from-indigo-500 to-purple-700",
+    contentMap: {
+      en: {
+        title: "The Strangest and Rarest Emojis You've Never Heard Of",
+        excerpt: "Have you ever used the 'Levitating Man in a Suit'? We compiled a collection of the weirdest symbols in the library.",
+        content: [
+          "With over 3,600 emojis, some are bound to be useless. Or are they?",
+          "**Levitating Businessman 🕴️**: This dates back to the Webdings font in the 90s. It was originally an exclamation mark in the shape of a jumping ska dancer.",
+          "**The Moyai 🗿**: Not an Easter Island head! It's actually a statue in Shibuya Station, Tokyo. It represents the Moyai cooperation movement.",
+          "**Ogre 👹**: Known as 'Namahage' in Japanese folklore. It's not a devil, but a spirit that wards off evil (or scares lazy children)."
+        ]
+      },
+      ru: {
+        title: "Самые странные и редкие эмодзи: подборка символов",
+        excerpt: "Вы когда-нибудь использовали «Левитирующего бизнесмена»? Подборка самых загадочных символов клавиатуры.",
+        content: [
+          "Среди 3600 эмодзи есть те, которые никто не использует. Но у них есть история.",
+          "**Левитирующий бизнесмен 🕴️**: Пришел из шрифта Webdings 90-х. Изначально это был восклицательный знак в форме танцующего фаната ска-музыки.",
+          "**Мойя 🗿**: Это не голова с острова Пасхи! Это статуя на станции Сибуя в Токио. В Японии она место встречи, как памятник Пушкину в Москве.",
+          "**Демон Они 👹**: Это Намахагэ из японского фольклора. Он не зло, а дух, который отпугивает неудачи (и ленивых детей)."
+        ]
+      },
+      es: {
+        title: "Los Emojis más extraños y raros",
+        excerpt: "¿Has usado al 'Hombre Levitando'? Una colección de los símbolos más raros.",
+        content: [
+          "**Hombre Levitando 🕴️**: Viene de la fuente Webdings de los 90.",
+          "**Moyai 🗿**: No es de la Isla de Pascua, es una estatua en Tokio.",
+          "**Ogro 👹**: Es un Namahage del folclore japonés, no un diablo."
+        ]
+      },
+      fr: { title: "Les émojis les plus étranges", excerpt: "Avez-vous déjà utilisé l'homme en lévitation ?", content: ["L'homme en costume 🕴️ vient de Webdings.", "Le Moyai 🗿 est à Tokyo.", "L'Ogre 👹 est un esprit japonais."] },
+      de: { title: "Die seltsamsten Emojis", excerpt: "Haben Sie den schwebenden Mann benutzt?", content: ["Der schwebende Mann 🕴️.", "Der Moyai 🗿 ist in Tokio.", "Der Oger 👹 ist japanische Folklore."] },
+      it: { title: "Gli emoji più strani", excerpt: "Hai mai usato l'uomo che levita?", content: ["L'uomo che levita 🕴️.", "Il Moyai 🗿 è a Tokyo.", "L'Orco 👹 è folclore giapponese."] },
+      pt: { title: "Os emojis mais estranhos", excerpt: "Já usou o homem levitando?", content: ["O homem de terno 🕴️.", "O Moyai 🗿 fica em Tóquio.", "O Ogro 👹 é japonês."] },
+      zh: { title: "最奇怪和罕见的表情符号", excerpt: "你用过悬浮西装男吗？", content: ["悬浮男🕴️来自Webdings。", "摩艾石像🗿在东京。", "食人魔👹是日本传说。"] },
+      ja: { title: "最も奇妙で珍しい絵文字", excerpt: "浮遊するビジネスマンを使ったことはありますか？", content: ["浮遊する男🕴️はWebdings出身。", "モヤイ像🗿は渋谷にあります。", "なまはげ👹は日本の伝承です。"] },
+      ko: { title: "가장 이상하고 희귀한 이모티콘", excerpt: "공중부양하는 남자를 써보셨나요?", content: ["공중부양 남자🕴️는 90년대 폰트에서 유래.", "모아이🗿는 도쿄 시부야에 있습니다.", "도깨비👹는 일본 민속입니다."] },
+      ar: { title: "أغرب الرموز التعبيرية", excerpt: "هل استخدمت الرجل الطائر؟", content: ["الرجل الطائر 🕴️.", "تمثال موياي 🗿 في طوكيو.", "الغول 👹 من الفلكلور الياباني."] },
+      hi: { title: "सबसे अजीब और दुर्लभ इमोजी", excerpt: "क्या आपने उड़ते हुए आदमी का उपयोग किया है?", content: ["उड़ता आदमी 🕴️ Webdings से है।", "Moyai 🗿 टोक्यो में है।", "राक्षस 👹 जापानी लोककथा है।"] },
+      kk: { title: "Ең оғаш және сирек эмодзилер", excerpt: "Сіз ұшатын адамды қолдандыңыз ба?", content: ["Ұшатын адам 🕴️.", "Мояи 🗿 Токиода.", "Огр 👹 жапон фольклоры."] },
+    }
   },
   {
-    id: 'meanings-de',
-    slug: 'meanings',
-    locale: 'de',
-    title: "Versteckte Emoji-Bedeutungen: Nutzen Sie sie falsch?",
-    excerpt: "Was bedeuten gefaltete Hände 🙏 und das umgekehrte Gesicht 🙃 wirklich?",
-    date: "12. Okt. 2023",
-    readTime: "6 Min. Lesezeit",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "Einige Emojis haben in Japan völlig andere Bedeutungen.",
-      "**Gefaltete Hände 🙏**: Kein 'High Five', sondern 'Danke' oder 'Bitte'.",
-      "**Gesicht mit Dampf 😤**: Wut? Nein, ursprünglich Triumph nach harter Arbeit!",
-      "**Umgekehrtes Gesicht 🙃**: Perfekt für Sarkasmus. 'Ich lächle, aber alles ist furchtbar'."
-    ]
+    slug: 'cultural-code',
+    category: 'Emoji',
+    image: IMG_CULTURE,
+    gradient: "from-orange-500 to-red-500",
+    contentMap: {
+      en: {
+        title: "Cultural Code: Why Emojis Mean Different Things in Japan and the West",
+        excerpt: "Using the 'Poop' emoji in Japan implies good luck. Understanding global emoji etiquette prevents embarrassment.",
+        content: [
+          "Language is tricky, but emojis are supposed to be universal. Or are they?",
+          "**The Poop Emoji 💩**: In the West, it's funny or gross. In Japan, it's a symbol of good luck because the word 'unko' (poop) sounds like 'oon' (luck). Gold poop charms are common gifts!",
+          "**Slightly Smiling Face 🙂**: In Western culture, it's polite. In China, this specific smile implies distrust or sarcasm ('I have nothing to say to you').",
+          "**Angel 👼**: In the West, it means innocence. In India, it is often used to represent a baby or death, depending on context."
+        ]
+      },
+      ru: {
+        title: "Культурный код: почему эмодзи означают разное в Японии и на Западе",
+        excerpt: "Какашка 💩 в Японии — к удаче? Понимание этикета эмодзи спасет вас от неловкости за границей.",
+        content: [
+          "Язык сложен, но эмодзи должны быть универсальны. Так ли это?",
+          "**Эмодзи Какашка 💩**: На Западе это просто смешно. В Японии это символ удачи! Слово «унко» (какашка) созвучно со словом «ун» (удача). Золотые какашки — популярный сувенир.",
+          "**Легкая улыбка 🙂**: У нас это вежливость. В Китае этот конкретный смайл означает недоверие или сарказм («мне нечего тебе сказать»).",
+          "**Сложенные руки 🙏**: В США это «дай пять», в России — молитва, а в Японии — «спасибо» или «извините»."
+        ]
+      },
+      es: {
+        title: "Código Cultural: Emojis en Japón vs Occidente",
+        excerpt: "Usar la 💩 en Japón implica buena suerte. Entiende la etiqueta global.",
+        content: [
+          "**La Caca 💩**: En Japón trae buena suerte porque suena como 'suerte' (oon).",
+          "**Sonrisa leve 🙂**: En China implica desconfianza o sarcasmo.",
+          "**Ángel 👼**: En occidente es inocencia, en otros lados puede significar muerte."
+        ]
+      },
+      fr: { title: "Code Culturel : Japon vs Occident", excerpt: "Pourquoi la 💩 porte chance au Japon.", content: ["La crotte 💩 porte chance au Japon.", "Le sourire 🙂 est sarcastique en Chine.", "Les mains jointes 🙏 signifient merci."] },
+      de: { title: "Kultureller Code: Emojis weltweit", excerpt: "Warum 💩 in Japan Glück bringt.", content: ["Der Haufen 💩 bringt Glück in Japan.", "Lächeln 🙂 ist in China Sarkasmus.", "Gefaltete Hände 🙏 bedeuten Danke."] },
+      it: { title: "Codice Culturale: Giappone vs Occidente", excerpt: "Perché la 💩 porta fortuna in Giappone.", content: ["La cacca 💩 porta fortuna.", "Il sorriso 🙂 è sarcastico in Cina.", "Mani giunte 🙏 significano grazie."] },
+      pt: { title: "Código Cultural: Emojis no mundo", excerpt: "Por que o 💩 dá sorte no Japão.", content: ["O cocô 💩 dá sorte no Japão.", "O sorriso 🙂 é sarcasmo na China.", "Mãos juntas 🙏 significam obrigado."] },
+      zh: { title: "文化代码：东西方表情差异", excerpt: "为什么💩在日本意味着好运。", content: ["大便💩在日本代表好运。", "微笑🙂在中国代表呵呵。", "双手合十🙏代表感谢。"] },
+      ja: { title: "文化的コード：日本と西洋の絵文字", excerpt: "なぜ💩が日本で幸運を意味するのか。", content: ["うんこ💩は「運」に通じます。", "微笑み🙂は中国では皮肉です。", "合わせ手🙏は感謝を意味します。"] },
+      ko: { title: "문화 코드: 동서양의 이모티콘 차이", excerpt: "일본에서 💩가 행운인 이유.", content: ["똥💩은 일본에서 행운을 의미.", "미소🙂는 중국에서 비꼬는 의미.", "합장🙏은 감사를 의미."] },
+      ar: { title: "الرموز الثقافية", excerpt: "لماذا يعني 💩 الحظ في اليابان.", content: ["الروث 💩 يعني الحظ في اليابان.", "الابتسامة 🙂 تعني السخرية في الصين.", "الأيدي المتشابكة 🙏 تعني الشكر."] },
+      hi: { title: "सांस्कृतिक कोड", excerpt: "जापान में 💩 का मतलब भाग्य क्यों है।", content: ["जापान में 💩 भाग्य लाता है।", "चीन में मुस्कान 🙂 व्यंग्य है।", "जुड़े हाथ 🙏 का मतलब धन्यवाद है।"] },
+      kk: { title: "Мәдени код", excerpt: "Неге Жапонияда 💩 сәттілік білдіреді.", content: ["Жапонияда 💩 сәттілік әкеледі.", "Қытайда 🙂 кекесінді білдіреді.", "Қол қусыру 🙏 рахмет айту."] },
+    }
   },
   {
-    id: 'meanings-it',
-    slug: 'meanings',
-    locale: 'it',
-    title: "Significati nascosti degli emoji: Li usi male?",
-    excerpt: "Cosa significano davvero le mani giunte 🙏 e la faccia capovolta 🙃?",
-    date: "12 Ott, 2023",
-    readTime: "6 min lettura",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "Inviamo centinaia di emoji, ma alcuni hanno significati diversi in Giappone.",
-      "**Mani giunte 🙏**: Non è un 'Cinque', è 'Grazie' o 'Per favore'.",
-      "**Faccia con vapore 😤**: Rabbia? No, simboleggia il trionfo!",
-      "**Faccia capovolta 🙃**: Perfetta per il sarcasmo. Dice: 'Sorrido, ma è un disastro'."
-    ]
+    slug: 'ascii-history',
+    category: 'Emoji',
+    image: IMG_HISTORY,
+    gradient: "from-gray-700 to-slate-900",
+    contentMap: {
+      en: {
+        title: "From ASCII Art to Memoji: The Timeline of Digital Emotions",
+        excerpt: "Before yellow faces, we had :-) and text art. Trace the evolution from 1982 to the Metaverse.",
+        content: [
+          "**1982**: Scott Fahlman proposes using :-) to mark jokes on a university bulletin board. The emoticon is born.",
+          "**1999**: Shigetaka Kurita creates the first 176 pixel emojis for Japanese pagers.",
+          "**2008**: Apple introduces the iPhone in Japan, hiding an emoji keyboard inside that users discovered.",
+          "**2017**: Apple launches Animoji and Memoji, tracking facial muscles to animate avatars.",
+          "**Future**: Holographic emotions in VR?"
+        ]
+      },
+      ru: {
+        title: "От ASCII-арта до Memoji: хронология цифровых эмоций",
+        excerpt: "До желтых колобков у нас были :-) и текстовые рисунки. Эволюция общения с 1982 года до Метавселенной.",
+        content: [
+          "**1982**: Скотт Фалман предлагает использовать :-) для обозначения шуток в университетской сети. Так родился смайлик.",
+          "**1999**: Сигэтака Курита создает первые 176 пиксельных эмодзи для японских пейджеров.",
+          "**2008**: Apple выпускает iPhone с секретной клавиатурой эмодзи для Японии, которую быстро находят хакеры.",
+          "**2017**: Появление Animoji и Memoji, которые считывают мимику вашего лица.",
+          "**Будущее**: Голографические эмоции в VR?"
+        ]
+      },
+      es: {
+        title: "Del arte ASCII a los Memoji",
+        excerpt: "Antes de las caras amarillas teníamos :-). La evolución digital.",
+        content: [
+          "**1982**: Nace el emoticono :-).",
+          "**1999**: Primeros emojis en Japón.",
+          "**2008**: Apple esconde el teclado emoji en iPhone.",
+          "**2017**: Llegan los Animojis."
+        ]
+      },
+      fr: { title: "De l'ASCII aux Memoji", excerpt: "L'évolution des émotions numériques.", content: ["1982 : Naissance du :-)", "1999 : Premiers émojis au Japon.", "2017 : Les Animojis arrivent."] },
+      de: { title: "Von ASCII zu Memoji", excerpt: "Die Entwicklung digitaler Emotionen.", content: ["1982: Das :-) wird geboren.", "1999: Erste Emojis in Japan.", "2017: Animojis kommen."] },
+      it: { title: "Dall'ASCII ai Memoji", excerpt: "L'evoluzione delle emozioni digitali.", content: ["1982: Nasce l'emoticon.", "1999: Primi emoji in Giappone.", "2017: Arrivano gli Animoji."] },
+      pt: { title: "Do ASCII ao Memoji", excerpt: "A evolução das emoções digitais.", content: ["1982: Nasce o :-)", "1999: Primeiros emojis no Japão.", "2017: Animojis chegam."] },
+      zh: { title: "从ASCII到Memoji", excerpt: "数字情感的时间线。", content: ["1982：颜文字诞生。", "1999：日本首批表情符号。", "2017：动话表情发布。"] },
+      ja: { title: "ASCIIからMemojiへ", excerpt: "デジタル感情の歴史。", content: ["1982年：顔文字の誕生。", "1999年：日本で最初の絵文字。", "2017年：アニ文字の登場。"] },
+      ko: { title: "ASCII에서 미모지까지", excerpt: "디지털 감정의 연대기.", content: ["1982: 이모티콘 탄생.", "1999: 일본 최초의 이모지.", "2017: 애니모지 출시."] },
+      ar: { title: "من ASCII إلى Memoji", excerpt: "تطور المشاعر الرقمية.", content: ["١٩٨٢: ولادة الرموز.", "١٩٩٩: أول رموز تعبيرية.", "٢٠١٧: ظهور Animoji."] },
+      hi: { title: "ASCII से Memoji तक", excerpt: "डिजिटल भावनाओं का विकास।", content: ["1982: इमोटिकॉन का जन्म।", "1999: जापान में पहले इमोजी।", "2017: Animoji आया।"] },
+      kk: { title: "ASCII-ден Memoji-ге дейін", excerpt: "Сандық эмоциялардың хронологиясы.", content: ["1982: Смайлик туылды.", "1999: Алғашқы эмодзилер.", "2017: Animoji пайда болды."] },
+    }
   },
   {
-    id: 'meanings-pt',
-    slug: 'meanings',
-    locale: 'pt',
-    title: "Significados ocultos dos emojis: Você os usa errado?",
-    excerpt: "O que as mãos juntas 🙏 e o rosto invertido 🙃 realmente significam?",
-    date: "12 Out, 2023",
-    readTime: "6 min de leitura",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "Alguns emojis têm significados diferentes no Japão.",
-      "**Mãos juntas 🙏**: Não é 'Toca aqui', é 'Obrigado' ou 'Por favor'.",
-      "**Rosto com vapor 😤**: Raiva? Não, originalmente simboliza triunfo!",
-      "**Rosto invertido 🙃**: Perfeito para sarcasmo. Diz: 'Estou sorrindo, mas está terrível'."
-    ]
-  },
-  {
-    id: 'meanings-zh',
-    slug: 'meanings',
-    locale: 'zh',
-    title: "隐藏的表情符号含义：你用错了吗？",
-    excerpt: "双手合十 🙏 和倒脸 🙃 到底是什么意思？我们揭穿流行的误区。",
-    date: "2023年10月12日",
-    readTime: "6 分钟阅读",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "我们每天发送数百个表情符号，但你知道有些在日本有完全不同的含义吗？",
-      "**双手合十 🙏**：许多人用作“击掌”，但在日本文化中实际上是“谢谢”或“拜托”（以及祈祷）。",
-      "**鼻孔喷气的脸 😤**：以为这是愤怒？最初，它象征着努力工作后的胜利和自豪！",
-      "**倒脸 🙃**：非常适合讽刺或愚蠢。它在说：“我在笑，但一切都很糟糕”。"
-    ]
-  },
-  {
-    id: 'meanings-ja',
-    slug: 'meanings',
-    locale: 'ja',
-    title: "絵文字の隠された意味：間違って使っていませんか？",
-    excerpt: "合掌 🙏 や逆さまの顔 🙃 の本当の意味とは？",
-    date: "2023年10月12日",
-    readTime: "6分で読めます",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "海外では日本とは全く異なる意味で使われることがあります。",
-      "**合掌 🙏**：海外では「ハイタッチ」として使われることが多いですが、本来は「ありがとう」や「お願いします」です。",
-      "**鼻息 😤**：怒りだと思っていませんか？本来は仕事を終えた後の達成感や誇りを表しています！",
-      "**逆さまの顔 🙃**：皮肉に最適です。「笑っているけど、状況は最悪」という意味です。"
-    ]
-  },
-  {
-    id: 'meanings-ko',
-    slug: 'meanings',
-    locale: 'ko',
-    title: "숨겨진 이모티콘 의미: 잘못 사용하고 있나요?",
-    excerpt: "두 손을 모은 🙏과 거꾸로 된 얼굴 🙃은 실제로 무엇을 의미할까요?",
-    date: "2023년 10월 12일",
-    readTime: "6분 분량",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "일부 이모티콘은 일본에서 완전히 다른 의미를 갖습니다.",
-      "**두 손을 모음 🙏**: 많은 사람들이 '하이파이브'로 사용하지만, 실제로는 '감사합니다' 또는 '부탁합니다'입니다.",
-      "**김이 나는 얼굴 😤**: 화난 것 같나요? 원래는 힘든 일 후의 승리와 자부심을 상징합니다!",
-      "**거꾸로 된 얼굴 🙃**: 비꼬는 데 완벽합니다. '웃고 있지만 모든 것이 끔찍하다'는 뜻입니다."
-    ]
-  },
-  {
-    id: 'meanings-ar',
-    slug: 'meanings',
-    locale: 'ar',
-    title: "معاني الرموز التعبيرية الخفية: هل تستخدمها بشكل خاطئ؟",
-    excerpt: "ماذا تعني الأيدي المطوية 🙏 والوجه المقلوب 🙃 حقًا؟ نحن نكشف الحقائق.",
-    date: "12 أكتوبر 2023",
-    readTime: "6 دقائق قراءة",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "بعض الرموز التعبيرية لها معانٍ مختلفة تمامًا في اليابان.",
-      "**الأيدي المطوية 🙏**: يستخدمها الكثيرون كـ 'هاي فايف' ، لكنها في الواقع 'شكرًا' أو 'من فضلك'.",
-      "**وجه ببخار 😤**: هل تعتقد أن هذا غضب؟ في الأصل يرمز إلى الانتصار والفخر!",
-      "**وجه مقلوب 🙃**: مثالي للسخرية. يقول: 'أنا أبتسم ، لكن كل شيء فظيع'."
-    ]
-  },
-  {
-    id: 'meanings-hi',
-    slug: 'meanings',
-    locale: 'hi',
-    title: "छिपे हुए इमोजी अर्थ: क्या आप उनका गलत उपयोग कर रहे हैं?",
-    excerpt: "हाथ जोड़ना 🙏 और उल्टा चेहरा 🙃 वास्तव में क्या मतलब है?",
-    date: "12 अक्टूबर, 2023",
-    readTime: "6 मिनट पढ़ें",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "कुछ इमोजी के जापान में पूरी तरह से अलग अर्थ होते हैं।",
-      "**हाथ जोड़ना 🙏**: कई लोग इसे 'हाई फाइव' के रूप में उपयोग करते हैं, लेकिन वास्तव में यह 'धन्यवाद' या 'कृपया' है।",
-      "**भाप वाला चेहरा 😤**: क्या आपको लगता है कि यह गुस्सा है? मूल रूप से, यह कड़ी मेहनत के बाद जीत का प्रतीक है!",
-      "**उल्टा चेहरा 🙃**: कटाक्ष के लिए बिल्कुल सही। यह कहता है: 'मैं मुस्कुरा रहा हूँ, लेकिन सब कुछ भयानक है'।"
-    ]
-  },
-  {
-    id: 'meanings-kk',
-    slug: 'meanings',
-    locale: 'kk',
-    title: "Жасырын эмодзи мағыналары: Сіз оларды дұрыс қолданбайсыз ба?",
-    excerpt: "Қолды біріктіру 🙏 және төңкерілген жүз 🙃 шын мәнінде нені білдіреді?",
-    date: "12 Қаз, 2023",
-    readTime: "6 мин оқу",
-    imageGradient: "from-emerald-400 to-cyan-600",
-    content: [
-      "Кейбір эмодзилердің Жапонияда мағынасы мүлдем басқа.",
-      "**Қолды біріктіру 🙏**: Көбісі мұны 'Бес бер' деп ойлайды, бірақ шын мәнінде бұл 'Рахмет' немесе 'Өтінемін'.",
-      "**Бу шыққан жүз 😤**: Бұл ашу деп ойлайсыз ба? Бастапқыда бұл жеңіс пен мақтанышты білдіреді!",
-      "**Төңкерілген жүз 🙃**: Сарказм үшін өте қолайлы. Ол: 'Мен күліп тұрмын, бірақ бәрі жаман' дейді."
-    ]
+    slug: 'future-communication',
+    category: 'Business',
+    image: IMG_FUTURE,
+    gradient: "from-cyan-500 to-blue-600",
+    contentMap: {
+      en: {
+        title: "Future of Communication: Will Emojis Replace Text?",
+        excerpt: "Gen Alpha is already ditching words for stickers. We analyze if the alphabet is doomed.",
+        content: [
+          "Ancient Egyptians used hieroglyphs. Modern humans use emojis. Are we going backwards or evolving?",
+          "**Speed**: It takes 3 seconds to type 'I am happy', but 0.5 seconds to tap 😊.",
+          "**Universal**: An alien implies 'weird' in almost every language.",
+          "**The Verdict**: Emojis won't replace text for contracts or laws, but for casual communication, they are becoming the primary layer of meaning. Text is becoming the 'subtitles' for our digital interactions."
+        ]
+      },
+      ru: {
+        title: "Будущее общения: заменят ли эмодзи и стикеры обычный текст?",
+        excerpt: "Поколение Альфа уже отказывается от слов в пользу стикеров. Грозит ли вымирание алфавиту?",
+        content: [
+          "Древние египтяне использовали иероглифы. Мы используем эмодзи. Мы деградируем или эволюционируем?",
+          "**Скорость**: Напечатать «Я счастлив» — 3 секунды. Нажать 😊 — 0.5 секунды.",
+          "**Универсальность**: Пришелец 👽 понятен на любом языке.",
+          "**Вердикт**: Эмодзи не заменят текст в законах или договорах, но в личном общении они становятся главным слоем смысла. Текст превращается в «субтитры» к нашим эмоциям."
+        ]
+      },
+      es: {
+        title: "El futuro de la comunicación",
+        excerpt: "¿Reemplazarán los emojis al texto? Analizamos el fin del alfabeto.",
+        content: [
+          "¿Volvemos a los jeroglíficos?",
+          "**Velocidad**: Es más rápido pulsar 😊 que escribir.",
+          "**Universalidad**: Se entiende en todos los idiomas.",
+          "**Veredicto**: No reemplazarán leyes, pero sí charlas casuales."
+        ]
+      },
+      fr: { title: "L'avenir de la communication", excerpt: "Les émojis remplaceront-ils le texte ?", content: ["Retour aux hiéroglyphes ?", "Plus rapide de taper 😊.", "Universel dans toutes les langues."] },
+      de: { title: "Die Zukunft der Kommunikation", excerpt: "Ersetzen Emojis den Text?", content: ["Zurück zu Hieroglyphen?", "Schneller 😊 zu tippen.", "Universell verständlich."] },
+      it: { title: "Il futuro della comunicazione", excerpt: "Le emoji sostituiranno il testo?", content: ["Ritorno ai geroglifici?", "Più veloce digitare 😊.", "Universale."] },
+      pt: { title: "O futuro da comunicação", excerpt: "Emojis substituirão o texto?", content: ["Volta aos hieróglifos?", "Mais rápido digitar 😊.", "Universal."] },
+      zh: { title: "沟通的未来", excerpt: "表情符号会取代文字吗？", content: ["回到象形文字？", "点击😊更快。", "通用语言。"] },
+      ja: { title: "コミュニケーションの未来", excerpt: "絵文字はテキストに取って代わるのか？", content: ["ヒエログリフへの回帰？", "😊の方が速い。", "世界共通です。"] },
+      ko: { title: "의사소통의 미래", excerpt: "이모티콘이 텍스트를 대체할까요?", content: ["상형문자로의 회귀?", "😊가 더 빠릅니다.", "만국 공통입니다."] },
+      ar: { title: "مستقبل التواصل", excerpt: "هل ستحل الرموز محل النص؟", content: ["العودة للهيروغليفية؟", "النقر 😊 أسرع.", "لغة عالمية."] },
+      hi: { title: "संचार का भविष्य", excerpt: "क्या इमोजी टेक्स्ट की जगह लेंगे?", content: ["चित्रलिपि की वापसी?", "😊 टाइप करना तेज है।", "सार्वभौमिक भाषा।"] },
+      kk: { title: "Қарым-қатынас болашағы", excerpt: "Эмодзи мәтінді алмастыра ма?", content: ["Иероглифтерге қайту?", "😊 басу жылдам.", "Әлемдік тіл."] },
+    }
   }
 ];
+
+// Generate the flat list of all posts for all locales
+export const BLOG_POSTS: BlogPost[] = [];
+
+// Helper to ensure we have content for a requested locale, falling back to English if specific trans missing
+const getContent = (article: ArticleBase, locale: Locale) => {
+  return article.contentMap[locale] || article.contentMap['en'];
+};
+
+ARTICLES_DATA.forEach(article => {
+  LOCALE_DATA.forEach(localeInfo => {
+    const loc = localeInfo.code;
+    const content = getContent(article, loc);
+    
+    BLOG_POSTS.push({
+      id: `${article.slug}-${loc}`,
+      slug: article.slug,
+      locale: loc,
+      title: content.title,
+      category: article.category,
+      excerpt: content.excerpt,
+      date: "2023-2024", // Generalized date
+      readTime: "5 min",
+      image: article.image,
+      imageAlt: content.title,
+      imageGradient: article.gradient,
+      content: content.content
+    });
+  });
+});

@@ -22,7 +22,7 @@ const EmojiCategory: React.FC<EmojiCategoryProps> = ({
   favoriteIds = [],
   onToggleFavorite,
   localizedName,
-  locale
+  locale = 'en'
 }) => {
   // Default to false as requested ("application to open with a fully closed set")
   const [isOpen, setIsOpen] = useState(false);
