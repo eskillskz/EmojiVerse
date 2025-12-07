@@ -7,28 +7,28 @@ interface UITranslation {
   darkMode: string;
   fontSize: string;
   instagramFonts: string;
-  textCase: string; // New
-  invisibleSpace: string; // New
+  textCase: string;
+  invisibleSpace: string;
   igLimit: string;
   copyText: string;
   clearText: string;
   copied: string;
-  clickToCopy: string; // New
+  clickToCopy: string;
   noEmojisFound: string;
   trySearching: string;
   favorites: string;
   recent: string;
   footer: string;
   selectStyle: string;
-  selectCase: string; // New
+  selectCase: string;
   backToArticles: string;
   mainMenu: string;
   share: string;
   shareTitle: string;
   tabEmoji: string;
-  tabKaomoji: string; // New
+  tabKaomoji: string;
   tabSeo: string;
-  tabCapsLock: string; // New
+  tabCapsLock: string;
   translitTitle: string;
   translitPlaceholder: string;
   translitGoogle: string;
@@ -44,6 +44,8 @@ interface UITranslation {
     'Objects': string;
     'Symbols': string;
     'Flags': string;
+    'Astrology': string;
+    'SEO Google & Yandex': string;
   };
 }
 
@@ -91,6 +93,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'Objects',
       'Symbols': 'Symbols',
       'Flags': 'Flags',
+      'Astrology': 'Astrology',
+      'SEO Google & Yandex': 'SEO Google & Yandex',
     }
   },
   ru: {
@@ -136,6 +140,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'Предметы',
       'Symbols': 'Символы',
       'Flags': 'Флаги',
+      'Astrology': 'Астрология',
+      'SEO Google & Yandex': 'SEO Google и Яндекс',
     }
   },
   es: {
@@ -181,6 +187,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'Objetos',
       'Symbols': 'Símbolos',
       'Flags': 'Banderas',
+      'Astrology': 'Astrología',
+      'SEO Google & Yandex': 'SEO Google y Yandex',
     }
   },
   fr: {
@@ -226,6 +234,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'Objets',
       'Symbols': 'Symboles',
       'Flags': 'Drapeaux',
+      'Astrology': 'Astrologie',
+      'SEO Google & Yandex': 'SEO Google et Yandex',
     }
   },
   de: {
@@ -271,6 +281,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'Objekte',
       'Symbols': 'Symbole',
       'Flags': 'Flaggen',
+      'Astrology': 'Astrologie',
+      'SEO Google & Yandex': 'SEO Google & Yandex',
     }
   },
   it: {
@@ -316,6 +328,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'Oggetti',
       'Symbols': 'Simboli',
       'Flags': 'Bandiere',
+      'Astrology': 'Astrologia',
+      'SEO Google & Yandex': 'SEO Google e Yandex',
     }
   },
   pt: {
@@ -361,6 +375,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'Objetos',
       'Symbols': 'Símbolos',
       'Flags': 'Bandeiras',
+      'Astrology': 'Astrologia',
+      'SEO Google & Yandex': 'SEO Google e Yandex',
     }
   },
   zh: {
@@ -406,6 +422,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': '物体',
       'Symbols': '符号',
       'Flags': '旗帜',
+      'Astrology': '占星术',
+      'SEO Google & Yandex': 'Google 与 Yandex SEO',
     }
   },
   ja: {
@@ -451,6 +469,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': '物',
       'Symbols': '記号',
       'Flags': '旗',
+      'Astrology': '占星術',
+      'SEO Google & Yandex': 'GoogleとYandexのSEO',
     }
   },
   ko: {
@@ -496,6 +516,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': '사물',
       'Symbols': '기호',
       'Flags': '깃발',
+      'Astrology': '점성술',
+      'SEO Google & Yandex': 'Google 및 Yandex SEO',
     }
   },
   ar: {
@@ -541,6 +563,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'الأشياء',
       'Symbols': 'الرموز',
       'Flags': 'الأعلام',
+      'Astrology': 'التنجيم',
+      'SEO Google & Yandex': 'تحسين محركات البحث في Google و Yandex',
     }
   },
   hi: {
@@ -586,6 +610,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'वस्तुएं',
       'Symbols': 'प्रतीक',
       'Flags': 'झंडे',
+      'Astrology': 'ज्योतिष',
+      'SEO Google & Yandex': 'Google और Yandex SEO',
     }
   },
   kk: {
@@ -631,6 +657,8 @@ export const UI_LABELS: Record<Locale, UITranslation> = {
       'Objects': 'Заттар',
       'Symbols': 'Таңбалар',
       'Flags': 'Жалаулар',
+      'Astrology': 'Астрология',
+      'SEO Google & Yandex': 'Google және Yandex SEO',
     }
   }
 };

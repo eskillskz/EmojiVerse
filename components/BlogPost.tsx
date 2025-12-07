@@ -14,7 +14,7 @@ interface BlogPostProps {
   onOpenPost?: (post: BlogPost) => void; 
 }
 
-// Helper for category style (duplicated for now to keep components independent)
+// Helper for category style
 const getCategoryStyle = (cat: string) => {
   const c = cat?.toLowerCase() || '';
   if (c === 'instagram') return 'bg-rose-500 text-white';
@@ -40,7 +40,7 @@ const BlogPostView: React.FC<BlogPostProps & { onOpenPost?: (post: BlogPost) => 
     // 1. Get all posts in current locale (excluding current one)
     let pool = BLOG_POSTS.filter(p => p.locale === locale && p.id !== post.id);
     
-    // 2. If not enough, fill with English posts (excluding current one if it happens to be english)
+    // 2. If not enough, fill with English posts (excluding current one)
     if (pool.length < 3) {
         const englishPosts = BLOG_POSTS.filter(p => p.locale === 'en' && p.id !== post.id && !pool.find(existing => existing.slug === p.slug));
         pool = [...pool, ...englishPosts];
@@ -50,9 +50,45 @@ const BlogPostView: React.FC<BlogPostProps & { onOpenPost?: (post: BlogPost) => 
     return pool.sort(() => 0.5 - Math.random()).slice(0, 3);
   }, [post.id, locale]);
 
+  // Generate Schema.org JSON-LD for the Article
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.seoTitle || post.title,
+    "description": post.seoDescription || post.excerpt,
+    "image": post.image ? [post.image] : [],
+    "author": {
+      "@type": "Organization",
+      "name": "EmojiVerse Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EmojiVerse",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://emojiverse.netlify.app/logo.png" // Placeholder or actual logo URL
+      }
+    },
+    "datePublished": post.date || "2024-01-01",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://emojiverse.netlify.app/?post=${post.slug}`
+    }
+  };
+
+  // Safety check: if post is null (shouldn't happen due to parent logic, but good practice)
+  if (!post) return null;
+
+  const contentArray = post.content || [];
+
   return (
     <div className="max-w-5xl mx-auto py-8 animate-in fade-in duration-500">
       
+      {/* Inject Schema for Search Engines */}
+      <script type="application/ld+json">
+        {JSON.stringify(articleSchema)}
+      </script>
+
       {/* Top Navigation */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-8 px-4 sm:px-0">
         <div className="flex gap-3">
@@ -127,14 +163,28 @@ const BlogPostView: React.FC<BlogPostProps & { onOpenPost?: (post: BlogPost) => 
 
             {/* 3. Content */}
             <div className="prose dark:prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-slate-900 dark:prose-headings:text-white prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 hover:prose-a:text-indigo-500 leading-relaxed">
-                {post.content.map((paragraph, index) => (
-                <p key={index} className="mb-6">
-                    {/* Render simple bolding */}
-                    {paragraph.split('**').map((part, i) => 
-                        i % 2 === 1 ? <span key={i} className="font-bold text-slate-900 dark:text-white bg-yellow-100 dark:bg-yellow-500/20 px-1 rounded mx-0.5">{part}</span> : part
-                    )}
-                </p>
-                ))}
+                {contentArray.length > 0 ? contentArray.map((paragraph, index) => {
+                  if (!paragraph) return null; // Skip empty strings
+                  
+                  // Handle Headers (## and ###)
+                  if (paragraph.startsWith('## ')) {
+                    return <h2 key={index} className="text-2xl md:text-3xl font-extrabold mt-10 mb-6 text-slate-900 dark:text-white">{paragraph.replace('## ', '')}</h2>;
+                  }
+                  if (paragraph.startsWith('### ')) {
+                    return <h3 key={index} className="text-xl md:text-2xl font-bold mt-8 mb-4 text-slate-800 dark:text-slate-100">{paragraph.replace('### ', '')}</h3>;
+                  }
+                  
+                  // Render standard paragraph with bolding support
+                  return (
+                    <p key={index} className="mb-6">
+                        {paragraph.split('**').map((part, i) => 
+                            i % 2 === 1 ? <span key={i} className="font-bold text-slate-900 dark:text-white bg-indigo-50 dark:bg-indigo-500/10 px-1 rounded mx-0.5">{part}</span> : part
+                        )}
+                    </p>
+                  );
+                }) : (
+                  <p className="text-slate-500 italic">No content available for this post.</p>
+                )}
             </div>
         </div>
       </article>

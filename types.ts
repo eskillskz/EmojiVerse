@@ -44,11 +44,10 @@ export type CategoryId =
   | 'Symbols'
   | 'Flags';
 
-// Mapping Emojibase group IDs (numbers) to our string categories
 export const GROUP_NAMES: Record<number, string> = {
   0: 'Smileys & Emotion',
   1: 'People & Body',
-  2: 'Component', // Usually hidden or merged
+  2: 'Component',
   3: 'Animals & Nature',
   4: 'Food & Drink',
   5: 'Travel & Places',
@@ -74,19 +73,42 @@ export const LOCALE_DATA: { code: Locale; label: string; flag: string }[] = [
   { code: 'kk', label: 'Қазақ', flag: '🇰🇿' },
 ];
 
+// The flattened structure used by the Application UI
 export interface BlogPost {
   id: string;
-  slug: string; // Shared ID across languages (e.g. 'history')
+  slug: string; 
   locale: Locale;
   title: string;
-  category: string; // New Category Field
+  seoTitle?: string;
+  category: string;
   excerpt: string;
-  content: string[]; // Paragraphs
-  date?: string;     // Optional now
-  readTime?: string; // Optional now
-  imageGradient: string; // Fallback CSS gradient
-  image?: string;    // Path to image file (e.g. /images/post.jpg)
-  imageAlt?: string; // Localized Alt Text for SEO
+  seoDescription?: string;
+  content: string[]; 
+  date?: string;     
+  readTime?: string; 
+  imageGradient: string; 
+  image?: string;    
+  imageAlt?: string; 
   richText?: any;
   _raw?: any;
+}
+
+// =====================================================================
+// SINGLE FILE STRUCTURE (Use this for new articles)
+// =====================================================================
+
+export interface ArticleContent {
+  title: string;
+  seoTitle?: string;        // <title> tag
+  excerpt: string;
+  seoDescription?: string;  // <meta name="description">
+  content: string[];        // Array of paragraphs. Use '## ' for H2 headers.
+}
+
+export interface ArticleMaster {
+  slug: string;             // URL part (e.g. 'my-post')
+  image: string;            // Cover image URL
+  category: string;         // Updated to string to allow dynamic new categories
+  gradient?: string;        // Fallback CSS gradient
+  locales: Partial<Record<Locale, ArticleContent>>; // Translations
 }

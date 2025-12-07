@@ -1,9 +1,8 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { BlogPost, Locale } from '../types';
 import { BLOG_POSTS } from '../data/blogPosts'; 
-import { fetchEntries } from '../services/contentfulService';
-import { ArrowRight, BookOpen, Home, Loader2, ChevronDown, Hash } from 'lucide-react';
+import { ArrowRight, BookOpen, Home, Loader2, ChevronDown } from 'lucide-react';
 import { UI_LABELS } from '../data/uiTranslations';
 
 interface BlogListProps {
@@ -18,36 +17,26 @@ const getCategoryStyle = (cat: string) => {
   if (c === 'instagram') return 'bg-rose-500 text-white shadow-rose-500/30';
   if (c === 'business') return 'bg-blue-600 text-white shadow-blue-600/30';
   if (c === 'emoji') return 'bg-amber-500 text-white shadow-amber-500/30';
+  if (c === 'history') return 'bg-purple-600 text-white shadow-purple-600/30';
+  if (c === 'astrology') return 'bg-violet-600 text-white shadow-violet-600/30';
+  if (c.includes('seo')) return 'bg-teal-600 text-white shadow-teal-600/30';
   return 'bg-slate-700 text-white';
 };
-
-const CATEGORIES = ['All', 'Instagram', 'Emoji', 'Business'];
 
 const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome }) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [visibleCount, setVisibleCount] = useState(9); // Show all initially or plenty
+  const [visibleCount, setVisibleCount] = useState(9); 
   const [loading, setLoading] = useState(true);
   const labels = UI_LABELS[locale];
 
   useEffect(() => {
+    // Simulating load for smooth transition, but purely static data now
     const loadPosts = async () => {
       setLoading(true);
       try {
-        // Try contentful first
-        const data = await fetchEntries({ locale });
-        
-        if (data && data.items.length > 0) {
-           // Process Contentful Data... (omitted for brevity, assuming fallback mostly)
-           // If contentful fails or is empty, we go to catch
-           throw new Error("Fallback to static");
-        } else {
-           throw new Error("Fallback to static");
-        }
-      } catch (err) {
-        // FALLBACK: Use static data generated in blogPosts.ts
-        // This ensures we get exactly the 7 articles for the CURRENT locale
+        // Fetch strictly from the static generated list
         const displayPosts = BLOG_POSTS.filter(p => p.locale === locale);
         setPosts(displayPosts);
       } finally {
@@ -58,6 +47,15 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
     loadPosts();
   }, [locale]);
 
+  // Dynamically extract categories from the loaded posts
+  const dynamicCategories = useMemo(() => {
+    const uniqueCategories = new Set(posts.map(p => p.category).filter(Boolean));
+    // Convert Set to Array and Sort alphabetically
+    const sortedCategories = Array.from(uniqueCategories).sort();
+    // Prepend 'All'
+    return ['All', ...sortedCategories];
+  }, [posts]);
+
   // Filter logic
   useEffect(() => {
     if (selectedCategory === 'All') {
@@ -65,7 +63,7 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
     } else {
       setFilteredPosts(posts.filter(p => p.category === selectedCategory));
     }
-    setVisibleCount(9); // Reset visible count on filter change
+    setVisibleCount(9); 
   }, [selectedCategory, posts]);
 
   const handleLoadMore = () => {
@@ -115,9 +113,9 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
           Tips, History, and Tricks to level up your social media game.
         </p>
         
-        {/* CATEGORY RUBRICS (Chips) */}
+        {/* CATEGORY RUBRICS (Chips) - Dynamic */}
         <div className="flex flex-wrap justify-center gap-3 mt-6">
-           {CATEGORIES.map(cat => (
+           {dynamicCategories.map(cat => (
              <button
                key={cat}
                onClick={() => setSelectedCategory(cat)}
@@ -127,7 +125,8 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
                }`}
              >
-               {cat === 'All' ? '✨ All Stories' : cat}
+               {/* Translate category if available, else show raw string */}
+               {cat === 'All' ? (locale === 'ru' ? '✨ Все статьи' : '✨ All Stories') : ((labels.categories as any)[cat] || cat)}
              </button>
            ))}
         </div>
@@ -173,7 +172,7 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex items-center gap-2 text-xs text-slate-400 mb-3 font-bold uppercase tracking-wider">
                      {/* Placeholder Date logic */}
-                    <span>2024</span>
+                    <span>{post.date || '2024'}</span>
                     <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
                     <span>{post.readTime || '5 min'}</span>
                   </div>
@@ -187,7 +186,7 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
                   </p>
 
                   <div className="flex items-center font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mt-auto">
-                    Read Story <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    {locale === 'ru' ? 'Читать статью' : 'Read Story'} <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </a>
@@ -200,7 +199,7 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
                 onClick={handleLoadMore}
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all border border-slate-200 dark:border-slate-700"
               >
-                Load More Stories
+                {locale === 'ru' ? 'Загрузить еще' : 'Load More Stories'}
                 <ChevronDown size={18} />
               </button>
             </div>

@@ -73,6 +73,17 @@ const App: React.FC = () => {
     }
   }, []); // Run once on mount
 
+  // Dynamic Language Switching for Articles
+  useEffect(() => {
+    if (viewState === 'article' && currentPost) {
+      // When locale changes, try to find the same article in the new language
+      const localizedPost = BLOG_POSTS.find(p => p.slug === currentPost.slug && p.locale === locale);
+      if (localizedPost && localizedPost.id !== currentPost.id) {
+        setCurrentPost(localizedPost);
+      }
+    }
+  }, [locale, viewState, currentPost]);
+
   const handleLocaleChange = (newLocale: Locale) => {
     setLocale(newLocale);
     const url = new URL(window.location.href);
@@ -96,20 +107,24 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const seoData = getSEOData(locale, activeTab);
+    const metaDesc = document.querySelector('meta[name="description"]');
     
     if (viewState === 'article' && currentPost) {
-      document.title = `${currentPost.title} - EmojiVerse`;
+      // Use explicit SEO Title if available, otherwise fallback to Post Title
+      document.title = `${currentPost.seoTitle || currentPost.title} - EmojiVerse`;
+      
+      if (metaDesc) {
+        // Use explicit SEO Description if available, otherwise fallback to Excerpt
+        metaDesc.setAttribute('content', currentPost.seoDescription || currentPost.excerpt);
+      }
     } else if (viewState === 'blog') {
       document.title = `EmojiVerse Blog - Stories & History (${locale.toUpperCase()})`;
+      if (metaDesc) {
+        metaDesc.setAttribute('content', seoData.metaDescription);
+      }
     } else {
       document.title = seoData.appTitle;
-    }
-    
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      if (viewState === 'article' && currentPost) {
-        metaDesc.setAttribute('content', currentPost.excerpt);
-      } else {
+      if (metaDesc) {
         metaDesc.setAttribute('content', seoData.metaDescription);
       }
     }
