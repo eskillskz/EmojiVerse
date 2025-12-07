@@ -23,13 +23,15 @@ import { NEW_YEAR_POEMS_2026 } from './articles/newYearPoems2026/index';
 import { NEW_YEAR_CONGRATULATORY_LYRICS_2026 } from './articles/newYearCongratulatoryLyrics2026/index';
 import { FIRE_HORSE_2026_UNIQUE } from './articles/fireHorse2026Unique/index';
 import { TRANSLITERATION_GUIDE } from './articles/transliterationGuide/index';
+import { SEO_PRODUCT_REVIEWS } from './articles/seoProductReviews/index';
 
 
 // ==============================================================================
 // 2. REGISTER THEM IN THIS LIST
 // ==============================================================================
 const ARTICLES_LIST: ArticleMaster[] = [
-  TRANSLITERATION_GUIDE, // New article
+  SEO_PRODUCT_REVIEWS, // New article
+  TRANSLITERATION_GUIDE,
   FIRE_HORSE_2026_UNIQUE,
   FIRE_HORSE_2026_PITFALLS,
   YEAR_OF_THE_FIRE_HORSE_2026,
@@ -89,8 +91,8 @@ ARTICLES_LIST.forEach((article, index) => {
 
         // Metadata
         category: article.category || 'General',
-        date: "2024", 
-        readTime: "5 min", 
+        date: "2025", 
+        readTime: "6 min", 
         
         // Visuals
         image: article.image,
