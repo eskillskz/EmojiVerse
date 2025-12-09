@@ -17,14 +17,22 @@ import BlogList from './components/BlogList';
 import BlogPostView from './components/BlogPost';
 import ShareModal from './components/ShareModal';
 import ReactionOverlay from './components/ReactionOverlay';
+import AdUnit from './components/AdUnit'; // Import AdUnit
 import { getSEOData } from './data/seoContent';
 import { KAOMOJI_DATA } from './data/kaomoji';
 import { UI_LABELS } from './data/uiTranslations';
-import { BLOG_POSTS } from './data/blogPosts'; // Import to find post by slug
+import { BLOG_POSTS } from './data/blogPosts'; 
 import { Clock, Heart } from 'lucide-react';
 
 const getGroupId = (name: string) => name.replace(/\s+/g, '-').toLowerCase();
 type ViewState = 'home' | 'blog' | 'article';
+
+// Declare gtag for TypeScript
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+  }
+}
 
 const App: React.FC = () => {
   const [allGroups, setAllGroups] = useState<EmojiGroup[]>([]);
@@ -105,29 +113,41 @@ const App: React.FC = () => {
     document.documentElement.lang = locale;
   }, [locale]);
 
+  // SEO & Analytics Handling
   useEffect(() => {
     const seoData = getSEOData(locale, activeTab);
     const metaDesc = document.querySelector('meta[name="description"]');
     
+    let pageTitle = seoData.appTitle;
+    let pagePath = window.location.pathname + window.location.search;
+
     if (viewState === 'article' && currentPost) {
-      // Use explicit SEO Title if available, otherwise fallback to Post Title
-      document.title = `${currentPost.seoTitle || currentPost.title} - EmojiVerse`;
-      
+      pageTitle = `${currentPost.seoTitle || currentPost.title} - EmojiVerse`;
       if (metaDesc) {
-        // Use explicit SEO Description if available, otherwise fallback to Excerpt
         metaDesc.setAttribute('content', currentPost.seoDescription || currentPost.excerpt);
       }
     } else if (viewState === 'blog') {
-      document.title = `EmojiVerse Blog - Stories & History (${locale.toUpperCase()})`;
+      pageTitle = `EmojiVerse Blog - Stories & History (${locale.toUpperCase()})`;
       if (metaDesc) {
         metaDesc.setAttribute('content', seoData.metaDescription);
       }
     } else {
-      document.title = seoData.appTitle;
+      pageTitle = seoData.appTitle;
       if (metaDesc) {
         metaDesc.setAttribute('content', seoData.metaDescription);
       }
     }
+
+    document.title = pageTitle;
+
+    // Send Page View to Google Analytics
+    if (typeof window.gtag === 'function') {
+      window.gtag('config', 'G-XXXXXXXXXX', {
+        page_title: pageTitle,
+        page_path: pagePath
+      });
+    }
+
   }, [locale, viewState, currentPost, activeTab]);
 
   useEffect(() => {
@@ -248,7 +268,6 @@ const App: React.FC = () => {
     if (viewState === 'home') {
       setViewState('blog');
       window.scrollTo(0, 0);
-      // Clean URL when entering blog home
       const url = new URL(window.location.href);
       url.searchParams.delete('post');
       window.history.pushState({}, '', url);
@@ -263,7 +282,6 @@ const App: React.FC = () => {
   const openArticle = (post: BlogPost) => {
     setCurrentPost(post);
     setViewState('article');
-    // Update URL for SEO/Sharing
     const url = new URL(window.location.href);
     url.searchParams.set('post', post.slug);
     window.history.pushState({}, '', url);
@@ -279,12 +297,12 @@ const App: React.FC = () => {
   const SpecialSection = ({ title, icon: Icon, list }: { title: string, icon: any, list: EmojiRaw[] }) => {
     if (list.length === 0) return null;
     return (
-      <div className="mb-6 bg-white dark:bg-slate-900/40 backdrop-blur-sm border border-slate-200 dark:border-white/5 rounded-3xl shadow-sm p-4 sm:p-6">
+      <div className="mb-6 bg-white dark:bg-slate-900/40 backdrop-blur-sm border border-slate-200 dark:border-white/5 rounded-3xl shadow-sm p-4 sm:p-6 w-full">
         <div className="flex items-center gap-2 mb-4 text-slate-800 dark:text-slate-200 font-bold">
           <Icon size={20} className="text-indigo-500" />
           <h3>{title}</h3>
         </div>
-        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3 sm:gap-4">
+        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 sm:gap-4">
           {list.map((emoji, index) => (
              <EmojiButton 
                key={`special-${title}-${emoji.hexcode}-${index}`} 
@@ -300,11 +318,10 @@ const App: React.FC = () => {
     );
   };
 
-  const labels = UI_LABELS[locale];
-
   return (
-    <div className="min-h-screen pb-32 bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300 relative overflow-x-hidden">
+    <div className="min-h-screen pb-32 bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300 relative overflow-x-hidden w-full">
       
+      {/* Background Ambience */}
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-500/20 dark:bg-indigo-500/10 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3 animate-pulse"></div>
           <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-pink-500/20 dark:bg-purple-500/10 rounded-full blur-[80px] translate-x-1/3 translate-y-1/3 opacity-70"></div>
@@ -330,90 +347,119 @@ const App: React.FC = () => {
         onTabChange={setActiveTab}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 relative z-10 w-full">
         
         {viewState === 'home' && (
-          <>
-            {/* === EMOJI TAB === */}
-            {activeTab === 'emoji' && (
-              <>
-                <TextEditor 
-                  text={editorText} 
-                  setText={setEditorText} 
-                  onCopy={handleCopyText}
-                  onClear={() => setEditorText('')}
-                  locale={locale}
-                />
-                <main className="min-w-0">
-                  {loading ? (
-                    <Loader />
-                  ) : filteredGroups.length === 0 ? (
-                    <div className="text-center py-20 animate-fade-in bg-white dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm">
-                      <p className="text-6xl mb-4 opacity-50">🧐</p>
-                      <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">{labels.noEmojisFound}</p>
-                    </div>
-                  ) : (
-                    <>
-                      {!searchQuery && (
-                        <>
-                          <SpecialSection title={labels.favorites} icon={Heart} list={favorites} />
-                          <SpecialSection title={labels.recent} icon={Clock} list={recent} />
-                        </>
-                      )}
-                      {filteredGroups.map((group) => (
-                        <EmojiCategory 
-                          key={group.groupName}
+          <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
+            
+            {/* === LEFT SIDEBAR (ADS) - Desktop Only === */}
+            {/* Sticky Wrapper */}
+            <aside className="hidden lg:block w-72 shrink-0">
+               <div className="sticky top-24 space-y-6">
+                  {/* Skyscraper Ad Unit (Top) */}
+                  <AdUnit 
+                    slotId="left-sidebar-top" 
+                    className="min-h-[300px] bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-white/5 shadow-sm"
+                  />
+                  
+                  {/* Pro Tip Widget */}
+                  <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white text-center shadow-lg">
+                    <p className="font-bold text-lg mb-2">🚀 Pro Tip</p>
+                    <p className="text-sm opacity-90">Use <span className="font-mono bg-white/20 px-1 rounded">Shift + Click</span> on emojis to copy multiple at once!</p>
+                  </div>
+
+                  {/* Rectangle Ad Unit (Bottom) */}
+                  <AdUnit 
+                    slotId="left-sidebar-bottom" 
+                    className="min-h-[250px] bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-white/5 shadow-sm"
+                  />
+               </div>
+            </aside>
+
+            {/* === MAIN CONTENT (RIGHT) === */}
+            <div className="flex-1 min-w-0 w-full">
+              
+              {/* === EMOJI TAB === */}
+              {activeTab === 'emoji' && (
+                <>
+                  <TextEditor 
+                    text={editorText} 
+                    setText={setEditorText} 
+                    onCopy={handleCopyText}
+                    onClear={() => setEditorText('')}
+                    locale={locale}
+                  />
+                  <main className="min-w-0 w-full">
+                    {loading ? (
+                      <Loader />
+                    ) : filteredGroups.length === 0 ? (
+                      <div className="text-center py-20 animate-fade-in bg-white dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm">
+                        <p className="text-6xl mb-4 opacity-50">🧐</p>
+                        <p className="text-2xl text-slate-600 dark:text-slate-400 font-medium">{UI_LABELS[locale].noEmojisFound}</p>
+                      </div>
+                    ) : (
+                      <>
+                        {!searchQuery && (
+                          <>
+                            <SpecialSection title={UI_LABELS[locale].favorites} icon={Heart} list={favorites} />
+                            <SpecialSection title={UI_LABELS[locale].recent} icon={Clock} list={recent} />
+                          </>
+                        )}
+                        {filteredGroups.map((group) => (
+                          <EmojiCategory 
+                            key={group.groupName}
+                            group={group}
+                            id={getGroupId(group.groupName)}
+                            onCopy={handleEmojiSelect}
+                            forceOpen={forceOpenState}
+                            favoriteIds={favIds}
+                            onToggleFavorite={toggleFavorite}
+                            localizedName={(UI_LABELS[locale].categories as any)[group.groupName]}
+                            locale={locale}
+                          />
+                        ))}
+                      </>
+                    )}
+                  </main>
+                </>
+              )}
+
+              {/* === KAOMOJI TAB === */}
+              {activeTab === 'kaomoji' && (
+                <>
+                  <TextEditor 
+                    text={editorText} 
+                    setText={setEditorText} 
+                    onCopy={handleCopyText}
+                    onClear={() => setEditorText('')}
+                    locale={locale}
+                  />
+                  <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    {filteredKaomoji.map((group, index) => (
+                      <KaomojiCategory 
+                          key={index}
                           group={group}
-                          id={getGroupId(group.groupName)}
-                          onCopy={handleEmojiSelect}
-                          forceOpen={forceOpenState}
-                          favoriteIds={favIds}
-                          onToggleFavorite={toggleFavorite}
-                          localizedName={(labels.categories as any)[group.groupName]}
+                          onCopy={handleKaomojiSelect}
                           locale={locale}
-                        />
-                      ))}
-                    </>
-                  )}
-                </main>
-              </>
-            )}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
 
-            {/* === KAOMOJI TAB === */}
-            {activeTab === 'kaomoji' && (
-               <>
-                <TextEditor 
-                  text={editorText} 
-                  setText={setEditorText} 
-                  onCopy={handleCopyText}
-                  onClear={() => setEditorText('')}
-                  locale={locale}
-                />
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                   {filteredKaomoji.map((group, index) => (
-                     <KaomojiCategory 
-                        key={index}
-                        group={group}
-                        onCopy={handleKaomojiSelect}
-                        locale={locale}
-                     />
-                   ))}
-                </div>
-               </>
-            )}
+              {/* === SEO TAB === */}
+              {activeTab === 'translit' && (
+                <TranslitTool locale={locale} />
+              )}
 
-            {/* === SEO TAB === */}
-            {activeTab === 'translit' && (
-              <TranslitTool locale={locale} />
-            )}
+              {/* === CAPS LOCK TAB === */}
+              {activeTab === 'capslock' && (
+                <CapsLockTool locale={locale} />
+              )}
 
-            {/* === CAPS LOCK TAB === */}
-            {activeTab === 'capslock' && (
-              <CapsLockTool locale={locale} />
-            )}
-
-            {!loading && <SEOSection locale={locale} activeTab={activeTab} />}
-          </>
+              {!loading && <SEOSection locale={locale} activeTab={activeTab} />}
+            </div>
+          </div>
         )}
 
         {viewState === 'blog' && (
@@ -454,11 +500,11 @@ const App: React.FC = () => {
         onClose={() => setIsShareModalOpen(false)} 
         url={window.location.href}
         title={viewState === 'home' ? getSEOData(locale, activeTab).appTitle : currentPost?.title || ''}
-        modalTitle={labels.shareTitle}
+        modalTitle={UI_LABELS[locale].shareTitle}
       />
       
       <footer className="text-center py-10 text-slate-400 dark:text-slate-600 text-sm mb-8 md:mb-0 border-t border-slate-200 dark:border-white/5 mt-8 relative z-10">
-        <p>© {new Date().getFullYear()} EmojiVerse. {labels.footer}</p>
+        <p>© {new Date().getFullYear()} EmojiVerse. {UI_LABELS[locale].footer}</p>
       </footer>
     </div>
   );

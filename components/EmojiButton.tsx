@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, Copy } from 'lucide-react';
 import { EmojiRaw, Locale } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
@@ -20,8 +20,16 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({
   locale = 'en'
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const hasVariants = emoji.skins && emoji.skins.length > 0;
   const labels = UI_LABELS[locale];
+
+  const handleCopy = (e: React.MouseEvent, targetEmoji: EmojiRaw = emoji) => {
+    e.stopPropagation();
+    onCopy(targetEmoji);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 1500);
+  };
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -34,7 +42,6 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({
   const showSecondaryLabel = emoji.baseLabel && emoji.baseLabel.toLowerCase() !== emoji.label.toLowerCase();
   
   // Get tags for "Analogy" / Emotion context
-  // We limit to 4 tags to keep the tooltip clean
   const displayTags = emoji.tags ? emoji.tags.slice(0, 4).join(', ') : '';
 
   return (
@@ -51,14 +58,13 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({
       }}
     >
       <button
-        onClick={() => onCopy(emoji)}
-        // Removed 'title' to disable native tooltip
-        className="w-full aspect-square flex items-center justify-center text-2xl sm:text-3xl md:text-4xl rounded-xl sm:rounded-2xl cursor-pointer select-none relative transition-all duration-200 transform
-          bg-slate-50/50 dark:bg-slate-800/20 border border-transparent
-          hover:bg-white dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600
-          hover:scale-110 
-          hover:shadow-lg dark:hover:ring-2 dark:hover:ring-indigo-500 dark:hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]
-          active:scale-95"
+        onClick={(e) => handleCopy(e)}
+        className={`w-full aspect-square flex items-center justify-center text-2xl sm:text-3xl md:text-4xl rounded-xl sm:rounded-2xl cursor-pointer select-none relative transition-all duration-200 transform border
+          ${isCopied 
+            ? 'bg-green-100 dark:bg-green-900/30 border-green-500 scale-95' 
+            : 'bg-slate-50/50 dark:bg-slate-800/20 border-transparent hover:bg-white dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600 hover:scale-110 hover:shadow-lg dark:hover:ring-2 dark:hover:ring-indigo-500 dark:hover:shadow-[0_0_20px_rgba(99,102,241,0.4)] active:scale-95'
+          }
+        `}
       >
         {emoji.emoji}
         
@@ -66,13 +72,18 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({
         {hasVariants && (
           <div className="absolute bottom-1 right-1 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-slate-300 dark:bg-slate-500 rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />
         )}
+
+        {/* Copy Icon Overlay (Visible on Hover) */}
+        <div className={`absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl sm:rounded-2xl transition-opacity duration-200 ${isHovered && !hasVariants ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+           <Copy className="text-white drop-shadow-md" size={20} />
+        </div>
       </button>
 
       {/* Favorite Heart Icon */}
       {onToggleFavorite && (
         <div 
           onClick={handleFavoriteClick}
-          className={`absolute -top-1 -right-1 p-1.5 rounded-full cursor-pointer transition-all duration-200 transform z-20 ${isFavorite ? 'scale-100 opacity-100' : 'scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100'}`}
+          className={`absolute -top-1 -right-1 p-1.5 rounded-full cursor-pointer transition-all duration-200 transform z-40 ${isFavorite ? 'scale-100 opacity-100' : 'scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100'}`}
         >
           <Heart 
             size={14} 
@@ -89,23 +100,16 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({
              {emoji.label}
            </div>
            
-           {/* Analogies / Tags (New Feature) */}
+           {/* Analogies / Tags */}
            {displayTags && (
              <div className="text-xs opacity-80 mt-1 text-indigo-200 dark:text-indigo-600 font-medium leading-snug">
                {displayTags}
              </div>
            )}
 
-           {/* English Label (if different) */}
-           {showSecondaryLabel && !displayTags && (
-             <div className="text-xs opacity-70 italic mt-0.5 capitalize">
-               {emoji.baseLabel}
-             </div>
-           )}
-
            {/* Click to Copy CTA */}
-           <div className="text-[10px] uppercase tracking-wider opacity-50 mt-2 border-t border-white/20 dark:border-slate-900/10 pt-1">
-             {labels.clickToCopy}
+           <div className="text-[10px] uppercase tracking-wider opacity-50 mt-2 border-t border-white/20 dark:border-slate-900/10 pt-1 flex items-center justify-center gap-1">
+             <Copy size={10} /> {labels.clickToCopy}
            </div>
            
            {/* Triangle */}
@@ -121,22 +125,28 @@ const EmojiButton: React.FC<EmojiButtonProps> = ({
         >
           {/* Render Original First */}
           <button
-             onClick={(e) => { e.stopPropagation(); onCopy(emoji); }}
-             className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xl sm:text-2xl hover:bg-slate-100 dark:hover:bg-white/10 hover:scale-110 rounded-lg transition-all cursor-pointer"
+             onClick={(e) => handleCopy(e, emoji)}
+             className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xl sm:text-2xl hover:bg-slate-100 dark:hover:bg-white/10 hover:scale-110 rounded-lg transition-all cursor-pointer relative group/variant"
              title={emoji.label}
           >
             {emoji.emoji}
+             <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg opacity-0 group-hover/variant:opacity-100 transition-opacity">
+               <Copy className="text-white" size={12} />
+             </div>
           </button>
           
           {/* Render Variants */}
           {emoji.skins?.map((variant, idx) => (
             <button
               key={`${variant.hexcode}-${idx}`}
-              onClick={(e) => { e.stopPropagation(); onCopy(variant); }}
-              className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xl sm:text-2xl hover:bg-slate-100 dark:hover:bg-white/10 hover:scale-110 rounded-lg transition-all cursor-pointer"
+              onClick={(e) => handleCopy(e, variant)}
+              className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xl sm:text-2xl hover:bg-slate-100 dark:hover:bg-white/10 hover:scale-110 rounded-lg transition-all cursor-pointer relative group/variant"
               title={variant.label}
             >
               {variant.emoji}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg opacity-0 group-hover/variant:opacity-100 transition-opacity">
+                <Copy className="text-white" size={12} />
+              </div>
             </button>
           ))}
           

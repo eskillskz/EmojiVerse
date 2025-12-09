@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Search, Smile, User, Dog, Pizza, Plane, Activity, Lightbulb, Heart, Flag, Grid3X3, Moon, Sun, Menu, X, BookOpen, Globe, Type, CaseUpper } from 'lucide-react';
-import { EmojiGroup, Locale, LOCALE_DATA } from '../types';
+import { EmojiGroup, EmojiRaw, Locale, LOCALE_DATA } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
 interface HeaderProps {
@@ -84,7 +84,21 @@ const Header: React.FC<HeaderProps> = ({
               </div>
           </div>
 
-          {/* Row 2: Theme, Language, Hamburger */}
+          {/* Row 2: Prominent Blog & Stories Button */}
+          <button
+              onClick={onOpenBlog}
+              className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold shadow-lg transition-all active:scale-95 ${
+                isBlogActive 
+                ? 'bg-slate-800 text-white border border-slate-700' 
+                : 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-rose-500/30 hover:shadow-rose-500/40'
+              }`}
+            >
+              <BookOpen size={20} className={isBlogActive ? "text-slate-400" : "text-white"} />
+              <span>Blog & Stories</span>
+              {!isBlogActive && <span className="bg-white/20 text-[10px] px-1.5 py-0.5 rounded-md ml-1 font-extrabold tracking-wide">NEW</span>}
+            </button>
+
+          {/* Row 3: Theme, Language, Hamburger */}
           <div className="flex items-center gap-2">
              {/* Theme Toggle */}
              <button 
@@ -132,7 +146,7 @@ const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Row 3: Main Navigation Tabs (Grid) - Visible by default now */}
+          {/* Row 4: Main Navigation Tabs (Grid) - Visible by default now */}
           {!isBlogActive && (
             <div className="grid grid-cols-2 gap-2">
                <button
@@ -182,7 +196,7 @@ const Header: React.FC<HeaderProps> = ({
             </div>
           )}
 
-          {/* Row 4: Search Bar */}
+          {/* Row 5: Search Bar */}
           <div className="relative w-full">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search className="h-4 w-4 text-slate-400" />
@@ -358,6 +372,7 @@ const Header: React.FC<HeaderProps> = ({
         {/* Mobile Nav Menu Dropdown (Hamburger Content) */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-[600px] opacity-100 pb-4 border-t border-slate-200 dark:border-white/10 mt-2' : 'max-h-0 opacity-0'}`}>
           <div className="flex flex-col gap-2 pt-4">
+             {/* Keep backup link in menu too */}
             <button
                onClick={() => { onOpenBlog(); setIsMobileMenuOpen(false); }}
                className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all border text-left ${isBlogActive ? 'bg-indigo-500 text-white' : 'bg-slate-50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-200'}`}
@@ -366,8 +381,6 @@ const Header: React.FC<HeaderProps> = ({
               Blog & Stories
             </button>
 
-            {/* Note: Main tabs are now in the grid above, removed from here to avoid duplication as requested */}
-            
             {!isBlogActive && activeTab === 'emoji' && (
               <>
                 <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">Categories</div>

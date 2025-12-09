@@ -3,7 +3,7 @@ import { ArticleMaster } from '../../types';
 
 export const INSTAGRAM_MARKETING_MISTAKES_2026: ArticleMaster = {
   slug: '5-instagram-marketing-mistakes-2026',
-  image: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=800&q=80',
+  image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=800&q=80', // Business frustration / Problem solving
   category: 'Instagram',
   gradient: 'from-red-500 to-orange-500',
   locales: {
@@ -142,7 +142,7 @@ export const INSTAGRAM_MARKETING_MISTAKES_2026: ArticleMaster = {
         "Je me souviens d'une époque où le marketing Instagram ressemblait au Far West. Au fil des ans, j'ai vu des entreprises trébucher sur des erreurs mineures qui ont paralysé leur croissance. En 2026, le paysage évolue.",
         "Il ne s'agit pas de petits dérapages, mais d'erreurs fondamentales. Mon objectif est de vous équiper de « solutions lifehack » pratiques pour 2026.",
         "## 1. Le piège de l'incohérence",
-        "L'une des erreurs les plus insidieuses est le manque de cohérence. Cela érode la confiance et la visibilité.",
+        "L'une des erreurs les plus insidieuses est le manque de cohérence. Cela érode la confiance et la visibilidad.",
         "### Pourquoi un calendrier irrégulier nuit à votre portée",
         "L'algorithme favorise la cohérence. Si vous publiez de manière erratique, l'algorithme juge votre contenu peu fiable.",
         "**Solution Lifehack :** Mettez en place un **Calendrier de Contenu Stratégique**. Planifiez thèmes et Reels à l'avance.",
@@ -252,7 +252,7 @@ export const INSTAGRAM_MARKETING_MISTAKES_2026: ArticleMaster = {
         "## 5. Profilo ottimizzato male e CTA poco chiare",
         "Molti trascurano gli elementi che convertono i visitatori in follower.",
         "### Creare una Bio coinvolgente",
-        "La tua bio è la tua vetrina. Deve comunicare chi sei. Usa parole chiave.",
+        "La tua bio è la tua vetrina. Deve comunicar chi sei. Usa parole chiave.",
         "### Guidare con CTA forti",
         "Dì alle persone cosa fare. \"Clicca il link in bio!\" o \"Invia un DM!\". È essenziale.",
         "## Conclusione",

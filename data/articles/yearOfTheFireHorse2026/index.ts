@@ -16,7 +16,7 @@ import { kk } from './kk';
 
 export const YEAR_OF_THE_FIRE_HORSE_2026: ArticleMaster = {
   slug: '15-surprising-facts-2026-year-of-the-fire-horse',
-  image: 'https://images.unsplash.com/photo-1545559535-081b9c0925d3?auto=format&fit=crop&w=800&q=80', // Fire/Horse/Astrology theme
+  image: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=800&q=80', // Powerful Horse Image
   category: 'History',
   gradient: 'from-red-600 to-orange-500',
   locales: {

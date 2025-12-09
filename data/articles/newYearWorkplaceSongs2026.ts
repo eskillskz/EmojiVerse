@@ -3,7 +3,7 @@ import { ArticleMaster } from '../../types';
 
 export const NEW_YEAR_WORKPLACE_SONGS_2026: ArticleMaster = {
   slug: 'new-year-2026-workplace-songs-lyrics',
-  image: 'https://images.unsplash.com/photo-1516450360452-631d408d5dfd?auto=format&fit=crop&w=800&q=80', // Corporate party/Karaoke theme
+  image: 'https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?auto=format&fit=crop&w=800&q=80', // Celebration/Music Theme
   category: 'Business',
   gradient: 'from-yellow-400 to-orange-500',
   locales: {
@@ -179,8 +179,8 @@ export const NEW_YEAR_WORKPLACE_SONGS_2026: ArticleMaster = {
         "### Letras reflexivas",
         "*(Melodía suave)* Este año crecimos fuertes, juntos pertenecimos. Por cada esfuerzo, grande y pequeño, gracias a todos.",
         "## Formas innovadoras de integrar canciones",
-        "### Desafío de Karaoke de Año Nuevo",
-        "Proporciona una selección de canciones populares con letras personalizadas preescritas relevantes para tu lugar de trabajo. Anima el entusiasmo sobre la perfección vocal.",
+        "### Desafio de Karaoke de Año Nuevo",
+        "Proporciona una selección de canciones populares con letras personalizadas preescritas. Anima el entusiasmo sobre la perfección vocal.",
         "### Concursos de canciones interactivas",
         "Desafía a diferentes equipos a adaptar una canción conocida con sus propias letras creativas. Fomenta la competencia amistosa.",
         "## Armonía festiva y etiqueta",
@@ -304,7 +304,7 @@ export const NEW_YEAR_WORKPLACE_SONGS_2026: ArticleMaster = {
         "- **Valori aziendali:** Innovazione, lavoro di squadra.",
         "- **Dinamiche di team:** Celebra gli eroi non celebrati.",
         "### Scegliere melodie familiari",
-        "La familiarità favorisce la partecipazione. Scegli melodie popolari che tutti conoscono, come \"Jingle Bells\" o classici pop. L'obiettivo è l'accessibilità.",
+        "La familiarità favorise la partecipazione. Scegli melodie popolari che tutti conoscono, come \"Jingle Bells\" o classici pop. L'obiettivo è l'accessibilità.",
         "### Rima e ritmo",
         "Cerca di adattare i nuovi testi al ritmo della canzone originale. La rima non deve essere perfetta; il ritmo è più importante.",
         "## Idee pronte da cantare",
@@ -350,7 +350,7 @@ export const NEW_YEAR_WORKPLACE_SONGS_2026: ArticleMaster = {
         "- **Valores da empresa:** Inovação, trabalho em equipe.",
         "- **Dinâmica de equipe:** Celebre os heróis anônimos.",
         "### Escolhendo melodias familiares",
-        "A familiaridade gera participação. Selecione melodias populares que todos conheçam, como \"Jingle Bells\" ou sucessos pop clássicos. O objetivo é a acessibilidade.",
+        "A familiaridade gera participação. Selecione melodias populares que todos conheçam, como \"Jingle Bells\" ousucessos pop clássicos. O objetivo é a acessibilidade.",
         "### Rima e ritmo",
         "Tente encaixar suas novas letras no ritmo da música original. A rima não precisa ser perfeita; o ritmo é mais importante.",
         "## Ideias prontas para cantar",
@@ -653,4 +653,3 @@ export const NEW_YEAR_WORKPLACE_SONGS_2026: ArticleMaster = {
     }
   }
 };
-    

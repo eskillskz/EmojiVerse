@@ -5,6 +5,7 @@ import { BLOG_POSTS } from '../data/blogPosts';
 import { ArrowLeft, Share2, Home, ArrowRight, Sparkles } from 'lucide-react';
 import { UI_LABELS } from '../data/uiTranslations';
 import ShareModal from './ShareModal';
+import AdUnit from './AdUnit'; // Import AdUnit
 
 interface BlogPostProps {
   post: BlogPost;
@@ -161,6 +162,9 @@ const BlogPostView: React.FC<BlogPostProps & { onOpenPost?: (post: BlogPost) => 
                 </h1>
             </div>
 
+            {/* AD UNIT: TOP (Below Title) */}
+            <AdUnit slotId="1234567890" /> 
+
             {/* 3. Content */}
             <div className="prose dark:prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-slate-900 dark:prose-headings:text-white prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 hover:prose-a:text-indigo-500 leading-relaxed">
                 {contentArray.length > 0 ? contentArray.map((paragraph, index) => {
@@ -186,6 +190,10 @@ const BlogPostView: React.FC<BlogPostProps & { onOpenPost?: (post: BlogPost) => 
                   <p className="text-slate-500 italic">No content available for this post.</p>
                 )}
             </div>
+
+            {/* AD UNIT: BOTTOM (End of Content) */}
+            <AdUnit slotId="0987654321" />
+
         </div>
       </article>
 

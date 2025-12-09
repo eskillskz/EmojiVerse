@@ -13,7 +13,7 @@ import { ArticleMaster } from '../../types';
 export const INSTAGRAM_BIO_HACKS: ArticleMaster = {
   // --- GLOBAL SETTINGS (Applied to all languages) ---
   slug: 'instagram-bio-hacks',
-  image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80",
+  image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=800&q=80", // Sleek Mobile Phone
   category: 'Instagram', // Options: 'Instagram', 'Emoji', 'Business', 'History'
   gradient: "from-purple-500 to-pink-500", // Used if image fails to load
 

@@ -14,29 +14,18 @@ import { INSTAGRAM_MARKETING_MISTAKES_2026 } from './articles/instagramMarketing
 import { KAOMOJI_ENGAGEMENT_SEO } from './articles/kaomojiEngagementSEO';
 import { KAOMOJI_MARKETING_GUIDE } from './articles/kaomojiMarketingGuide';
 import { INSTAGRAM_SEO_2026 } from './articles/instagramSEO2026';
+import { NEW_YEAR_POEMS_2026 } from './articles/newYearPoems2026';
 import { NEW_YEAR_COLLEAGUES_2026 } from './articles/newYearColleagues2026';
 import { NEW_YEAR_WORKPLACE_SONGS_2026 } from './articles/newYearWorkplaceSongs2026';
 import { NEW_YEAR_LYRICS_2026 } from './articles/newYearLyrics2026';
-import { YEAR_OF_THE_FIRE_HORSE_2026 } from './articles/yearOfTheFireHorse2026/index';
-import { FIRE_HORSE_2026_PITFALLS } from './articles/fireHorse2026Pitfalls/index';
-import { NEW_YEAR_POEMS_2026 } from './articles/newYearPoems2026/index';
-import { NEW_YEAR_CONGRATULATORY_LYRICS_2026 } from './articles/newYearCongratulatoryLyrics2026/index';
-import { FIRE_HORSE_2026_UNIQUE } from './articles/fireHorse2026Unique/index';
-import { TRANSLITERATION_GUIDE } from './articles/transliterationGuide/index';
-import { SEO_PRODUCT_REVIEWS } from './articles/seoProductReviews/index';
+import { YEAR_OF_THE_FIRE_HORSE_2026 } from './articles/yearOfTheFireHorse2026/index'; // Updated path
 
 
 // ==============================================================================
 // 2. REGISTER THEM IN THIS LIST
 // ==============================================================================
 const ARTICLES_LIST: ArticleMaster[] = [
-  SEO_PRODUCT_REVIEWS, // New article
-  TRANSLITERATION_GUIDE,
-  FIRE_HORSE_2026_UNIQUE,
-  FIRE_HORSE_2026_PITFALLS,
   YEAR_OF_THE_FIRE_HORSE_2026,
-  NEW_YEAR_CONGRATULATORY_LYRICS_2026,
-  NEW_YEAR_POEMS_2026,
   INSTAGRAM_BIO_HACKS,
   EMOJI_CREATION_SECRETS,
   EMOJI_MARKETING_GUIDE,
@@ -47,6 +36,7 @@ const ARTICLES_LIST: ArticleMaster[] = [
   KAOMOJI_ENGAGEMENT_SEO,
   KAOMOJI_MARKETING_GUIDE,
   INSTAGRAM_SEO_2026,
+  NEW_YEAR_POEMS_2026,
   NEW_YEAR_COLLEAGUES_2026,
   NEW_YEAR_WORKPLACE_SONGS_2026,
   NEW_YEAR_LYRICS_2026
@@ -91,8 +81,8 @@ ARTICLES_LIST.forEach((article, index) => {
 
         // Metadata
         category: article.category || 'General',
-        date: "2025", 
-        readTime: "6 min", 
+        date: "2024", 
+        readTime: "5 min", 
         
         // Visuals
         image: article.image,
@@ -102,3 +92,4 @@ ARTICLES_LIST.forEach((article, index) => {
     }
   });
 });
+    

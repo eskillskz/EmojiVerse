@@ -108,7 +108,7 @@ export interface ArticleContent {
 export interface ArticleMaster {
   slug: string;             // URL part (e.g. 'my-post')
   image: string;            // Cover image URL
-  category: string;         // Updated to string to allow dynamic new categories
+  category: 'Instagram' | 'Emoji' | 'Business' | 'History' | 'Astrology';
   gradient?: string;        // Fallback CSS gradient
   locales: Partial<Record<Locale, ArticleContent>>; // Translations
 }

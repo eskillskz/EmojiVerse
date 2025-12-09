@@ -1,9 +1,10 @@
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BlogPost, Locale } from '../types';
 import { BLOG_POSTS } from '../data/blogPosts'; 
 import { ArrowRight, BookOpen, Home, Loader2, ChevronDown } from 'lucide-react';
 import { UI_LABELS } from '../data/uiTranslations';
+import AdUnit from './AdUnit'; // Import AdUnit
 
 interface BlogListProps {
   locale: Locale;
@@ -19,9 +20,10 @@ const getCategoryStyle = (cat: string) => {
   if (c === 'emoji') return 'bg-amber-500 text-white shadow-amber-500/30';
   if (c === 'history') return 'bg-purple-600 text-white shadow-purple-600/30';
   if (c === 'astrology') return 'bg-violet-600 text-white shadow-violet-600/30';
-  if (c.includes('seo')) return 'bg-teal-600 text-white shadow-teal-600/30';
   return 'bg-slate-700 text-white';
 };
+
+const CATEGORIES = ['All', 'Instagram', 'Emoji', 'Business', 'History', 'Astrology'];
 
 const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome }) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -46,15 +48,6 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
 
     loadPosts();
   }, [locale]);
-
-  // Dynamically extract categories from the loaded posts
-  const dynamicCategories = useMemo(() => {
-    const uniqueCategories = new Set(posts.map(p => p.category).filter(Boolean));
-    // Convert Set to Array and Sort alphabetically
-    const sortedCategories = Array.from(uniqueCategories).sort();
-    // Prepend 'All'
-    return ['All', ...sortedCategories];
-  }, [posts]);
 
   // Filter logic
   useEffect(() => {
@@ -101,7 +94,7 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
       </div>
 
       {/* Hero Section */}
-      <div className="text-center max-w-3xl mx-auto mb-10 space-y-4 px-4">
+      <div className="text-center max-w-3xl mx-auto mb-6 space-y-4 px-4">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-sm font-bold uppercase tracking-wide">
           <BookOpen size={16} />
           Blog & Stories
@@ -113,9 +106,9 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
           Tips, History, and Tricks to level up your social media game.
         </p>
         
-        {/* CATEGORY RUBRICS (Chips) - Dynamic */}
+        {/* CATEGORY RUBRICS (Chips) */}
         <div className="flex flex-wrap justify-center gap-3 mt-6">
-           {dynamicCategories.map(cat => (
+           {CATEGORIES.map(cat => (
              <button
                key={cat}
                onClick={() => setSelectedCategory(cat)}
@@ -125,11 +118,19 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
                }`}
              >
-               {/* Translate category if available, else show raw string */}
-               {cat === 'All' ? (locale === 'ru' ? '✨ Все статьи' : '✨ All Stories') : ((labels.categories as any)[cat] || cat)}
+               {cat === 'All' ? '✨ All Stories' : cat}
              </button>
            ))}
         </div>
+      </div>
+
+      {/* --- AD UNIT: Horizontal Banner (Between Menu and Grid) --- */}
+      <div className="max-w-4xl mx-auto px-4 mb-10">
+         <AdUnit 
+            slotId="blog-list-header-ad" 
+            format="auto" 
+            className="min-h-[150px] bg-slate-100 dark:bg-slate-800/50"
+         />
       </div>
 
       {filteredPosts.length === 0 ? (
@@ -172,7 +173,7 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex items-center gap-2 text-xs text-slate-400 mb-3 font-bold uppercase tracking-wider">
                      {/* Placeholder Date logic */}
-                    <span>{post.date || '2024'}</span>
+                    <span>2024</span>
                     <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
                     <span>{post.readTime || '5 min'}</span>
                   </div>
@@ -186,7 +187,7 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
                   </p>
 
                   <div className="flex items-center font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mt-auto">
-                    {locale === 'ru' ? 'Читать статью' : 'Read Story'} <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    Read Story <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </a>
@@ -199,7 +200,7 @@ const BlogList: React.FC<BlogListProps> = ({ locale, onReadPost, onBackToHome })
                 onClick={handleLoadMore}
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all border border-slate-200 dark:border-slate-700"
               >
-                {locale === 'ru' ? 'Загрузить еще' : 'Load More Stories'}
+                Load More Stories
                 <ChevronDown size={18} />
               </button>
             </div>

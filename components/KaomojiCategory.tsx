@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Copy } from 'lucide-react';
 import { KaomojiGroup, KaomojiItem, Locale } from '../types';
 import { UI_LABELS } from '../data/uiTranslations';
 
@@ -12,12 +13,18 @@ interface KaomojiCategoryProps {
 interface KaomojiButtonProps {
   item: KaomojiItem;
   onCopy: (k: string) => void;
-  label: string;       // "Click to Copy"
+  label: string;
 }
 
-// Sub-component to handle individual hover state for tooltips
 const KaomojiButton: React.FC<KaomojiButtonProps> = ({ item, onCopy, label }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleClick = () => {
+    onCopy(item.text);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 1500);
+  }
 
   return (
     <div 
@@ -26,16 +33,20 @@ const KaomojiButton: React.FC<KaomojiButtonProps> = ({ item, onCopy, label }) =>
       onMouseLeave={() => setIsHovered(false)}
     >
       <button
-        onClick={() => onCopy(item.text)}
-        className="
-          w-full flex items-center justify-center py-3 px-2 rounded-xl border border-slate-100 dark:border-slate-800
-          bg-slate-50/50 dark:bg-slate-800/30 text-slate-700 dark:text-slate-300
-          font-mono text-sm sm:text-base whitespace-nowrap overflow-hidden text-ellipsis
-          hover:bg-white dark:hover:bg-slate-700 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-300
-          hover:scale-105 hover:shadow-md transition-all active:scale-95
-        "
+        onClick={handleClick}
+        className={`
+          w-full flex items-center justify-between py-3 px-3 rounded-xl border font-mono text-sm sm:text-base whitespace-nowrap overflow-hidden
+          transition-all active:scale-95 group
+          ${isCopied
+            ? 'bg-green-50 dark:bg-green-900/20 border-green-500 text-green-600 dark:text-green-400'
+            : 'bg-slate-50/50 dark:bg-slate-800/30 text-slate-700 dark:text-slate-300 border-slate-100 dark:border-slate-800 hover:bg-white dark:hover:bg-slate-700 hover:border-indigo-200 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-300 hover:scale-105 hover:shadow-md'
+          }
+        `}
       >
-        {item.text}
+        <span className="truncate flex-1 text-center">{item.text}</span>
+        {isHovered && (
+            <Copy size={14} className="opacity-50 ml-2 shrink-0 animate-in fade-in duration-200" />
+        )}
       </button>
 
       {/* Custom Rich Tooltip */}
@@ -47,8 +58,8 @@ const KaomojiButton: React.FC<KaomojiButtonProps> = ({ item, onCopy, label }) =>
            </div>
            
            {/* Click to Copy CTA */}
-           <div className="text-[10px] uppercase tracking-wider opacity-50 border-t border-white/20 dark:border-slate-900/10 pt-1">
-             {label}
+           <div className="text-[10px] uppercase tracking-wider opacity-50 border-t border-white/20 dark:border-slate-900/10 pt-1 flex items-center justify-center gap-1">
+             <Copy size={10} /> {label}
            </div>
            
            {/* Triangle */}
