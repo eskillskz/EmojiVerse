@@ -19,12 +19,14 @@ import { NEW_YEAR_COLLEAGUES_2026 } from './articles/newYearColleagues2026';
 import { NEW_YEAR_WORKPLACE_SONGS_2026 } from './articles/newYearWorkplaceSongs2026';
 import { NEW_YEAR_LYRICS_2026 } from './articles/newYearLyrics2026';
 import { YEAR_OF_THE_FIRE_HORSE_2026 } from './articles/yearOfTheFireHorse2026/index'; // Updated path
+import { SURPRISING_FACTS_ABOUT_THE_2026 } from './articles/15SurprisingFactsAboutthe2026YearoftheFireHorse'; // Updated path
 
 
 // ==============================================================================
 // 2. REGISTER THEM IN THIS LIST
 // ==============================================================================
 const ARTICLES_LIST: ArticleMaster[] = [
+  SURPRISING_FACTS_ABOUT_THE_2026,
   YEAR_OF_THE_FIRE_HORSE_2026,
   INSTAGRAM_BIO_HACKS,
   EMOJI_CREATION_SECRETS,
